@@ -1,0 +1,68 @@
+<header [ngClass]="' backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out py-2 px-4 md:px-12 ' +
+    (isScrolled ? 'bg-transparent' : 'bg-white/90 backdrop-blur-md shadow-sm')"
+>
+    <!-- PseudoLogo -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-14">
+            <a class="flex items-center gap-3" routerLink="/">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+                    <lucide-angular [img] = "PawPrint" class="w-8 h-8 text-white"></lucide-angular>
+                </div>
+                <div>
+                    <h1 [ngClass]="'text-xl font-bold ' + (isScrolled ? 'text-gray-800' : 'bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent')">
+                        Amigo de Patas
+                    </h1>
+                    <p [ngClass]="'text-xs ' + (isScrolled ? 'text-gray-800' : 'text-gray-500')">
+                        ONG • Adoção Responsável
+                    </p>
+                </div>
+            </a>
+            <!-- Desktop Navigation Buttons -->
+            <nav class="hidden md:flex items-center space-x-1">
+                <a
+                *ngFor="let item of navigationItems"
+                [routerLink]="item.url"
+                class="px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2"
+                [ngClass]="router.url === item.url
+                ?(isScrolled
+                    ? 'bg-transparent text-gray-800 shadow'
+                    : 'bg-blue-100 text-blue-700')
+                :(isScrolled
+                    ? 'text-gray-800 hover:bg-blue-500 hover:text-white'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900')
+                "
+                >
+                <ng-container *ngIf="item.icon">
+                    <lucide-angular [img]="item.icon" class="w-4 h-4"></lucide-angular>
+                </ng-container>
+                {{ item.title }}
+                </a>
+            </nav>
+            <!-- Mobile Menu Button -->
+            <button
+            type="button"
+            class="md:hidden p-2 rounded-full hover:bg-gray-100 transition"
+            (click)="mobileMenuOpen = !mobileMenuOpen"
+            >
+                <lucide-angular
+                [img]="mobileMenuOpen ? X : Menu"
+                class="w-5 h-5"> </lucide-angular>
+            </button>
+        </div>
+        <!-- Mobile NavBar -->
+        <div *ngIf="mobileMenuOpen" [ngClass]="'md:hidden'+ (isScrolled ? ' bg-transparent' : ' bg-white')">
+            <nav class="px-4 py-1 space-y-1">
+                <a
+                *ngFor="let item of navigationItems"
+                [routerLink]="item.url"
+                (click)="mobileMenuOpen = false"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200"
+                [ngClass]="router.url === item.url ? 'bg-blue-100 text-blue-700' : 'text-gray-600'"
+                >
+                    <lucide-angular [img]="item.icon" class="w-5 h-5"></lucide-angular>
+                    {{ item.title }}
+                </a>
+            </nav>
+        </div>
+    </div>
+</header>
