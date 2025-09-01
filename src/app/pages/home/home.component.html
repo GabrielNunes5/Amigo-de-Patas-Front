@@ -82,8 +82,8 @@
         </div>
         <div *ngIf="!loading" class="grid md:grid-cols-3 mb-12">
             <div *ngFor="let animal of animalDestaque" class="p-4 border rounded-lg shadow">
-                <img [src]="animal.foto" [alt]="animal.nome" class="w-full h-64 object-cover rounded-md mb-4">
-                <h3 class="text-xl font-semibold"> {{animal.nome}} </h3>
+                <img [src]="animal.animalImageUrl" [alt]="animal.animalName" class="w-full h-64 object-cover rounded-md mb-4">
+                <h3 class="text-xl font-semibold"> {{animal.animalName}} </h3>
             </div>
         </div>
         <div class="text-center">
