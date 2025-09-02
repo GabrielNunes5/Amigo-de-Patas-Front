@@ -5,9 +5,10 @@ import { OnInit } from '@angular/core';
 import { Award, Heart, Home, LucideAngularModule, PawPrint, Users } from 'lucide-angular';
 import { MOCK_ANIMALS } from '../../mocks/mock-animals';
 import { Animal } from '../../models/animal.model';
+import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, CommonModule, LucideAngularModule],
+  imports: [RouterLink, CommonModule, LucideAngularModule, AnimalCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
