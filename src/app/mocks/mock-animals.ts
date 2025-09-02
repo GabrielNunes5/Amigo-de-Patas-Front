@@ -32,7 +32,7 @@ export const MOCK_ANIMALS: Animal[] = [
     animalAdopted: false,
     },
     {
-            animalId: '3',
+    animalId: '3',
     animalName: 'Thor',
     animalAge: '3 anos',
     animalWeight: 25.0,
