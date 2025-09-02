@@ -1,0 +1,55 @@
+<div class="overflow-hidden m-3 bg-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 border-0 h-full rounded-2xl transform hover:-translate-y-1">
+    <!-- Imagem -->
+    <div class="relative">
+    <div class="aspect-square overflow-hidden">
+        <img [src]="animal.animalImageUrl" [alt]="animal.animalName" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"/>
+    </div>
+    <div class="absolute top-4 right-4">
+        <span class="px-2 py-1 rounded-md text-xs font-medium border"
+        [ngClass]="animal.animalSpecies ? tipoColors[animal.animalSpecies.toLowerCase()] : ''">
+        {{ animal.animalSpecies }}
+        </span>
+    </div>
+    </div>
+
+    <!-- Header -->
+    <div class="px-4 pt-2 flex items-center justify-between">
+        <h3 class="text-xl font-bold text-gray-900">
+            {{ animal.animalName }}
+        </h3>
+    <lucide-angular [img]="Heart" class="w-5 h-5 text-red-400 fill-current hover:text-red-500 cursor-pointer"></lucide-angular>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="px-4 pb-2 space-y-3">
+        <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+            <div class="flex items-center gap-1">
+                <lucide-angular [img]="Calendar" class="w-4 h-4"></lucide-angular>
+                {{ animal.animalAge }}
+            </div>
+        <div class="flex items-center gap-1">
+        <lucide-angular [img]="User" class="w-4 h-4"></lucide-angular>
+        {{ animal.animalSex }}
+        </div>
+        <div class="flex items-center gap-1">
+        <lucide-angular [img]="Ruler" class="w-4 h-4"></lucide-angular>
+        <span class="px-2 py-1 text-xs rounded border"
+            [ngClass]="animal.animalSize ? porteColors[animal.animalSize.toLowerCase()] : ''">
+            {{ animal.animalSize }}
+        </span>
+        </div>
+    </div>
+
+    <!-- Descrição -->
+    <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
+        {{ animal.animalSpecialConditions || 'Sem observações' }}
+    </p>
+
+    <!-- Botão -->
+    <a [routerLink]="['/animal', animal.animalId]" class="block">
+        <button class="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3 rounded-full transition-all duration-300 transform hover:scale-105">
+        Conhecer Melhor
+        </button>
+    </a>
+    </div>
+</div>
