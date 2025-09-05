@@ -1,0 +1,198 @@
+<main class="min-h-screen py-8">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Como Você Pode
+                <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
+                    Fazer a Diferença
+                </span>
+            </h1>
+            <p class="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                Existem muitas formas de ajudar nossos amiguinhos! Cada contribuição, por menor que seja, faz uma diferença enorme na vida destes animais.
+            </p>
+        </section>
+        <!-- Ways to Help -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                    Formas de Ajudar
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Escolha a maneira que mais combina com você
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                *ngFor="let forma of formasAjudar; let i = index"
+                class="transition-all duration-300 h-full hover:-translate-y-1"
+                [style.transitionDelay]="(i * 100) + 'ms'"
+                >
+                    <div class="border-none shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                        <div class="p-8 text-center">
+                            <div class="w-16 h-16 bg-gradient-to-r {{forma.color}} rounded-full flex items-center justify-center mx-auto mb-4">
+                                <lucide-angular [img]="forma.icon" class="w-8 h-8 text-white"></lucide-angular>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">
+                                {{ forma.title }}
+                            </h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                {{ forma.description }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Donation Info -->
+        <section class="mb-20">
+            <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white border-none shadow-2xl">
+                <div class="p-12">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold mb-4">
+                            Doações Financeiras
+                        </h2>
+                        <p class="text-xl text-green-100">
+                            Sua doação nos ajuda a manter nosso trabalho de resgate e cuidado
+                        </p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-4">
+                            <div class="bg-red-600/20 rounded-lg p-6">
+                                <h3 class="font-bold text-lg mb-2"> PIX </h3>
+                                <p class="text-green-100">contato&#64;amigodepatas.org.br</p>
+                            </div>
+                            <div class="bg-red-600/20 rounded-lg p-6">
+                                <h3 class="font-bold text-lg mb-2">Banco do Brasil</h3>
+                                <p class="text-green-100">Agência: 1234-5 | Conta: 56789-0</p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="inline-flex items-center justify-center w-30 h-30 bg-white/20 rounded-full mb-6">
+                                <lucide-angular [img]="DollarSign" class="w-15 h-15"></lucide-angular>
+                            </div>
+                            <p class="text-lg">
+                                Qualquer valor faz a diferença! ❤️
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact Info -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Fale Conosco</h2>
+                <p class="text-xl text-gray-600">Estamos aqui para esclarecer suas dúvidas</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div
+                *ngFor="let contato of contatos; let i = index"
+                >
+                    <div class="text-center border-none shadow-lg hover:shadow-xl transition-all duration-300">
+                        <div class="p-8">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <lucide-angular [img]="contato.icon" class="w-8 h-8 text-white"></lucide-angular>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-2">{{contato.title}}</h3>
+                            <p class="text-blue-600 font-semibold mb-2">{{contato.info}}</p>
+                            <p class="text-gray-600 text-sm">{{contato.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Volunteer Section -->
+        <section class="mb-20">
+            <div class="bg-gradient-to-r from-orange-600 to-red-500 text-white border-none shadow-2xl">
+                <div class="p-12 text-center">
+                    <lucide-angular [img]="Users" class="w-16 h-16 mx-auto mb-6 text-yellow-300"></lucide-angular>
+                    <h2 class="text-3xl font-bold mb-6">Seja um Voluntário</h2>
+                    <p class="text-xl leading-relaxed max-w-4xl mx-auto mb-8">
+                        Junte-se ao nosso time! Precisamos de pessoas dedicadas para ajudar nos resgates, cuidados diários, feiras de adoção, transporte de animais e muito mais.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-white/20 rounded-lg p-6">
+                            <h3 class="font-bold text-lg mb-2">Final de Semana</h3>
+                            <p class="text-orange-100">Feiras de adoção e eventos</p>
+                        </div>
+                        <div class="bg-white/20 rounded-lg p-6">
+                            <h3 class="font-bold text-lg mb-2">Flexível</h3>
+                            <p class="text-orange-100">Trabalho online e administrativo</p>
+                        </div>
+                        <div class="bg-white/20 rounded-lg p-6">
+                            <h3 class="font-bold text-lg mb-2">Emergências</h3>
+                            <p class="text-orange-100">Resgates e situações urgentes</p>
+                        </div>
+                    </div>
+                    <a routerLink="/animais" class="block"> <!--TODO: ADICIONAR FORM PARA VOLUNTARIO -->
+                        <button class="mt-8 bg-white text-orange-600 hover:bg-gray-200 px-8 py-4 rounded-full text-lg font-semibold cursor-pointer">
+                            Quero ser Voluntário!
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- Items Donation -->
+        <section>
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                    Itens que Precisamos
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Doações de materiais que sempre fazem falta
+                </p>
+            </div>
+            <div class="bg-gray-50 rounded-3xl p-8">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <h3 class="font-bold text-lg text-gray-900 mb-4">🍖 Alimentação</h3>
+                        <ul class="text-gray-600 space-y-2">
+                            <li>• Ração para cães</li>
+                            <li>• Ração para gatos</li>
+                            <li>• Sachês e patês</li>
+                            <li>• Suplementos</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <h3 class="font-bold text-lg text-gray-900 mb-4">🏥 Saúde</h3>
+                        <ul class="text-gray-600 space-y-2">
+                            <li>• Medicamentos</li>
+                            <li>• Vacinas</li>
+                            <li>• Material cirúrgico</li>
+                            <li>• Produtos de higiene</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <h3 class="font-bold text-lg text-gray-900 mb-4">🏠 Conforto</h3>
+                        <ul class="text-gray-600 space-y-2">
+                            <li>• Casinhas</li>
+                            <li>• Cobertores</li>
+                            <li>• Camas e almofadas</li>
+                            <li>• Brinquedos</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <h3 class="font-bold text-lg text-gray-900 mb-4">🔧 Utilitários</h3>
+                        <ul class="text-gray-600 space-y-2">
+                            <li>• Comedouros</li>
+                            <li>• Bebedouros</li>
+                            <li>• Coleiras e guias</li>
+                            <li>• Caixas de transporte</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="text-center mt-8">
+                    <p class="text-gray-600 mb-4">
+                        📍 Entrega: Agende conosco através do WhatsApp (85) 99999-9999
+                    </p>
+                    <a routerLink="/animais" class="block"> <!--TODO: ADICIONAR LINK WHATSAPP -->
+                        <button class="bg-green-600 hover:bg-green-700 text-white rounded-full px-6 h-12 text-lg font-semibold">
+                            Entrar em Contato pelo WhatsApp
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </section>
+</main>
