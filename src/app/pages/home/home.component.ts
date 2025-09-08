@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { Award, Heart, Home, LucideAngularModule, PawPrint, Users } from 'lucide-angular';
-import { MOCK_ANIMALS } from '../../mocks/mock-animals';
 import { Animal } from '../../models/animal.model';
 import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
+import { AnimalService } from '../../service/animal.service';
 @Component({
   selector: 'app-home',
   imports: [RouterLink, CommonModule, LucideAngularModule, AnimalCardComponent],
@@ -18,17 +18,24 @@ export class HomeComponent implements OnInit {
   readonly Home = Home
   readonly Heart = Heart;
   readonly PawPrint = PawPrint
-  animalDestaque: Animal[] = [];
+
+  animalService = inject(AnimalService)
+
+  animals: Animal[] = [];
   loading = true;
+  
 
   ngOnInit(): void{
-    this.loadAnimaisDestaque();
+    this.animalService.getAnimals().subscribe({
+      next: (data) =>{
+        this.animals = data;
+        this.loading = false;
+      },
+      error: (error) =>{
+        console.error('Error fetching animals:', error);
+        this.loading = true;
+      }
+    })
   }
 
-  loadAnimaisDestaque(): void {
-    setTimeout(() => {
-      this.animalDestaque = MOCK_ANIMALS
-      this.loading = false;
-    }, 1000)
-  }
 }

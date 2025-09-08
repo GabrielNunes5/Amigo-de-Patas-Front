@@ -82,7 +82,7 @@
         </div>
         <div *ngIf="!loading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-12">
             <app-animal-card 
-            *ngFor="let animal of animalDestaque" [animal]="animal">
+            *ngFor="let animal of animals" [animal]="animal">
             </app-animal-card>
         </div>
         <div class="text-center">
