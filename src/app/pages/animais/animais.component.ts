@@ -5,6 +5,7 @@ import { Animal } from '../../models/animal.model';
 import { AnimalService } from '../../service/animal.service';
 import { CommonModule } from '@angular/common';
 import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-animais',
@@ -19,27 +20,28 @@ export class AnimaisComponent implements OnInit {
 
   animais: Animal[] = [];
   animaisFiltrados: Animal[] = [];
-  loading = true;
-  animalService = inject(AnimalService)
+  animais$!: Observable<Animal[]>;
+  loading$ = new BehaviorSubject(true);
+  animalService = inject(AnimalService);
 
-  // Filtros
   busca: string = '';
   filtroTipo: string = 'todos';
   filtroPorte: string = 'todos';
   filtroSexo: string = 'todos';
 
   ngOnInit(): void {
-    this.animalService.getAnimals().subscribe({
-      next: (data) => {
+    this.animais$ = this.animalService.getAnimals().pipe(
+      tap(data =>{
         this.animais = data;
         this.animaisFiltrados = data;
-        this.loading = false;
-      },
-      error: (err) => {
+        this.loading$.next(false);
+      }),
+      catchError(err => {
         console.error('Erro ao buscar animais', err);
-        this.loading = false;
-      }
-    });
+        this.loading$.next(false);
+        return of([]);
+      })
+    )
   }
 
   filtrarAnimais(): void {
