@@ -72,19 +72,24 @@
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto"> Que tal conhecer melhor algum deles?</p>
             </div>
         </div>
-        <div *ngIf="loading" class="grid md:grid-cols-3 gap-8">
-            <div *ngFor="let i of [1, 2, 3]" class="overflow-hidden animate-pulse">
-                <div class="aspect-square bg-gray-200"></div>
-                <div class="h-6 bg-gray-200 rounded mb-2"></div>
-                <div class="h-4 bg-gray-200 rounded mb-4"></div>
-                <div class="h-10 bg-gray-200 rounded"></div>
+        <ng-container *ngIf="loading$ | async; else animaisTpl" >
+            <div class="grid md:grid-cols-3 gap-8 mb-12
+            ">
+                <div *ngFor="let i of [1, 2, 3]" class="overflow-hidden animate-pulse">
+                    <div class="aspect-square bg-gray-200"></div>
+                    <div class="h-6 bg-gray-200 rounded mb-2"></div>
+                    <div class="h-4 bg-gray-200 rounded mb-4"></div>
+                    <div class="h-10 bg-gray-200 rounded"></div>
+                </div>
             </div>
-        </div>
-        <div *ngIf="!loading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-12">
-            <app-animal-card 
-            *ngFor="let animal of animals" [animal]="animal">
-            </app-animal-card>
-        </div>
+        </ng-container>
+        <ng-template #animaisTpl>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-12">
+                <app-animal-card 
+                *ngFor="let animal of animais" [animal]="animal">
+                </app-animal-card>
+            </div>
+        </ng-template>
         <div class="text-center">
             <a routerLink="/animais" class="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105">Ver Todos os Animais</a>
         </div>

@@ -6,6 +6,7 @@ import { Award, Heart, Home, LucideAngularModule, PawPrint, Users } from 'lucide
 import { Animal } from '../../models/animal.model';
 import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
 import { AnimalService } from '../../service/animal.service';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 @Component({
   selector: 'app-home',
   imports: [RouterLink, CommonModule, LucideAngularModule, AnimalCardComponent],
@@ -19,23 +20,24 @@ export class HomeComponent implements OnInit {
   readonly Heart = Heart;
   readonly PawPrint = PawPrint
 
-  animalService = inject(AnimalService)
-
-  animals: Animal[] = [];
-  loading = true;
+  animais: Animal[] = [];
+  animais$!: Observable<Animal[]>;
+  loading$ = new BehaviorSubject(true);
+  animalService = inject(AnimalService);
   
 
-  ngOnInit(): void{
-    this.animalService.getAnimals().subscribe({
-      next: (data) =>{
-        this.animals = data;
-        this.loading = false;
-      },
-      error: (error) =>{
-        console.error('Error fetching animals:', error);
-        this.loading = true;
-      }
-    })
-  }
+  ngOnInit(): void {
+      this.animais$ = this.animalService.getAnimals().pipe(
+        tap(data =>{
+          this.animais = data
+          this.loading$.next(false);
+        }),
+        catchError(err => {
+          console.error('Erro ao buscar animais', err);~
+          this.loading$.next(false);
+          return of([]);
+        })
+      )
+    }
 
 }
