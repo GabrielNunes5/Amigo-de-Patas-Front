@@ -1,7 +1,7 @@
 {
     "animals": [
     {
-        "animalId": 1,
+        "id": 1,
         "animalName": "Rex",
         "animalAge": "2 anos",
         "animalWeight": 12.5,
@@ -12,24 +12,26 @@
         "animalSize": "Médio",
         "animalNeutered": true,
         "animalSpecialConditions": "Alergia a ração com frango",
-        "animalImageUrl": "https://prefeitura.sp.gov.br/documents/d/saude/negresco-jpg"
+        "animalImageUrl": "https://prefeitura.sp.gov.br/documents/d/saude/negresco-jpg",
+        "animalAdopted": true
     },
     {
-        "animalId": 2,
+        "id": 2,
         "animalName": "Luna",
         "animalAge": "1 ano",
         "animalWeight": 4.2,
         "animalSex": "Fêmea",
-        "animalColor": "Preto",
+        "animalColor": "Branco",
         "animalSpecies": "Gato",
         "animalVaccines": "Tríplice Felina",
         "animalSize": "Pequeno",
         "animalNeutered": false,
         "animalSpecialConditions": "",
-        "animalImageUrl": "https://p2.trrsf.com/image/fget/cf/1200/1600/middle/images.terra.com/2024/05/08/279496687-gato-branco.jpg"
+        "animalImageUrl": "https://p2.trrsf.com/image/fget/cf/1200/1600/middle/images.terra.com/2024/05/08/279496687-gato-branco.jpg",
+        "animalAdopted": false
     },
     {
-        "animalId": 3,
+        "id": 3,
         "animalName": "Thor",
         "animalAge": "3 anos",
         "animalWeight": 30.0,
@@ -40,7 +42,8 @@
         "animalSize": "Grande",
         "animalNeutered": true,
         "animalSpecialConditions": "Ansioso, precisa de passeios diários",
-        "animalImageUrl": "https://www.petz.com.br/blog/wp-content/uploads/2020/11/cachorro-gosta-de-musica.jpg"
+        "animalImageUrl": "https://www.petz.com.br/blog/wp-content/uploads/2020/11/cachorro-gosta-de-musica.jpg",
+        "animalAdopted": false
     }
     ]
 }
