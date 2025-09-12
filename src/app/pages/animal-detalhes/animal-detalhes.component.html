@@ -1,0 +1,201 @@
+@if (animal() === null) {
+  <div class="min-h-screen flex justify-center items-center" role="status" aria-label="Carregando">
+    <div class="flex space-x-2">
+      <div class="w-3 h-3 bg-orange-500 rounded-full animate-pulse"></div>
+      <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse animation-delay-150"></div>
+      <div class="w-3 h-3 bg-orange-500 rounded-full animate-pulse animation-delay-300"></div>
+    </div>
+  </div>
+}
+
+@if (animal(); as animal) {
+  <main class="min-h-screen py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <nav class="mb-8">
+        <button
+          routerLink="/animais"
+          class="flex items-center gap-2 px-4 py-2 border border-gray-300 bg-gray-300 text-gray-700 rounded-full cursor-pointer hover:bg-gray-100 transition-colors"
+          aria-label="Voltar para lista de animais"
+        >
+          <lucide-angular [img]="ArrowLeft" class="w-4 h-4" />
+          Voltar aos Animais
+        </button>
+      </nav>
+
+      <section class="grid lg:grid-cols-2 gap-12">
+        
+        <div class="space-y-4">
+          <figure class="aspect-square rounded-3xl overflow-hidden shadow-2xl">
+            <img
+              [src]="animal.animalImageUrl"
+              [alt]="'Foto de ' + animal.animalName"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </figure>
+        </div>
+
+        <div class="space-y-8">
+          
+          <header>
+            <div class="flex items-center gap-4 mb-4">
+              <h1 class="text-4xl font-bold text-gray-900">
+                {{ animal.animalName }}
+              </h1>
+              <button 
+                class="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Favoritar animal"
+              >
+                <lucide-angular [img]="Heart" class="w-8 h-8 text-red-400 hover:text-red-500 cursor-pointer transition-colors" />
+              </button>
+            </div>
+            
+            @if (animal.animalAdopted) {
+              <div class="mb-4">
+                <span class="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 text-sm font-semibold rounded-full border border-green-200">
+                  ✅ Já foi adotado
+                </span>
+              </div>
+            }
+            
+            <div class="flex flex-wrap gap-3 mb-6">
+              @if (animal.animalSpecies) {
+                <span [class]="speciesBadgeClasses()">
+                  {{ specieEmoji() }} {{ animal.animalSpecies }}
+                </span>
+              }
+              
+              @if (animal.animalAge) {
+                <div class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full">
+                  <lucide-angular [img]="Calendar" class="w-4 h-4 text-gray-600" />
+                  <span class="text-sm font-medium text-gray-700">
+                    {{ animal.animalAge }}
+                  </span>
+                </div>
+              }
+              
+              <div class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full">
+                <lucide-angular [img]="User" class="w-4 h-4 text-gray-600" />
+                <span class="text-sm font-medium text-gray-700">{{ animal.animalSex }}</span>
+              </div>
+              
+              @if (animal.animalSize) {
+                <div class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full">
+                  <lucide-angular [img]="Scale" class="w-4 h-4 text-gray-600" />
+                  <span class="text-sm font-medium text-gray-700">Porte {{ animal.animalSize }}</span>
+                </div>
+              }
+              
+              <div class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full">
+                <lucide-angular [img]="Scale" class="w-4 h-4 text-gray-600" />
+                <span class="text-sm font-medium text-gray-700">
+                  {{ animal.animalWeight }} Kg
+                </span>
+              </div>
+              
+              @if (animal.animalColor) {
+                <div class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full">
+                  <lucide-angular [img]="Palette" class="w-4 h-4 text-gray-600" />
+                  <span class="text-sm font-medium text-gray-700">{{ animal.animalColor }}</span>
+                </div>
+              }
+            </div>
+            
+            <div class="space-y-4 mb-6">
+              <div class="flex items-center gap-2">
+                <lucide-angular 
+                  [img]="CheckCircle" 
+                  [class]="neuteredClasses()"
+                />
+                <span [class]="neutredTextClasses()">
+                  {{ neutredText() }}
+                </span>
+              </div>
+              
+              @if (animal.animalVaccines) {
+                <div class="flex items-center gap-2">
+                  <lucide-angular [img]="Syringe" class="w-5 h-5 text-blue-500" />
+                  <span class="text-sm font-medium text-blue-700">
+                    Vacinas: {{ animal.animalVaccines }}
+                  </span>
+                </div>
+              }
+            </div>
+          </header>
+
+          @if (animal.animalSpecialConditions) {
+            <section class="bg-white border-none shadow-lg rounded-lg">
+              <header class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <lucide-angular [img]="AlertTriangle" class="w-5 h-5 text-yellow-500" />
+                  Condições Especiais
+                </h2>
+              </header>
+              
+              <div class="p-6">
+                <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                  <p class="text-gray-700 text-sm">
+                    {{ animal.animalSpecialConditions }}
+                  </p>
+                </div>
+              </div>
+            </section>
+          }
+          
+          @if (canShowAdoptionButton() && !animal.animalAdopted) {
+            <button 
+              (click)="mostrarFormulario()"
+              class="w-full bg-gradient-to-r cursor-pointer from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105"
+            >
+              ❤️ Quero Adotar {{ animal.animalName }}
+            </button>
+          }
+          
+          @if (animal.animalAdopted) {
+            <div class="text-center p-6 bg-gray-50 rounded-lg">
+              <p class="text-gray-600 text-lg">
+                O {{ animal.animalName }} já encontrou uma família! 😊
+              </p>
+              <button 
+                routerLink="/animais" 
+                class="mt-4 px-6 py-2 cursor-pointer bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+              >
+                Ver Outros Animais
+              </button>
+            </div>
+          }
+
+          @if (submitted()) {
+            <div class="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <lucide-angular [img]="CheckCircle" class="w-10 h-10 text-green-500" />
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">
+                Solicitação Enviada!
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Entraremos em contato em breve sobre a adoção do <strong>{{ animal.animalName }}</strong>.
+              </p>
+              <button 
+                routerLink="/animais" 
+                class="px-6 py-2 cursor-pointer bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+              >
+                Ver Mais Animais
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+
+      @if (!submitted()) {
+        <app-adoption-form 
+          [animal]="animal"
+          [showForm]="showForm()"
+          (formCancelled)="onFormCancelled()"
+          (formSubmitted)="onFormSubmitted()"
+        />
+      }
+    </div>
+  </main>
+}
