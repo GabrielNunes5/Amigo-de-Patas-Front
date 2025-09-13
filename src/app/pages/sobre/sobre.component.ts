@@ -1,6 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { Award, Heart, Lightbulb, LucideAngularModule, Shield, Target, Users } from 'lucide-angular';
+
+interface Valor {
+  icon: any;
+  title: string;
+  description: string;
+}
+
+interface MembroEquipe {
+  nome: string;
+  cargo: string;
+  descricao: string;
+  foto: string;
+}
+
+interface Estatistica {
+  valor: string;
+  descricao: string;
+  cor: string;
+}
 
 @Component({
   selector: 'app-sobre',
@@ -16,7 +35,7 @@ export class SobreComponent {
   readonly Shield = Shield;
   readonly Users = Users;
 
-  valores = [
+  valores = signal<Valor[]>([
     {
       icon: Heart,
       title: "Amor Incondicional",
@@ -37,9 +56,9 @@ export class SobreComponent {
       title: "Educação e Consciência",
       description: "Promovemos a educação sobre posse responsável e direitos dos animais."
     }
-  ];
+  ]);
 
-  equipe = [
+  equipe = signal<MembroEquipe[]>([
     {
       nome: "Ana Silva",
       cargo: "Fundadora e Presidente",
@@ -58,5 +77,26 @@ export class SobreComponent {
       foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
       descricao: "Psicóloga especializada em comportamento animal, garante matches perfeitos entre pets e famílias."
     }
-  ];
+  ]);
+
+  estatisticas = signal<Estatistica[]>([
+    { valor: '500+', descricao: 'Animais Adotados', cor: 'text-green-400' },
+    { valor: '1000+', descricao: 'Famílias Conectadas', cor: 'text-blue-400' },
+    { valor: '50+', descricao: 'Voluntários Ativos', cor: 'text-yellow-400' },
+    { valor: '5+', descricao: 'Anos de Dedicação', cor: 'text-orange-400' }
+  ]);
+
+  valoresComDelay = computed(() => 
+    this.valores().map((valor, index) => ({
+      ...valor,
+      delay: index * 100
+    }))
+  );
+
+  equipeComDelay = computed(() => 
+    this.equipe().map((membro, index) => ({
+      ...membro,
+      delay: index * 100
+    }))
+  );
 }

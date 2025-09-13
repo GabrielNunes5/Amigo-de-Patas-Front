@@ -1,178 +1,162 @@
 <main class="min-h-screen py-8">
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Hero Section -->
-        <section class="text-center mb-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <header class="text-center mb-16">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Nossa História de
+                    Nossa História de
                 <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
                     Amor e Dedicação
                 </span>
             </h1>
             <p class="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                Há mais de 5 anos, trabalhamos incansavelmente para dar uma segunda chance aos animais abandonados, conectando corações e transformando vidas através da adoção responsável.
+                Há mais de 5 anos, trabalhamos incansavelmente para dar uma segunda chance aos animais abandonados, 
+                conectando corações e transformando vidas através da adoção responsável.
             </p>
-        </section>
-        <!-- Mission Section -->
-        <section class="mb-20">
-            <div class="bg-gradient-to-r from-blue-600 to-green-600 text-white border-none shadow-2xl">
-                <div class="p-12 text-center">
-                    <lucide-angular [img]="Target" class="w-16 h-16 mx-auto mb-2 text-yellow-300"></lucide-angular>
-                    <h2 class="text-3xl font-bold mb-2">Nossa Missão</h2>
-                    <p class="text-xl leading-relaxed max-w-4xl mx-auto">
+        </header>
 
-                        Resgatar, reabilitar e encontrar lares amorosos para cães e gatos abandonados, promovendo a adoção responsável e a conscientização sobre os direitos dos animais. Acreditamos que cada pet merece uma família e cada família pode ser enriquecida pela presença de um animal.
+        <section class="mb-20">
+            <div class="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-3xl shadow-2xl">
+                <div class="p-12 text-center">
+                    <lucide-angular [img]="Target" class="w-16 h-16 mx-auto mb-6 text-yellow-300" />
+                    <h2 class="text-3xl font-bold mb-6">Nossa Missão</h2>
+                    <p class="text-xl leading-relaxed max-w-4xl mx-auto">
+                        Resgatar, reabilitar e encontrar lares amorosos para cães e gatos abandonados, 
+                        promovendo a adoção responsável e a conscientização sobre os direitos dos animais. 
+                        Acreditamos que cada pet merece uma família e cada família pode ser enriquecida pela presença de um animal.
                     </p>
                 </div>
             </div>
         </section>
-        <!-- Values Section -->
+
         <section class="mb-20">
-            <div class="text-center mb-12">
+            <header class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">
                     Nossos Valores
                 </h2>
                 <p class="text-xl text-gray-600">
                     Os princípios que guiam cada uma de nossas ações
                 </p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div
-                *ngFor="let valor of valores; let i = index"
+            </header>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            @for (valor of valoresComDelay(); track valor.title) {
+                <article 
                 class="transition-all duration-300 h-full hover:-translate-y-1"
-                [style.transitionDelay]="(i * 100) + 'ms'"
-                >
-                    <div class="text-center border-none shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                [style.transitionDelay.ms]="valor.delay">
+                    <div class="text-center bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-full">
                         <div class="p-8">
                             <div class="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <lucide-angular [img]="valor.icon" class="w-8 h-8 text-white"></lucide-angular>
+                                <lucide-angular [img]="valor.icon" class="w-8 h-8 text-white" />
                             </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">
-                                {{ valor.title }}
-                            </h3>
-                            <p class="text-gray-600 leading-relaxed">
-                                {{ valor.description }}
-                            </p>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ valor.title }}</h3>
+                            <p class="text-gray-600 leading-relaxed">{{ valor.description }}</p>
                         </div>
                     </div>
-                </div>
-            </div>
+                </article>
+            }
+        </div>
         </section>
-        <!-- Stats Section -->
+
         <section class="mb-20">
             <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-3xl p-12 text-white">
-                <div class="text-center mb-12">
+                <header class="text-center mb-12">
                     <h2 class="text-3xl font-bold mb-4">Nossos Números</h2>
-                    <p class="text-xl text-gray-300">
-                        O impacto da nossa dedicação ao longo dos anos
-                    </p>
-                </div>
+                    <p class="text-xl text-gray-300">O impacto da nossa dedicação ao longo dos anos</p>
+                </header>
+                
                 <div class="grid md:grid-cols-4 gap-8 text-center">
-                    <div>
-                        <div class="text-4xl font-bold text-green-400 mb-2">
-                            500+
+                    @for (stat of estatisticas(); track stat.descricao) {
+                        <div>
+                            <div class="text-4xl font-bold mb-2" [class]="stat.cor">
+                                {{ stat.valor }}
+                            </div>
+                            <p class="text-gray-300">{{ stat.descricao }}</p>
                         </div>
-                        <p class="text-gray-300">Animais Adotados</p>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold text-blue-400 mb-2">
-                            1000+
-                        </div>
-                        <p class="text-gray-300">Famílias Conectadas</p>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold text-yellow-400 mb-2">
-                            50+
-                        </div>
-                        <p class="text-gray-300">Voluntários Ativos</p>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold text-orange-400 mb-2">
-                            5+
-                        </div>
-                        <p class="text-gray-300">Anos de Dedicação</p>
-                    </div>
+                    }
                 </div>
             </div>
         </section>
-        <!-- Team Section -->
+
         <section class="mb-20">
-            <div class="text-center mb-12">
+            <header class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">
                     Nossa Equipe
                 </h2>
-                <p class="text-xl text-gray-60">
+                <p class="text-xl text-gray-600">
                     Conheça as pessoas apaixonadas por trás da nossa missão
                 </p>
-            </div>
+            </header>
             <div class="grid md:grid-cols-3 gap-8">
-                <div
-                *ngFor="let membro of equipe; let i = index"
-                class="transition-all duration-300 hover:-translate-y-1"
-                [style.transitionDelay]="(i * 100) + 'ms'"
-                >
-                    <div class="text-center border-none shadow-lg hover:shadow-xl transition-all duration-300 h-full">
-                        <div class="p-8">
-                            <div class="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-full">
-                                <img 
-                                src="{{membro.foto}}" 
-                                alt="{{membro.nome}}" 
-                                class="w-full h-full object-cover">
+                @for (membro of equipeComDelay(); track membro.nome) {
+                    <article 
+                    class="transition-all duration-300 hover:-translate-y-1"
+                    [style.transitionDelay.ms]="membro.delay">
+                        <div class="text-center bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                            <div class="p-8">
+                                <figure class="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-full">
+                                    <img 
+                                    [src]="membro.foto" 
+                                    [alt]="'Foto de ' + membro.nome"
+                                    class="w-full h-full object-cover"
+                                    loading="lazy"/>
+                                </figure>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ membro.nome }}</h3>
+                                <p class="text-orange-600 font-semibold mb-4">{{ membro.cargo }}</p>
+                                <p class="text-gray-600 leading-relaxed">{{ membro.descricao }}</p>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">
-                                {{ membro.nome }}
-                            </h3>
-                            <p class="text-orange-600 font-semibold mb-4">
-                                {{ membro.cargo }}
-                            </p>
-                            <p class="text-gray-600 leading-relaxed">
-                                {{ membro.descricao }}
-                            </p>
                         </div>
-                    </div>
-                </div>
+                    </article>
+                }
             </div>
         </section>
-        <!-- Story Section -->
+
         <section class="mb-20">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div>
+                <article>
                     <h2 class="text-3xl font-bold text-gray-900 mb-6">
                         Como Tudo Começou
                     </h2>
                     <div class="space-y-6 text-gray-700 leading-relaxed">
                         <p>
-                            A <strong>Amigo de patas</strong> nasceu em 2019 quando nossa fundadora Ana Silva, uma veterinária apaixonada por animais, encontrou um filhote abandonado na chuva.Esse encontro mudou sua vida e a de centenas de animais que vieram depois.
+                        A <strong>Amigo de Patas</strong> nasceu em 2019 quando nossa fundadora Ana Silva, 
+                        uma veterinária apaixonada por animais, encontrou um filhote abandonado na chuva. 
+                        Esse encontro mudou sua vida e a de centenas de animais que vieram depois.
                         </p>
                         <p>
-                            O que começou como um impulso individual de ajuda se transformou em uma organização estruturada, com voluntários dedicados, parcerias com clínicas veterinárias e um sistema eficiente de adoção responsável.
+                        O que começou como um impulso individual de ajuda se transformou em uma organização estruturada, 
+                        com voluntários dedicados, parcerias com clínicas veterinárias e um sistema eficiente de adoção responsável.
                         </p>
                         <p>
-                            Hoje, somos uma família de mais de 50 voluntários, unidos pelo mesmo propósito: garantir que nenhum animal seja esquecido e que cada adoção seja o início de uma história de amor verdadeiro.
+                        Hoje, somos uma família de mais de 50 voluntários, unidos pelo mesmo propósito: 
+                        garantir que nenhum animal seja esquecido e que cada adoção seja o início de uma história de amor verdadeiro.
                         </p>
                     </div>
-                </div>
-                <div class="relative">
+                </article>
+                
+                <figure class="relative">
                     <img 
-                    src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600&h=500&fit=crop" alt="Animais resgatados"
-                    class="rounded-3xl shadow-2xl"
-                    >
+                    src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600&h=500&fit=crop" 
+                    alt="Animais resgatados sendo cuidados por voluntários"
+                    class="rounded-3xl shadow-2xl w-full"
+                    loading="lazy"/>
                     <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-r from-orange-400 to-red-400 rounded-full flex items-center justify-center">
-                        <lucide-angular [img]="Heart" class="w-16 h-16 text-white"></lucide-angular>
+                        <lucide-angular [img]="Heart" class="w-16 h-16 text-white" />
                     </div>
-                </div>
+                </figure>
             </div>
         </section>
-        <!-- Vision Section -->
+
         <section>
-            <div class="bg-gradient-to-r from-green-500 to-blue-600 text-white border-none shadow-2xl">
+            <div class="bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-3xl shadow-2xl">
                 <div class="p-12 text-center">
-                    <lucide-angular [img]="Award" class="w-16 h-16 mx-auto mb-6 text-yellow-300"></lucide-angular>
-                    <h2 class="text-3xl font-bold mb-6">Nossa Visão de Futuro</h2>
+                    <lucide-angular [img]="Award" class="w-16 h-16 mx-auto mb-6 text-yellow-300" />
+                    <h2 class="text-3xl font-bold mb-6">
+                        Nossa Visão de Futuro
+                    </h2>
                     <p class="text-xl leading-relaxed max-w-4xl mx-auto">
                         Sonhamos com um mundo onde não existam mais animais abandonados nas ruas, onde cada pet tenha uma família amorosa e onde a sociedade entenda que os animais são seres sencientes que merecem respeito, cuidado e amor. Continuaremos trabalhando até que esse sonho se torne realidade.
                     </p>
                 </div>
             </div>
         </section>
-    </section>
+    </div>
 </main>
