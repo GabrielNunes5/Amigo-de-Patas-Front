@@ -1,95 +1,104 @@
 <main class="min-h-screen py-8">
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="text-center mb-12">
+        <header class="text-center mb-12">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Animais Disponiveis para Adoção
+                Animais Disponíveis para Adoção
             </h1>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
                 Encontre seu novo melhor amigo! Veja os animais que estão esperando por um lar amoroso.
             </p>
             <div class="flex items-center justify-center gap-2 text-orange-600">
-                <lucide-angular [img]="Heart" class="w-5 h-5"></lucide-angular>
-                <span class="font-medium">{{animais.length}} animais esperando por você</span>
+                <lucide-angular [img]="Heart" class="w-5 h-5" />
+                <span class="font-medium">{{ totalAnimais() }} 
+                    animais esperando por você
+                </span>
             </div>
-        </div>
-        <!-- Filters -->
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-8">
-            <div class="flex items-center gap-2 mb-4">
-                <lucide-angular [img]="Filter" class="w-5 h-5 text-gray-500"></lucide-angular>
-                <h2 class="font-semibold text-gray-900">Filtros de Busca</h2>
-            </div>
-            <div class="grid md:grid-cols-4 gap-2 mb-3">
-                <div class="relative">
-                    <lucide-angular [img]="Search" class="absolute left-1 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"></lucide-angular>
-                    <input 
-                    type="text"
-                    placeholder="Buscar por nome"
-                    [(ngModel)] = "busca"
-                    (ngModelChange)="filtrarAnimais()"
-                    class="pl-10 p-2 rounded-full border-gray-200 focus:ring-2 focus:ring-blue-500">
-                </div>
+        </header>
 
-                <select [(ngModel)]="filtroTipo" (change)="filtrarAnimais()" class="rounded-full border-gray-200 w-fit p-2">
+    <section class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-8">
+        <div class="flex items-center gap-2 mb-4">
+            <lucide-angular [img]="Filter" class="w-5 h-5 text-gray-500" />
+            <h2 class="font-semibold text-gray-900">Filtros de Busca</h2>
+        </div>
+        <div class="grid md:grid-cols-4 gap-4 mb-4">
+            <div class="relative">
+                <lucide-angular [img]="Search" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"/>
+                <input 
+                id="busca" 
+                type="text"
+                placeholder="Buscar por nome"
+                [(ngModel)]="busca"
+                class="pl-10 p-3 w-full rounded-full border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+            </div>
+            <select 
+            id="tipo"
+            [(ngModel)]="filtroTipo" 
+            class="rounded-full border border-gray-200 p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <option value="todos">Todos os tipos</option>
                 <option value="cachorro">🐕 Cães</option>
                 <option value="gato">🐱 Gatos</option>
-                </select>
+            </select>
 
-                <select [(ngModel)]="filtroPorte" (change)="filtrarAnimais()" class="rounded-full border-gray-200 w-fit p-2">
+            <select 
+            id="porte"
+            [(ngModel)]="filtroPorte" 
+            class="rounded-full border border-gray-200 p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <option value="todos">Todos os portes</option>
                 <option value="pequeno">Pequeno</option>
                 <option value="médio">Médio</option>
                 <option value="grande">Grande</option>
-                </select>
+            </select>
 
-                <select [(ngModel)]="filtroSexo" (change)="filtrarAnimais()" class="rounded-full border-gray-200 w-fit p-2">
+            <select 
+            id="sexo"
+            [(ngModel)]="filtroSexo" 
+            class="rounded-full border border-gray-200 p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <option value="todos">Macho e Fêmea</option>
                 <option value="macho">Macho</option>
                 <option value="fêmea">Fêmea</option>
-                </select>
-            </div>
-            
-            <button 
-            (click)="limparFiltros()" 
-            class="px-4 py-2 border rounded-full cursor-pointer ">
-                Limpar Filtros
-            </button>
+            </select>
         </div>
-        <!-- Animal Cards Grid -->
-        <ng-template #animaisTpl>
-            <div 
-            *ngIf="animaisFiltrados.length > 0"
-            class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <app-animal-card 
-                    *ngFor="let animal of animaisFiltrados" [animal]="animal">
-                </app-animal-card>
-            </div>
-            <div
-            *ngIf="animaisFiltrados.length === 0"
-            class="text-center py-16">
-                <lucide-angular [img]="Heart" class="w-16 h-16 text-gray-300 mx-auto mb-4"></lucide-angular>
-                <h2 class="text-xl font-semibold text-gray-900 mb-2">
-                    Nenhum animal encontrado
-                </h2>
-                <p class="text-gray-600 mb-6">
-                Tente ajustar os filtros ou faça uma nova busca.
-                </p>
-                <button (click)="limparFiltros()" class="px-6 py-2 bg-blue-600 text-white rounded-full">
-                Limpar Filtros
-                </button>
-            </div>
-        </ng-template>
-        <ng-container *ngIf="loading$ | async; else animaisTpl" >
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div *ngFor="let i of [1,2,3,4,5,6,7,8]" class="bg-white rounded-2xl shadow-lg p-6 animate-pulse">
+        <button 
+        (click)="limparFiltros()" 
+        class="px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:bg-gray-50 transition-colors">
+        Limpar Filtros
+        </button>
+    </section>
+
+    @if (loading()) {
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" role="status" aria-label="Carregando animais">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+            <div class="bg-white rounded-2xl shadow-lg p-6 animate-pulse">
                 <div class="aspect-square bg-gray-200 rounded-xl mb-4"></div>
                 <div class="h-6 bg-gray-200 rounded mb-2"></div>
                 <div class="h-4 bg-gray-200 rounded mb-4"></div>
                 <div class="h-10 bg-gray-200 rounded-full"></div>
-                </div>
             </div>
-        </ng-container>
+        }
+        </div>
+    } @else {
+        @if (hasResultados()) {
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            @for (animal of animaisFiltrados(); track animal.id) {
+                <app-animal-card [animal]="animal" />
+            }
+            </div>
+        } @else {
+            <div class="text-center py-16">
+                <lucide-angular [img]="Heart" class="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">
+                    Nenhum animal encontrado
+                </h2>
+                <p class="text-gray-600 mb-6">
+                    Tente ajustar os filtros ou faça uma nova busca.
+                </p>
+                <button 
+                (click)="limparFiltros()" 
+                class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                    Limpar Filtros
+                </button>
+            </div>
+        }
+    }
     </section>
 </main>
-
