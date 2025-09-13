@@ -1,5 +1,4 @@
 <main class="min-h-screen">
-    <!-- Hero Section -->
     <section class="relative bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 text-white py-20 md:py-32">
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
             <div class="max-w-4xl">
@@ -13,97 +12,120 @@
                     Conectamos corações a patinhas que precisam de um lar.
                     Cada adoção é uma vida transformada, um amigo fiel encontrado.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a routerLink="/animais" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
+                <nav class="flex flex-col sm:flex-row gap-4">
+                    <a 
+                    routerLink="/animais" 
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
                         Ver Animais Disponíveis
                     </a>
-                    <a routerLink="/sobre" class="border-2 border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 rounded-full text-lg transition-all duration-300">
+                    <a 
+                    routerLink="/sobre" 
+                    class="border-2 border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 rounded-full text-lg transition-all duration-300">
                         Conheça Nossa História
                     </a>
-                </div>
+                </nav>
             </div>
         </div>
-        <!-- Floating Hearts -->
-        <div class="absolute top-20 right-20 opacity-20">
-            <lucide-angular [img]="Heart" class="w-32 h-32 animate-pulse"></lucide-angular>
+    
+        <div class="absolute top-20 right-20 opacity-20" aria-hidden="true">
+            <lucide-angular 
+            [img]="Heart" class="w-32 h-32 animate-pulse" />
         </div>
-        <div class="absolute top-50 right-50 opacity-20">
-            <lucide-angular [img]="Heart" class="w-32 h-32 animate-ping"></lucide-angular>
+        <div class="absolute top-50 right-50 opacity-20" aria-hidden="true">
+            <lucide-angular 
+            [img]="Heart" class="w-32 h-32 animate-ping" />
         </div>
-        <div class="absolute bottom-20 right-40 opacity-10">
-            <lucide-angular [img]="PawPrint" class="w-24 h-24 animate-bounce"></lucide-angular>
+        <div class="absolute bottom-20 right-40 opacity-10" aria-hidden="true">
+            <lucide-angular 
+            [img]="PawPrint" class="w-24 h-24 animate-bounce" />
         </div>
     </section>
 
-    <!-- Sats Section -->
     <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="text-center">
                     <div class="w-16 h-16 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <lucide-angular [img]="Home" class="w-8 h-8 text-white"></lucide-angular>
+                        <lucide-angular [img]="Home" class="w-8 h-8 text-white" />
                     </div>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">500+</h3>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ estatisticas().animaisAdotados }}+</h3>
                     <p class="text-gray-600">Animais adotados</p>
                 </div>
                 <div class="text-center">
                     <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <lucide-angular [img]="Users" class="w-8 h-8 text-white"></lucide-angular>
+                        <lucide-angular [img]="Users" class="w-8 h-8 text-white" />
                     </div>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">1000+</h3>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ estatisticas().familiasConectadas }}+</h3>
                     <p class="text-gray-600">Famílias conectadas</p>
                 </div>
                 <div class="text-center">
                     <div class="w-16 h-16 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <lucide-angular [img]="Award" class="w-8 h-8 text-white"></lucide-angular>
+                        <lucide-angular [img]="Award" class="w-8 h-8 text-white" />
                     </div>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">5+</h3>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ estatisticas().anosAtuacao }}+</h3>
                     <p class="text-gray-600">Anos de dedicação</p>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Animals Highlight Section -->
+
     <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Conheça quem está esperando por você</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Cada um destes amiguinhos tem uma história única e muito amor para oferecer.</p>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto"> Que tal conhecer melhor algum deles?</p>
-            </div>
-        </div>
-        <ng-container *ngIf="loading$ | async; else animaisTpl" >
-            <div class="grid md:grid-cols-3 gap-8 mb-12
-            ">
-                <div *ngFor="let i of [1, 2, 3]" class="overflow-hidden animate-pulse">
-                    <div class="aspect-square bg-gray-200"></div>
-                    <div class="h-6 bg-gray-200 rounded mb-2"></div>
-                    <div class="h-4 bg-gray-200 rounded mb-4"></div>
-                    <div class="h-10 bg-gray-200 rounded"></div>
+            <header class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Conheça quem está esperando por você
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-2">
+                Cada um destes amiguinhos tem uma história única e muito amor para oferecer.
+                </p>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Que tal conhecer melhor algum deles?
+                </p>
+            </header>
+
+        @if (loading()) {
+            <div class="grid md:grid-cols-3 gap-8 mb-12" role="status" aria-label="Carregando animais">
+            @for (i of [1, 2, 3]; track i) {
+                <div class="bg-white rounded-2xl shadow-lg p-6 animate-pulse">
+                <div class="aspect-square bg-gray-200 rounded-xl mb-4"></div>
+                <div class="h-6 bg-gray-200 rounded mb-2"></div>
+                <div class="h-4 bg-gray-200 rounded mb-4"></div>
+                <div class="h-10 bg-gray-200 rounded-full"></div>
                 </div>
+            }
             </div>
-        </ng-container>
-        <ng-template #animaisTpl>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-12">
-                <app-animal-card 
-                *ngFor="let animal of animais" [animal]="animal">
-                </app-animal-card>
+        } @else {
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+            @for (animal of animaisDestaque(); track animal.id) {
+                <app-animal-card [animal]="animal" />
+            }
             </div>
-        </ng-template>
+        }
+
         <div class="text-center">
-            <a routerLink="/animais" class="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105">Ver Todos os Animais</a>
+            <a 
+            routerLink="/animais" 
+            class="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105">
+            Ver Todos os Animais
+            </a>
+        </div>
         </div>
     </section>
-    <!-- Call to Action Section -->
+
     <section class="py-20 bg-gradient-to-r from-orange-500 to-red-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
                 Pronto para transformar uma vida hoje?
             </h2>
             <p class="text-xl text-orange-100 mb-8 max-w-3xl mx-auto">
-                A adoção responsável é um ato de amor que transforma duas vidas: a do animal e a sua. Venha fazer parte desta corrente do bem.
+                A adoção responsável é um ato de amor que transforma duas vidas: a do animal e a sua. 
+                Venha fazer parte desta corrente do bem.
             </p>
-            <a routerLink="/contato" class="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105"> Saiba Como Ajudar </a>
+            <a 
+                routerLink="/contato" 
+                class="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                Saiba Como Ajudar
+            </a>
         </div>
     </section>
 </main>
