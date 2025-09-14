@@ -115,14 +115,14 @@ export class AnimalDetalhesComponent {
     const neutred = this.animal()?.animalNeutered;
     return neutred 
     ? 'w-5 h-5 text-green-500' 
-    : 'w-5 h-5 text-gray-400';
+    : 'w-5 h-5 text-yellow-500';
   })
 
   neutredTextClasses = computed(() =>{
     const neutred = this.animal()?.animalNeutered;
     return neutred 
     ? 'text-sm font-medium text-green-700' 
-    : 'text-sm font-medium text-green-700'
+    : 'text-sm font-medium text-yellow-700'
   })
   
 }
