@@ -1,55 +1,57 @@
-<div class="overflow-hidden m-3 bg-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 border-0 h-full rounded-2xl transform hover:-translate-y-1">
-    <!-- Imagem -->
+<article
+class="overflow-hidden m-3 bg-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 border-0 h-full rounded-2xl transform hover:-translate-y-1">
     <div class="relative">
-    <div class="aspect-square overflow-hidden">
-        <img [src]="animal.animalImageUrl" [alt]="animal.animalName" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"/>
+        <div class="aspect-square overflow-hidden">
+            <img
+            [src]="animal().animalImageUrl"
+            [alt]="'Foto de ' + animal().animalName + ', ' + animal().animalSpecies + ' para adoção'"
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+            loading="lazy"/>
+        </div>
+        <div class="absolute top-4 right-4">
+            <span
+            class="px-2 py-1 rounded-md text-xs font-medium border"
+            [class]="speciesClass()"
+            [attr.aria-label]="'Espécie: ' + animal().animalSpecies">
+                {{ animal().animalSpecies }}
+            </span>
+        </div>
     </div>
-    <div class="absolute top-4 right-4">
-        <span class="px-2 py-1 rounded-md text-xs font-medium border"
-        [ngClass]="animal.animalSpecies ? tipoColors[animal.animalSpecies.toLowerCase()] : ''">
-        {{ animal.animalSpecies }}
-        </span>
-    </div>
-    </div>
-
-    <!-- Header -->
-    <div class="px-4 pt-2 flex items-center justify-between">
+    <div class="px-4 pt-2">
         <h3 class="text-xl font-bold text-gray-900">
-            {{ animal.animalName }}
+            {{ animal().animalName }}
         </h3>
-    <lucide-angular [img]="Heart" class="w-5 h-5 text-red-400 fill-current hover:text-red-500 cursor-pointer"></lucide-angular>
     </div>
-
-    <!-- Conteúdo -->
     <div class="px-4 pb-2 space-y-3">
-        <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+        <dl class="flex flex-wrap gap-2 text-sm text-gray-600">
             <div class="flex items-center gap-1">
-                <lucide-angular [img]="Calendar" class="w-4 h-4"></lucide-angular>
-                {{ animal.animalAge }}
+                <lucide-angular [img]="Calendar" class="w-4 h-4" aria-hidden="true" />
+                <dt class="sr-only">Idade:</dt>
+                <dd>{{ animal().animalAge }}</dd>
             </div>
-        <div class="flex items-center gap-1">
-        <lucide-angular [img]="User" class="w-4 h-4"></lucide-angular>
-        {{ animal.animalSex }}
-        </div>
-        <div class="flex items-center gap-1">
-        <lucide-angular [img]="Ruler" class="w-4 h-4"></lucide-angular>
-        <span class="px-2 py-1 text-xs rounded border"
-            [ngClass]="animal.animalSize ? porteColors[animal.animalSize.toLowerCase()] : ''">
-            {{ animal.animalSize }}
-        </span>
-        </div>
+            <div class="flex items-center gap-1">
+                <lucide-angular [img]="User" class="w-4 h-4" aria-hidden="true" />
+                <dt class="sr-only">Sexo:</dt>
+                <dd>{{ animal().animalSex }}</dd>
+            </div>
+            <div class="flex items-center gap-1">
+                <lucide-angular [img]="Ruler" class="w-4 h-4" aria-hidden="true" />
+                <dt class="sr-only">Porte:</dt>
+                <dd>
+                    <span class="px-2 py-1 text-xs rounded border" [class]="sizeClass()">
+                        {{ animal().animalSize }}
+                    </span>
+                </dd>
+            </div>
+        </dl>
+        <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
+            {{ displayDescription() }}
+        </p>
+        <a
+        [routerLink]="['/animal', animal().animalId]"
+        class="block w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3 rounded-full transition-all duration-300 transform hover:scale-105 text-center"
+        [attr.aria-label]="'Conhecer melhor ' + animal().animalName">
+            Conhecer Melhor
+        </a>
     </div>
-
-    <!-- Descrição -->
-    <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
-        {{ animal.animalSpecialConditions || 'Sem observações' }}
-    </p>
-
-    <!-- Botão -->
-    <button 
-    [routerLink]="['/animal', animal.animalId]"
-    class="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3 rounded-full transition-all duration-300 transform hover:scale-105">
-        Conhecer Melhor
-    </button>
-    </div>
-</div>
+</article>
