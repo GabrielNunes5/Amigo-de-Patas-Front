@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { 
   LucideAngularModule, 
   ArrowLeft, 
-  Heart, 
   Calendar, 
   User, 
   Scale, 
@@ -32,7 +31,6 @@ import { of } from 'rxjs';
 })
 export class AnimalDetalhesComponent {
   readonly ArrowLeft = ArrowLeft;
-  readonly Heart = Heart;
   readonly Calendar = Calendar;
   readonly User = User;
   readonly Scale = Scale;
