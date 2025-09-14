@@ -1,7 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Camera, Clock, DollarSign, Heart, LucideAngularModule, Mail, MapPin, Package, Phone, Stethoscope, Users } from 'lucide-angular';
+
+interface FormaAjudar {
+  icon: any;
+  title: string;
+  description: string;
+  color: string;
+}
+
+interface Contato {
+  icon: any;
+  title: string;
+  info: string;
+  description: string;
+}
 
 @Component({
   selector: 'app-contato',
@@ -21,7 +35,7 @@ export class ContatoComponent {
   readonly Camera = Camera;
   readonly Users = Users;
 
-  formasAjudar = [
+  formasAjudar = signal<FormaAjudar[]>([
     {
       icon: Heart,
       title: "Adoção",
@@ -58,9 +72,9 @@ export class ContatoComponent {
       description: "Participe dos resgates, feiras de adoção e cuidados",
       color: "from-indigo-400 to-indigo-600"
     }
-  ];
+  ]);
 
-  contatos = [
+  contatos = signal<Contato[]>([
     {
       icon: Phone,
       title: "Telefone",
@@ -77,7 +91,7 @@ export class ContatoComponent {
       icon: MapPin,
       title: "Localização",
       info: "Fortaleza, CE",
-      description: "Atuamos em toda a região metropolitana"
+      description: "Atuamos em toda região metropolitana"
     },
     {
       icon: Clock,
@@ -85,5 +99,9 @@ export class ContatoComponent {
       info: "Sábados e Domingos",
       description: "Das 9h às 17h, com agendamento prévio"
     }
-  ];
+  ]);
+
+  protected trackByIndex(index: number): number {
+    return index;
+  }
 }
