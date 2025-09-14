@@ -53,7 +53,7 @@ export class AnimaisComponent implements OnInit {
       
       const matchSexo = filters.sexo === 'todos' || 
         animal.animalSex.toLowerCase() === filters.sexo.toLowerCase();
-
+      
       return matchBusca && matchTipo && matchPorte && matchSexo;
     });
   });

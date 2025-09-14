@@ -1,5 +1,5 @@
 export interface Animal {
-    id: string;
+    animalId: string;
     animalName: string;
     animalAge: string;
     animalWeight: number;

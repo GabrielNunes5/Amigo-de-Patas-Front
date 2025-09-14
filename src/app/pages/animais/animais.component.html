@@ -79,7 +79,7 @@
     } @else {
         @if (hasResultados()) {
             <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            @for (animal of animaisFiltrados(); track animal.id) {
+            @for (animal of animaisFiltrados(); track animal.animalId) {
                 <app-animal-card [animal]="animal" />
             }
             </div>

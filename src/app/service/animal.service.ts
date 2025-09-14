@@ -1,20 +1,25 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { Animal, AdocaoFormData } from "../models/animal.model";
 
 @Injectable({providedIn: 'root'})
 export class AnimalService {
-    private apiUrl = 'http://localhost:3000/animals';
+    private apiUrl = "https://amigo-de-pata-api.onrender.com/animals";
     private http = inject(HttpClient)
 
     getAnimals(): Observable<Animal[]> {
-        return this.http.get<Animal[]>(this.apiUrl);
+        return this.http.get<{data: {content: Animal[]}}>(
+            this.apiUrl
+        ).pipe(
+            map(response => response.data.content)
+        )
     }
 
-    getAnimal(id: string ): Observable<Animal> {
+    getAnimal(id: string): Observable<Animal> {
         return this.http.get<Animal>(`${this.apiUrl}/${id}`);
     }
+
     
     enviarSolicitacaoAdocao(formData: AdocaoFormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/adocao`, formData);

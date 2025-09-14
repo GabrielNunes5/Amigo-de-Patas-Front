@@ -63,7 +63,7 @@ export class AdoptionFormComponent implements OnInit {
     try {
       const formData: AdocaoFormData = {
         ...this.adoptionForm.value,
-        animal_id: this.animal().id,
+        animal_id: this.animal().animalId,
         animal_name: this.animal().animalName
       };
 
