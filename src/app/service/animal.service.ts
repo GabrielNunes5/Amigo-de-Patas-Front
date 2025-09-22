@@ -2,10 +2,11 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { Animal, AdocaoFormData } from "../models/animal.model";
+import { environment } from '../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class AnimalService {
-    private apiUrl = "https://amigo-de-pata-api.onrender.com/animals";
+    private apiUrl = `${environment.apiUrl}animals`;
     private http = inject(HttpClient)
 
     getAnimals(): Observable<Animal[]> {
