@@ -1,5 +1,5 @@
 @if (submitted()) {
-    <section class="min-h-screen py-8 flex items-center justify-center">
+    <section class="min-h-screen py-8 flex items-center justify-center bg-black">
         <div class="max-w-2xl mx-auto px-4">
             <div class="text-center shadow-2xl border-none">
                 <div class="p-12">
@@ -30,7 +30,7 @@
     </section>
 } @else {
     <main class="min-h-screen py-8">
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <nav class="mb-8">
             <button
             routerLink="/contato"
@@ -91,7 +91,7 @@
                         Formulário de Inscrição - Voluntário
                     </h1>
                 </div>
-                <form [formGroup]="voluntarioForm" (ngSubmit)="onSubmit()" class="space-y-8">
+                <form [formGroup]="voluntarioForm" (ngSubmit)="onSubmit()" class="space-y-8 px-2">
                     <div class="p-4 bg-white">
                         <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                             <lucide-angular [img]="User" class="w-5 h-5 text-blue-600"/>
