@@ -1,59 +1,125 @@
-# AmigoDePatas
+# Amigo de Patas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+## Sobre o Projeto
 
-## Development server
+O projeto **Amigo de Patas** é uma aplicação web desenvolvida em Angular, com o objetivo de conectar animais necessitados de adoção com potenciais adotantes. A plataforma oferece uma interface intuitiva para visualizar animais disponíveis, detalhes sobre cada um, formulários de contato e adoção, além de informações sobre como se tornar um voluntário.
 
-To start a local development server, run:
+Este repositório contém o código-fonte da parte frontend da aplicação, construída com foco em responsividade, usabilidade e uma experiência de usuário agradável.
 
-```bash
-ng serve
+**A "Amigo de Patas" é uma ONG fictícia criada para esse projeto**
+
+## Tecnologias Utilizadas
+
+O projeto foi desenvolvido utilizando as seguintes tecnologias:
+
+*   **Angular**: Framework para construção de aplicações web dinâmicas e de página única.
+    *   Versão: 19.2.15
+*   **TypeScript**: Linguagem de programação que adiciona tipagem estática ao JavaScript.
+*   **Tailwind CSS**: Framework CSS utilitário para estilização rápida e responsiva.
+*   **ngx-mask**: Biblioteca para aplicação de máscaras em campos de formulário.
+*   **Lucide Angular**: Biblioteca de ícones para Angular.
+*   **JSON Server**: Utilizado para simular uma API RESTful para desenvolvimento e testes.
+
+## Estrutura do Projeto
+
+A estrutura do projeto segue as convenções do Angular, com módulos e componentes bem organizados:
+
+```
+Amigo-de-Patas-Front/
+├── public/                  # Ativos públicos (imagens, etc.)
+├── src/
+│   ├── app/
+│   │   ├── components/      # Componentes reutilizáveis
+│   │   │   ├── adoption-form/ # Formulário de adoção
+│   │   │   ├── animal-card/   # Cartão de exibição de animal
+│   │   │   ├── footer/        # Rodapé da aplicação
+│   │   │   └── header/        # Cabeçalho da aplicação
+│   │   ├── models/          # Definições de modelos de dados
+│   │   ├── pages/           # Páginas principais da aplicação
+│   │   │   ├── animais/       # Lista de animais
+│   │   │   ├── animal-detalhes/ # Detalhes de um animal específico
+│   │   │   ├── contato/       # Página de contato
+│   │   │   ├── home/          # Página inicial
+│   │   │   ├── sobre/         # Página 'Sobre Nós'
+│   │   │   └── voluntario/    # Página para voluntários
+│   │   ├── service/         # Serviços para comunicação com a API
+│   │   └── ...
+│   ├── environments/        # Configurações de ambiente
+│   └── ...
+├── angular.json             # Configuração do Angular CLI
+├── package.json             # Dependências e scripts do projeto
+└── README.md                # Este arquivo
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Páginas da Aplicação
 
-## Code scaffolding
+A aplicação é composta pelas seguintes páginas principais, localizadas em `src/app/pages/`:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+*   **Home (`/home`)**: A página inicial da aplicação, servindo como porta de entrada para os usuários. Apresenta uma visão geral do projeto, animais em destaque e chamadas para ação para adoção ou voluntariado.
+*   **Animais (`/animais`)**: Exibe uma lista completa de todos os animais disponíveis para adoção. Os usuários podem navegar, filtrar e buscar animais com base em diversos critérios, como espécie, raça, idade e localização.
+*   **Detalhes do Animal (`/animal-detalhes/:id`)**: Uma página dedicada a cada animal, onde são apresentadas informações detalhadas, incluindo galeria de fotos, descrição completa, histórico, temperamento e requisitos para adoção. Inclui um botão para iniciar o processo de adoção.
+*   **Contato (`/contato`)**: Oferece um formulário para que os usuários possam entrar em contato com a equipe do Amigo de Patas para dúvidas, sugestões ou outras informações.
+*   **Sobre Nós (`/sobre`)**: Detalha a missão, visão, valores e a história da organização Amigo de Patas, promovendo a transparência e a conexão com a causa.
+*   **Voluntário (`/voluntario`)**: Uma página informativa para aqueles que desejam se juntar à causa como voluntários. Contém informações sobre as atividades de voluntariado e um formulário de inscrição para interessados.
 
-```bash
-ng generate component component-name
-```
+## Componentes Reutilizáveis
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Os componentes reutilizáveis, localizados em `src/app/components/`, são elementos modulares da interface do usuário que promovem a consistência e a eficiência no desenvolvimento:
 
-```bash
-ng generate --help
-```
+*   **Header**: O cabeçalho da aplicação, presente em todas as páginas. Contém o logotipo do Amigo de Patas, a navegação principal (links para Home, Animais, Contato, Sobre, Voluntário) e, possivelmente, elementos de interação como um botão de login/perfil.
+*   **Footer**: O rodapé da aplicação, também presente em todas as páginas. Inclui informações de contato, links para redes sociais, política de privacidade, termos de uso e direitos autorais.
+*   **Animal Card (`animal-card/`)**: Um componente de cartão que exibe um resumo conciso das informações de um animal. Ideal para listagens, inclui a foto do animal, nome, espécie e um link rápido para a página de detalhes.
+*   **Adoption Form (`adoption-form/`)**: Um formulário abrangente para que os usuários interessados possam formalizar sua intenção de adotar um animal. Coleta informações essenciais do adotante e pode incluir validações e máscaras de entrada para garantir a qualidade dos dados.
 
-## Building
+## Como Rodar o Projeto Localmente
 
-To build the project run:
+Para configurar e rodar o projeto em sua máquina local, siga os passos abaixo:
 
-```bash
-ng build
-```
+### Pré-requisitos
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Certifique-se de ter as seguintes ferramentas instaladas:
 
-## Running unit tests
+*   **Node.js** (versão LTS recomendada)
+*   **npm** (gerenciador de pacotes do Node.js)
+*   **Angular CLI** (instale globalmente com `npm install -g @angular/cli`)
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Instalação e Execução
 
-```bash
-ng test
-```
+1.  **Clone o repositório:**
 
-## Running end-to-end tests
+    ```bash
+    git clone https://github.com/GabrielNunes5/Amigo-de-Patas-Front.git
+    cd Amigo-de-Patas-Front
+    ```
 
-For end-to-end (e2e) testing, run:
+2.  **Instale as dependências:**
 
-```bash
-ng e2e
-```
+    ```bash
+    npm install
+    ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+3.  **Inicie o servidor de desenvolvimento:**
 
-## Additional Resources
+    ```bash
+    ng serve
+    ```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+    Navegue para `http://localhost:4200/` em seu navegador. A aplicação será recarregada automaticamente sempre que você modificar qualquer arquivo-fonte.
+
+4.  **(Opcional) Inicie a simulação de API:**
+
+    Este projeto utiliza `json-server` para simular uma API RESTful. Para iniciar o servidor JSON, execute em um novo terminal:
+
+    ```bash
+    npm run json-server
+    ```
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT.
+
+## Autor
+
+**Gabriel Nunes**
+*   [GitHub](https://github.com/GabrielNunes5)
+*   [Linkedin](https://www.linkedin.com/in/gabriel-nunes-085gn/)
