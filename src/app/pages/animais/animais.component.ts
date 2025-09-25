@@ -1,11 +1,12 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { Filter, Heart, LucideAngularModule, Search } from "lucide-angular";
 import { FormsModule } from '@angular/forms';
 import { Animal } from '../../models/animal.model';
 import { AnimalService } from '../../service/animal.service';
 import { CommonModule } from '@angular/common';
 import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
-import { catchError, Observable, of, tap, finalize } from 'rxjs';
+import { catchError, of } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 interface Filtros {
   busca: string;
@@ -20,14 +21,28 @@ interface Filtros {
   templateUrl: './animais.component.html',
   styleUrl: './animais.component.css'
 })
-export class AnimaisComponent implements OnInit {
+export class AnimaisComponent {
   // Ícones do Lucide
   readonly Heart = Heart;
   readonly Filter = Filter;
   readonly Search = Search;
 
-  animais = signal<Animal[]>([]);
-  loading = signal(true);
+  private readonly animalService = inject(AnimalService);
+
+  private readonly animaisResponse = toSignal(
+    this.animalService.getAnimals().pipe(
+      catchError(error => {
+        console.error('Erro ao carregar animais:', error);
+        return of([]);
+      })
+    ), 
+    { initialValue: [] as Animal[] }
+  );
+
+  loading = computed(() => !this.animaisResponse());
+
+  animais = computed(() => this.animaisResponse());
+
   filtros = signal<Filtros>({
     busca: '',
     tipo: 'todos',
@@ -73,23 +88,6 @@ export class AnimaisComponent implements OnInit {
 
   get filtroSexo(): string { return this.filtros().sexo; }
   set filtroSexo(value: string) { this.updateFiltro('sexo', value); }
-
-  private readonly animalService = inject(AnimalService);
-
-  ngOnInit(): void {
-    this.loadAnimais();
-  }
-
-  private loadAnimais(): void {
-    this.animalService.getAnimals().pipe(
-      tap(data => this.animais.set(data)),
-      catchError(error => {
-        console.error('Erro ao carregar animais:', error);
-        return of([]);
-      }),
-      finalize(() => this.loading.set(false))
-    ).subscribe();
-  }
 
   private updateFiltro<K extends keyof Filtros>(key: K, value: Filtros[K]): void {
     this.filtros.update(filtros => ({ ...filtros, [key]: value }));
