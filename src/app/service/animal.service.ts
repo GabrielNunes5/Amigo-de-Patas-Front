@@ -25,7 +25,8 @@ export class AnimalService {
 
   getAnimal(id: string): Observable<Animal> {
     if (!this.animalCache.has(id)) {
-      const animal$ = this.http.get<Animal>(`${this.apiUrl}/${id}`).pipe(
+      const animal$ = this.http.get<{ data: Animal }>(`${this.apiUrl}/${id}`).pipe(
+        map(response => response.data),
         shareReplay({ bufferSize: 1, refCount: true })
       );
       this.animalCache.set(id, animal$);
