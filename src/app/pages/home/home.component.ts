@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Award, Heart, Home, LucideAngularModule, PawPrint, Users } from 'lucide-angular';
 import { Animal } from '../../models/animal.model';
 import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
-import { AnimalService } from '../../service/animal.service';
+import { AnimalService } from '../../service/animal/animal.service';
 import { catchError, of } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 

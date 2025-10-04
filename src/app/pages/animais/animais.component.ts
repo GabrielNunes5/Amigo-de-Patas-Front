@@ -2,7 +2,7 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { Filter, Heart, LucideAngularModule, Search } from "lucide-angular";
 import { FormsModule } from '@angular/forms';
 import { Animal } from '../../models/animal.model';
-import { AnimalService } from '../../service/animal.service';
+import { AnimalService } from '../../service/animal/animal.service';
 import { CommonModule } from '@angular/common';
 import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
 import { catchError, of } from 'rxjs';

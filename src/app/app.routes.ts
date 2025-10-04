@@ -5,6 +5,7 @@ import { AnimaisComponent } from './pages/animais/animais.component';
 import { SobreComponent } from './pages/sobre/sobre.component';
 import { AnimalDetalhesComponent } from './pages/animal-detalhes/animal-detalhes.component';
 import { VoluntarioComponent } from './pages/voluntario/voluntario.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
     {
@@ -30,6 +31,10 @@ export const routes: Routes = [
     {
         path:"voluntario",
         component: VoluntarioComponent
+    },
+    {
+        path:"login",
+        component: LoginComponent
     },
     {
         path:"**",

@@ -3,7 +3,7 @@ import { Component, EventEmitter, inject, input, OnInit, output, signal } from '
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CheckCircle, LucideAngularModule, Mail, MessageSquare, Phone, User } from 'lucide-angular';
 import { Animal, AdocaoFormData } from '../../models/animal.model'; 
-import { AnimalService } from '../../service/animal.service';
+import { AnimalService } from '../../service/animal/animal.service';
 import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({

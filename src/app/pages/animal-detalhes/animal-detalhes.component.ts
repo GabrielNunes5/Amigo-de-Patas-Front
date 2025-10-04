@@ -13,7 +13,7 @@ import {
   AlertTriangle
 } from 'lucide-angular';
 import { catchError, switchMap } from 'rxjs/operators';
-import { AnimalService } from '../../service/animal.service';
+import { AnimalService } from '../../service/animal/animal.service';
 import { toSignal } from '@angular/core/rxjs-interop'
 import { AdoptionFormComponent } from '../../components/adoption-form/adoption-form.component';
 import { of } from 'rxjs';

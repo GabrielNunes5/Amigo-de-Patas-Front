@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable, shareReplay } from "rxjs";
-import { Animal, AdocaoFormData } from "../models/animal.model";
-import { environment } from '../../environments/environment';
+import { Animal, AdocaoFormData } from "../../models/animal.model";
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AnimalService {
