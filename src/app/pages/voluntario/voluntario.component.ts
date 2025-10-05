@@ -139,7 +139,6 @@ export class VoluntarioComponent implements OnInit {
     this.submitting.set(true);
 
     try {
-      console.log('Dados enviados:', this.voluntarioForm.value);
       this.submitted.set(true);
       this.voluntarioForm.reset();
     } catch (err) {

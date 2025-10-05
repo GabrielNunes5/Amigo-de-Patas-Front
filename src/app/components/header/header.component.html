@@ -31,6 +31,34 @@ class="backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-
                         {{ item.title }}
                     </a>
                 }
+                <div>
+                    @if (currentUser()) {
+                        <div class="flex items-center gap-3 cursor-pointer py-2 px-2">
+                            <div 
+                            class="w-8 h-8 rounded-full flex items-center justify-center"
+                            [ngClass]="isScrolled() ? 'bg-transparent text-gray-800' : 'text-white bg-gradient-to-r from-blue-500 to-green-500'">
+                                <span 
+                                class="font-medium">
+                                    {{ currentUser()?.adopterFullName?.[0]?.toUpperCase() }}
+                                </span>
+                            </div>
+                            <span
+                            class="font-medium">
+                                {{ getFirstTwoNames(currentUser()?.adopterFullName) }}
+                            </span>
+                        </div>
+                    } @else {
+                        <a 
+                        class="py-2 px-2 gap-2 flex font-medium items-center rounded-lg transition-all duration-300" 
+                        [ngClass]="isScrolled() 
+                            ? 'bg-transparent text-gray-800 hover:bg-gray-100' 
+                            : 'bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white'"
+                        routerLink="/login">
+                            <lucide-angular [img]="LogIn" class="w-4 h-4"/>
+                            Entrar
+                        </a>
+                    }
+                </div>
             </nav>
             <button type="button"class="md:hidden p-2 rounded-full hover:bg-gray-100 transition"(click)="toggleMobileMenu()">
                 <lucide-angular [img]="mobileMenuOpen() ? X : Menu" class="w-5 h-5"/>
