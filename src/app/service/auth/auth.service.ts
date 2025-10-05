@@ -1,8 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, switchMap, map } from 'rxjs';
 import { AdopterResponse, AuthResponse, LoginRequest, RegisterRequest } from '../../models/auth.model';
+
+interface ApiResponse<T> {
+  data: T;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,34 +18,60 @@ export class AuthService {
     private currentUser = signal<AdopterResponse | null>(null);
 
     get user() {
-    return this.currentUser.asReadonly();
-  }
+      return this.currentUser.asReadonly();
+    }
 
     register(data: RegisterRequest): Observable<AuthResponse>{
       return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data)
       .pipe(tap((response) => {
-        localStorage.setItem('acessToken', response.accessToken);
+        localStorage.setItem('accessToken', response.accessToken);
       }));
     }
     
-    login(data: LoginRequest): Observable<AuthResponse>{
+    login(data: LoginRequest): Observable<AuthResponse> {
       return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data)
-      .pipe(tap((response) => {
-        console.log('Resposta do servidor:', response);
-        localStorage.setItem('acessToken', response.accessToken);
-      }));
+        .pipe(
+          tap((response) => {
+            localStorage.setItem('accessToken', response.accessToken);
+          }),
+          switchMap((authResponse) => 
+            this.profile().pipe(
+              tap((user) => {
+                this.currentUser.set(user);
+              }),
+              map(() => authResponse)
+            )
+          )
+        );
     }
 
-    profile(): Observable<AdopterResponse>{
-      return this.http.get<AdopterResponse>(`${this.apiUrl}/me`);
+    profile(): Observable<AdopterResponse> {
+      return this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me`)
+        .pipe(
+          map(response => response.data),
+          tap({
+            next: (user) => {;
+              this.currentUser.set(user);
+            },
+            error: (error) => {
+              console.error('Erro ao buscar profile:', error);
+            }
+          })
+        );
     }
 
     logout(): void {
-      localStorage.removeItem('acessToken');
+      localStorage.removeItem('accessToken');
       this.currentUser.set(null);
   }
 
     isAuthenticated(): boolean {
-      return !!localStorage.getItem('acessToken');
+      return !!localStorage.getItem('accessToken');
+  }
+
+  loadUserProfile(): void {
+    if (this.isAuthenticated()) {
+      this.profile().subscribe();
+    }
   }
 }

@@ -1,3 +1,5 @@
+import { Animal } from "./animal.model";
+
 export interface LoginRequest {
     adopterEmail: string;
     adopterPassword: string;
@@ -25,7 +27,7 @@ export interface AdopterResponse {
     adopterAddress: string,
     typeHouse: string,
     hasGarden: boolean,
-    adoptedAnimals: [], 
+    adoptedAnimals: Animal[], 
 }
 
 export interface AuthResponse {

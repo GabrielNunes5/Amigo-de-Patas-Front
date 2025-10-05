@@ -44,7 +44,6 @@ export class LoginComponent {
     this.auth
       .login(payload)
       .pipe(
-        tap(() => console.log('Token salvo:', localStorage.getItem('accessToken'))),
         switchMap(() => this.auth.profile()),
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.isLoading.set(false))
