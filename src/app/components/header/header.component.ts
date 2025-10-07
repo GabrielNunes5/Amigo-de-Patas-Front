@@ -11,8 +11,9 @@ import { AuthService } from '../../service/auth/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
-  isScrolled = signal(false);
-  mobileMenuOpen = signal(false);
+  readonly isScrolled = signal(false);
+  readonly mobileMenuOpen = signal(false);
+  readonly isDropdownOpen = signal(false);
 
   navigationItems = [
     { title: 'Início', url: '/', icon: Home },
@@ -29,9 +30,21 @@ export class HeaderComponent implements OnInit {
     return user;
   });
 
+
+  toggleDropdown(): void {
+    this.isDropdownOpen.update((v) => !v);
+  }
+
+  closeDropdown(): void {
+    this.isDropdownOpen.set(false);
+  }
+
   @HostListener('window:scroll')
   onWindowScroll() {
     this.isScrolled.set(window.scrollY > 10);
+    if (this.isDropdownOpen()) {
+      this.closeDropdown();
+    }
   }
 
   toggleMobileMenu() {
@@ -42,16 +55,16 @@ export class HeaderComponent implements OnInit {
     this.mobileMenuOpen.set(false);
   }
 
-  readonly PawPrint = PawPrint;
-  readonly Menu = Menu;
-  readonly X = X;
-  readonly LogIn = LogIn;
-  readonly LogOut = LogOut;
-
+  
   ngOnInit() {
     if (this.auth.isAuthenticated()) {
       this.auth.loadUserProfile();
     }
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/']);
   }
 
   getFirstTwoNames(fullName: string | undefined): string {
@@ -60,4 +73,10 @@ export class HeaderComponent implements OnInit {
     const names = fullName.split(' ');
     return names.slice(0, 2).join(' ');
   }
+
+  readonly PawPrint = PawPrint;
+  readonly Menu = Menu;
+  readonly X = X;
+  readonly LogIn = LogIn;
+  readonly LogOut = LogOut;
 }
