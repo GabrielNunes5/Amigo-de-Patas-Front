@@ -45,6 +45,9 @@ export class HeaderComponent implements OnInit {
     if (this.isDropdownOpen()) {
       this.closeDropdown();
     }
+    if (this.mobileMenuOpen()) {
+      this.closeMobileMenu();
+    }
   }
 
   toggleMobileMenu() {
