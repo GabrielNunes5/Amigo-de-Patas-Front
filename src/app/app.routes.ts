@@ -33,8 +33,10 @@ export const routes: Routes = [
         component: VoluntarioComponent
     },
     {
-        path:"login",
-        component: LoginComponent
+        path:"auth",
+        children: [
+            {path: 'login', component: LoginComponent},
+        ]
     },
     {
         path:"**",
