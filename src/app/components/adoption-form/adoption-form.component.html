@@ -1,171 +1,113 @@
-@if (showForm() && !submitted()) {
-  <section class="mt-12">
-    <div class="max-w-4xl mx-auto shadow-2xl border-none rounded-lg overflow-hidden">
-      <header class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6">
-        <h2 class="text-2xl font-bold text-center">
-          Formulário de Interesse - {{ animal().animalName }}
+@if (canShowForm()) {
+  @if (showForm() && !submitted()) {
+    <section class="mt-12">
+      <div class="max-w-4xl mx-auto shadow-2xl border-none rounded-lg overflow-hidden">
+        <header class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6">
+          <h2 class="text-2xl font-bold text-center">
+            Formulário de Interesse - {{ animal().animalName }}
+          </h2>
+        </header>
+        <div class="bg-white p-8 space-y-6">
+          <div class="bg-gray-100 p-4 rounded-lg border">
+            <p class="font-semibold text-gray-900">
+              {{ currentUser()?.adopterFullName }}
+            </p>
+            <p class="text-gray-700">{{ currentUser()?.adopterEmail }}</p>
+            <p class="text-gray-700">{{ currentUser()?.adopterPhone }}</p>
+            <p class="text-gray-700">{{ currentUser()?.typeHouse }}</p>
+            <div class="flex items-center">
+              <label class="mr-1">Quintal ou Area externa ?</label>
+              <input type="checkbox" [checked]="currentUser()?.hasGarden" disabled/>
+            </div>
+          </div>
+          <form [formGroup]="adoptionForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <div>
+              <label for="experiencia" class="text-sm font-semibold text-gray-900 mb-2 block">
+                Experiência com Animais
+              </label>
+              <textarea
+                id="experiencia"
+                formControlName="experiencia_animais"
+                rows="3"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="Conte sobre sua experiência com pets..."
+              ></textarea>
+            </div>
+
+            <div>
+              <label for="outros" class="text-sm font-semibold text-gray-900 mb-2 block">
+                Outros Animais em Casa
+              </label>
+              <textarea
+                id="outros"
+                formControlName="outros_animais"
+                rows="2"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="Possui outros pets? Conte sobre eles..."
+              ></textarea>
+            </div>
+
+            <div>
+              <label for="mensagem" class="text-sm font-semibold text-gray-900 mb-2 block">
+                <lucide-angular [img]="MessageSquare" class="w-4 h-4 inline mr-2" />
+                Mensagem Adicional
+              </label>
+              <textarea
+                id="mensagem"
+                formControlName="mensagem"
+                rows="4"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="Quer nos contar algo mais sobre você?"
+              ></textarea>
+            </div>
+
+            <div class="flex gap-4 pt-6">
+              <button
+                type="button"
+                (click)="cancelarFormulario()"
+                class="flex-1 px-6 py-3 cursor-pointer border border-gray-300 text-gray-700 rounded-full hover:bg-gray-50 transition-colors">
+                Cancelar
+              </button>
+
+              <button
+                type="submit"
+                [disabled]="adoptionForm.invalid || submitting()"
+                class="flex-1 cursor-pointer bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-full transition-all duration-300">
+                {{ submitting() ? "Enviando..." : "Enviar Solicitação" }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  }
+
+  @if (submitted()) {
+    <section class="mt-12">
+      <div class="max-w-2xl mx-auto text-center shadow-2xl border-none rounded-lg bg-white p-12">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <lucide-angular [img]="CheckCircle" class="w-12 h-12 text-green-500" />
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+          Solicitação Enviada com Sucesso!
         </h2>
-      </header>
-      <div class="bg-white p-8">
-        <form [formGroup]="adoptionForm" (ngSubmit)="onSubmit()" class="space-y-6">
-          <div class="grid md:grid-cols-2 gap-6">
-            <div>
-              <label for="nome" class="text-sm font-semibold text-gray-900 mb-2 block">
-                <lucide-angular [img]="User" class="w-4 h-4 inline mr-2" />
-                Nome Completo *
-              </label>
-              <input
-                id="nome"
-                type="text"
-                formControlName="nome_interessado"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Seu nome completo"
-                [class.border-red-500]="hasError('nome_interessado')"/>
-              @if (hasError('nome_interessado')) {
-                <p class="text-red-500 text-sm mt-1" role="alert">
-                  {{ getErrorMessage('nome_interessado') }}
-                </p>
-              }
-            </div>
-            <div>
-              <label for="email" class="text-sm font-semibold text-gray-900 mb-2 block">
-                <lucide-angular [img]="Mail" class="w-4 h-4 inline mr-2" />
-                Email *
-              </label>
-              <input
-                id="email"
-                type="email"
-                formControlName="email"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="seu@email.com"
-                [class.border-red-500]="hasError('email')"/>
-              @if (hasError('email')) {
-                <p class="text-red-500 text-sm mt-1" role="alert">
-                  {{ getErrorMessage('email') }}
-                </p>
-              }
-            </div>
-          </div>
-          <div class="grid md:grid-cols-2 gap-6">
-            <div>
-              <label for="telefone" class="text-sm font-semibold text-gray-900 mb-2 block">
-                <lucide-angular [img]="Phone" class="w-4 h-4 inline mr-2" />
-                Telefone *
-              </label>
-              <input
-                id="telefone"
-                type="tel"
-                formControlName="telefone"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                mask="(00) 0000-0000||(00) 00000-0000"
-                placeholder="(85) 99999-9999"
-                [class.border-red-500]="hasError('telefone')"/>
-              @if (hasError('telefone')) {
-                <p class="text-red-500 text-sm mt-1" role="alert">
-                  {{ getErrorMessage('telefone') }}
-                </p>
-              }
-            </div>
-            <div>
-              <label for="moradia" class="text-sm font-semibold text-gray-900 mb-2 block">
-                Tipo de Moradia
-              </label>
-              <select 
-                id="moradia"
-                formControlName="tipo_moradia"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                <option value="">Selecione</option>
-                <option value="casa">Casa</option>
-                <option value="apartamento">Apartamento</option>
-              </select>
-            </div>
-          </div>
-          <div class="flex items-center space-x-2">
-            <input
-              id="quintal"
-              type="checkbox"
-              formControlName="tem_quintal"
-              class="rounded border-gray-300 text-orange-600 focus:ring-orange-500"/>
-            <label for="quintal" class="text-sm font-medium text-gray-900">
-              Possui quintal ou área externa
-            </label>
-          </div>
-
-          <div>
-            <label for="experiencia" class="text-sm font-semibold text-gray-900 mb-2 block">
-              Experiência com Animais
-            </label>
-            <textarea
-              id="experiencia"
-              formControlName="experiencia_animais"
-              rows="3"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="Conte sobre sua experiência com pets..."
-            ></textarea>
-          </div>
-          <div>
-            <label for="outros" class="text-sm font-semibold text-gray-900 mb-2 block">
-              Outros Animais em Casa
-            </label>
-            <textarea
-              id="outros"
-              formControlName="outros_animais"
-              rows="2"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="Possui outros pets? Conte sobre eles..."
-            ></textarea>
-          </div>
-          <div>
-            <label for="mensagem" class="text-sm font-semibold text-gray-900 mb-2 block">
-              <lucide-angular [img]="MessageSquare" class="w-4 h-4 inline mr-2" />
-              Mensagem Adicional
-            </label>
-            <textarea
-              id="mensagem"
-              formControlName="mensagem"
-              rows="4"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="Quer nos contar algo mais sobre você?"
-            ></textarea>
-          </div>
-          <div class="flex gap-4 pt-6">
-            <button
-              type="button"
-              (click)="cancelarFormulario()"
-              class="flex-1 px-6 py-3 cursor-pointer border border-gray-300 text-gray-700 rounded-full hover:bg-gray-50 transition-colors">
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              [disabled]="adoptionForm.invalid || submitting()"
-              class="flex-1 cursor-pointer bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-full transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5">
-              {{ submitting() ? "Enviando..." : "Enviar Solicitação" }}
-            </button>
-          </div>
-        </form>
+        <p class="text-gray-600 mb-8 leading-relaxed">
+          Obrigado pelo interesse em adotar o <strong>{{ animal().animalName }}</strong>!
+          Entraremos em contato em breve para dar continuidade ao processo de adoção.
+        </p>
+        <button
+          routerLink="/animais"
+          class="cursor-pointer bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white rounded-full px-8 py-3 transition-all duration-300">
+          Ver Mais Animais
+        </button>
       </div>
-    </div>
-  </section>
-}
-
-@if (submitted()) {
-  <section class="mt-12">
-    <div class="max-w-2xl mx-auto text-center shadow-2xl border-none rounded-lg bg-white p-12">
-      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-        <lucide-angular [img]="CheckCircle" class="w-12 h-12 text-green-500" />
-      </div>
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">
-        Solicitação Enviada com Sucesso!
-      </h2>
-      <p class="text-gray-600 mb-8 leading-relaxed">
-        Obrigado pelo interesse em adotar o <strong>{{ animal().animalName }}</strong>! 
-        Recebemos sua solicitação e entraremos em contato em breve para dar continuidade ao processo de adoção.
-      </p>
-      <button 
-        routerLink="/animais" 
-        class="cursor-pointer bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white rounded-full px-8 py-3 transition-all duration-300">
-        Ver Mais Animais
-      </button>
-    </div>
-  </section>
+    </section>
+  }
+} @else if (shouldShowError()) {
+  <div class="p-4 rounded-lg bg-red-50 text-red-600">
+    <p class="text-center">
+      Você precisa estar logado para solicitar uma adoção.
+      <a routerLink="/auth/login" class="font-medium underline">Fazer login</a>
+    </p>
+  </div>
 }

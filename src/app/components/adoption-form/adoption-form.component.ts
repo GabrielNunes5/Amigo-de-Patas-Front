@@ -1,53 +1,51 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, input, OnInit, output, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CheckCircle, LucideAngularModule, Mail, MessageSquare, Phone, User } from 'lucide-angular';
-import { Animal, AdocaoFormData } from '../../models/animal.model'; 
+import { Component, computed, effect, EffectRef, inject, input, output, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CheckCircle, LucideAngularModule, MessageSquare } from 'lucide-angular';
+import { Animal, AdocaoFormData } from '../../models/animal.model';
 import { AnimalService } from '../../service/animal/animal.service';
-import { NgxMaskDirective } from 'ngx-mask';
+import { AuthService } from '../../service/auth/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-adoption-form',
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, NgxMaskDirective],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, RouterLink],
   templateUrl: './adoption-form.component.html',
-  styleUrl: './adoption-form.component.css'
+  styleUrl: './adoption-form.component.css',
 })
-export class AdoptionFormComponent implements OnInit {
-  readonly User = User;
-  readonly Mail = Mail;
-  readonly Phone = Phone;
-  readonly MessageSquare = MessageSquare;
+export class AdoptionFormComponent {
   readonly CheckCircle = CheckCircle;
+  readonly MessageSquare = MessageSquare;
+
+  private readonly fb = inject(FormBuilder);
+  private readonly animalService = inject(AnimalService);
+  private readonly auth = inject(AuthService);
 
   animal = input.required<Animal>();
   showForm = input<boolean>(false);
-  
+
   formCancelled = output<void>();
   formSubmitted = output<void>();
 
-  submitted = signal(false);
-  submitting = signal(false);
-  
-  adoptionForm!: FormGroup;
+  readonly isAuthenticated = computed(() => this.auth.isAuthenticated());
+  readonly currentUser = computed(() => this.auth.user());
+  readonly showError = signal(false);
 
-  private readonly animalService = inject(AnimalService);
-  private readonly fb = inject(FormBuilder);
+  readonly submitting = signal(false);
+  readonly submitted = signal(false);
 
-  ngOnInit(): void {
-    this.initializeForm();
+  readonly adoptionForm = this.fb.nonNullable.group({
+    experiencia_animais: ['', [Validators.maxLength(255)]],
+    outros_animais: ['', [Validators.maxLength(255)]],
+    mensagem: ['', [Validators.maxLength(255)]],
+  });
+
+  canShowForm(): boolean {
+    return this.showForm() && this.isAuthenticated();
   }
 
-  private initializeForm(): void {
-    this.adoptionForm = this.fb.group({
-      nome_interessado: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      telefone: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      tipo_moradia: [''],
-      tem_quintal: [false],
-      experiencia_animais: [''],
-      outros_animais: [''],
-      mensagem: ['']
-    });
+  shouldShowError(): boolean {
+    return this.showForm() && !this.isAuthenticated();
   }
 
   cancelarFormulario(): void {
@@ -62,39 +60,22 @@ export class AdoptionFormComponent implements OnInit {
 
     try {
       const formData: AdocaoFormData = {
-        ...this.adoptionForm.value,
         animal_id: this.animal().animalId,
-        animal_name: this.animal().animalName
+        animal_name: this.animal().animalName,
+        experiencia_animais: this.adoptionForm.value.experiencia_animais!,
+        outros_animais: this.adoptionForm.value.outros_animais!,
+        mensagem: this.adoptionForm.value.mensagem!,
       };
 
       await this.animalService.enviarSolicitacaoAdocao(formData);
-      
+
       this.submitted.set(true);
       this.formSubmitted.emit();
     } catch (error) {
       console.error('Erro ao enviar solicitação:', error);
-      // TODO: Implementar tratamento de erro mais robusto
+      // TODO: exibir toast ou mensagem de erro amigável
     } finally {
       this.submitting.set(false);
     }
-  }
-
-  hasError(fieldName: string): boolean {
-    const field = this.adoptionForm.get(fieldName);
-    return !!(field?.invalid && (field.dirty || field.touched));
-  }
-
-  getErrorMessage(fieldName: string): string {
-    const field = this.adoptionForm.get(fieldName);
-    
-    if (!field?.errors) return '';
-
-    const errors = field.errors;
-    
-    if (errors['required']) return 'Este campo é obrigatório';
-    if (errors['email']) return 'Email inválido';
-    if (errors['pattern']) return 'Formato inválido';
-    
-    return 'Campo inválido';
   }
 }
