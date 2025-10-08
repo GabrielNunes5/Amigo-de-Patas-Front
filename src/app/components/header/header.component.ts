@@ -1,8 +1,9 @@
 import { Component, HostListener, inject, signal, computed, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Heart, Home, Menu, PawPrint, Phone, Users, X, LogIn, LogOut } from 'lucide-angular';
 import { AuthService } from '../../service/auth/auth.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -60,6 +61,13 @@ export class HeaderComponent implements OnInit {
 
   
   ngOnInit() {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.closeDropdown();
+        this.closeMobileMenu();
+      })
+      
     if (this.auth.isAuthenticated()) {
       this.auth.loadUserProfile();
     }
