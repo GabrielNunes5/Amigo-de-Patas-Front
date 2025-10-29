@@ -1,68 +1,124 @@
-<form [formGroup]="loginForm" (ngSubmit)="submit()" [attr.aria-busy]="isLoading()">
-  <div class="max-w-md mx-auto p-6 bg-white rounded shadow">
-
-    <h2 class="text-center text-2xl font-semibold mb-6">Entrar</h2>
-
-    <!-- Email -->
-    <div class="mb-4">
-      <label for="email" class="block text-sm font-medium mb-1">Email</label>
-      <input
-        id="email"
-        type="email"
-        formControlName="adopterEmail"
-        class="w-full border rounded px-3 py-2"
-        [attr.aria-invalid]="emailControl.invalid && emailControl.touched"
-        autocomplete="email"
-        required
-      />
-
-      @if (emailControl.touched && emailControl.invalid) {
-        <p class="text-red-500 text-sm mt-1" role="alert">
-          @if (emailControl.errors?.['required']){ O email é obrigatório. }
-          @if (emailControl.errors?.['email']) { Insira um email válido (ex: usuario&#64;dominio.com). }
-        </p>
-      }
-    </div>
-
-    <!-- Senha -->
-    <div class="mb-4">
-      <label for="password" class="block text-sm font-medium mb-1">Senha</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="adopterPassword"
-        class="w-full border rounded px-3 py-2"
-        autocomplete="current-password"
-        [attr.aria-invalid]="passwordControl.invalid && passwordControl.touched"
-        required
-      />
-
-      @if (passwordControl.touched && passwordControl.invalid) {
-        <p class="text-red-600 text-sm mt-1">
-          @if (passwordControl.errors?.['required']) { A senha é obrigatória. }
-          @if (passwordControl.errors?.['minlength']) { A senha deve ter ao menos 6 caracteres. }
-        </p>
-      }
-    </div>
-
-    <!-- Erro da API -->
-    @if (errorMessage()) {
-      <div role="alert" class="mb-4 text-red-700 bg-red-100 p-3 rounded">
-        {{ errorMessage() }}
+<main class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center px-4 py-12">
+  <section class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-green-600 rounded-full mb-4 shadow-lg" aria-hidden="true">
+        <lucide-angular [img]="User" class="w-8 h-8 text-white" />
       </div>
-    }
-
-    <div class="flex gap-2 items-center">
-      <button
-        type="submit"
-        class="flex-1 bg-blue-600 text-white py-2 rounded disabled:opacity-60"
-        [attr.aria-disabled]="isLoading() || loginForm.invalid"
-        [disabled]="isLoading() || loginForm.invalid"
-      >
-        @if (isLoading()) { Entrando... } @else { Entrar }
-      </button>
-
-      <a routerLink="/auth/register" class="text-sm underline text-gray-600">Criar conta</a>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Bem-vindo de volta!</h1>
+      <p class="text-gray-600">Entre para continuar sua jornada de adoção</p>
     </div>
-  </div>
-</form>
+    <section class="bg-gray-200 rounded-2xl shadow-xl p-8">
+      <form 
+      [formGroup]="loginForm" 
+      (ngSubmit)="submit()" [attr.aria-busy]="isLoading()">
+        <fieldset class="mb-6 border-0 p-0 m-0">
+          <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            formControlName="adopterEmail"
+            class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+            placeholder="seu@email.com"
+            [attr.aria-invalid]="emailControl.invalid && emailControl.touched"
+            [attr.aria-describedby]="emailControl.invalid && emailControl.touched ? 'email-error' : null"
+            [class.border-red-500]="emailControl.invalid && emailControl.touched"
+            autocomplete="email"
+            required/>
+
+          @if (emailControl.touched && emailControl.invalid) {
+            <div class="mt-2 flex items-center gap-2" role="alert">
+              <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0" aria-hidden="true"/>
+              <p class="text-red-600 text-sm">
+                @if (emailControl.errors?.['required']) { 
+                  O email é obrigatório. 
+                }
+                @if (emailControl.errors?.['email']) { 
+                  Insira um email válido (ex: usuario&#64;dominio.com). 
+                }
+              </p>
+            </div>
+          }
+        </fieldset>
+        <fieldset class="mb-6 border-0 p-0 m-0">
+          <div class="flex items-center justify-between mb-2">
+            <label for="password" class="block text-sm font-semibold text-gray-700">
+              Senha
+            </label>
+            <a 
+            routerLink="/auth/recuperar-senha" 
+            class="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200">
+              Esqueci a senha
+            </a>
+          </div>
+          <input
+            id="password"
+            type="password"
+            formControlName="adopterPassword"
+            class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+            placeholder="••••••••"
+            [attr.aria-invalid]="passwordControl.invalid && passwordControl.touched"
+            [attr.aria-describedby]="passwordControl.invalid && passwordControl.touched ? 'password-error' : null"
+            [class.border-red-500]="passwordControl.invalid && passwordControl.touched"
+            autocomplete="current-password"
+            required/>
+
+          @if (passwordControl.touched && passwordControl.invalid) {
+            <div class="mt-2 flex items-start gap-2" role="alert">
+              <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0" aria-hidden="true"/>
+              <p class="text-red-600 text-sm">
+                @if (passwordControl.errors?.['required']) { 
+                  A senha é obrigatória. 
+                }
+                @if (passwordControl.errors?.['minlength']) { 
+                  A senha deve ter ao menos 6 caracteres. 
+                }
+              </p>
+            </div>
+          }
+        </fieldset>
+        @if (errorMessage()) {
+          <aside role="alert" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+            <div class="flex items-start gap-3">
+              <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0" aria-hidden="true"/>
+              <p class="text-red-800 text-sm font-medium">{{ errorMessage() }}</p>
+            </div>
+          </aside>
+        }
+        <button
+          type="submit"
+          class="block w-1/2 m-auto bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
+          [attr.aria-disabled]="isLoading() || loginForm.invalid"
+          [disabled]="isLoading() || loginForm.invalid">
+          @if (isLoading()) {
+            <span class="flex items-center justify-center gap-2">
+              <span class="inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
+              <span>Entrando...</span>
+            </span>
+          } @else {
+            Entrar
+          }
+        </button>
+      </form>
+      <div class="m-2 flex justify-center text-sm">
+        <span class="px-4 text-gray-500 font-medium">
+          Ainda não tem conta?
+        </span>
+      </div>
+      <div class="flex justify-center">
+        <a 
+          routerLink="/auth/register" 
+          class="block w-fit text-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-6 rounded-lg transition-all duration-200 md:w-1/2">
+          Criar conta
+        </a>
+      </div>
+    </section>
+    <div class="text-center text-sm text-gray-600 mt-6">
+      <p>
+        Ao entrar, você concorda com nossos 
+        <a routerLink="/termos" class="text-blue-600 hover:text-blue-700 underline">Termos de Uso</a>
+      </p>
+    </div>
+  </section>
+</main>
