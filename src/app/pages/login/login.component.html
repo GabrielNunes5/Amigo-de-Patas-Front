@@ -88,7 +88,7 @@
         }
         <button
           type="submit"
-          class="block w-1/2 m-auto bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
+          class="block w-fit m-auto bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
           [attr.aria-disabled]="isLoading() || loginForm.invalid"
           [disabled]="isLoading() || loginForm.invalid">
           @if (isLoading()) {
@@ -109,7 +109,7 @@
       <div class="flex justify-center">
         <a 
           routerLink="/auth/register" 
-          class="block w-fit text-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-6 rounded-lg transition-all duration-200 md:w-1/2">
+          class="block w-fit text-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-6 rounded-lg transition-all duration-200">
           Criar conta
         </a>
       </div>
