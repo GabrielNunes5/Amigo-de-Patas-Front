@@ -24,7 +24,7 @@ export class LoginComponent {
 
   readonly loginForm = this.fb.group({
     adopterEmail: ['', [Validators.required, Validators.email]],
-    adopterPassword: ['', [Validators.required, Validators.minLength(6)]],
+    adopterPassword: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   readonly isLoading = signal(false);
@@ -65,15 +65,33 @@ export class LoginComponent {
         return;
       }
       if (err.status === 400) {
-        const msg = (err.error && (err.error as any).message) ?? 'Requisição inválida.';
-        this.errorMessage.set(msg);
+        const backendError = err.error;
+        if (backendError?.mensagens && typeof backendError.mensagens === 'object') {
+          const mensagens = Object.values(backendError.mensagens);
+          this.errorMessage.set(mensagens.join('\n'));
+          return;
+        }
+
+        if (backendError?.error) {
+          this.errorMessage.set(backendError.error);
+          return;
+        }
+
+        if (backendError?.message) {
+          this.errorMessage.set(backendError.message);
+          return;
+        }
+
+        this.errorMessage.set('Requisição inválida. Verifique os dados.');
         return;
       }
       if (err.status === 0) {
         this.errorMessage.set('Não foi possível conectar ao servidor. Verifique sua conexão.');
         return;
       }
-      const fallback = (err.error && (err.error as any).message) ?? 'Erro inesperado. Tente novamente.';
+
+      const fallback =
+        (err.error && (err.error as any).message) ?? 'Erro inesperado. Tente novamente.';
       this.errorMessage.set(fallback);
       return;
     }
@@ -82,11 +100,4 @@ export class LoginComponent {
     console.error(err);
   }
 
-  get emailControl() {
-    return this.loginForm.controls.adopterEmail;
-  }
-
-  get passwordControl() {
-    return this.loginForm.controls.adopterPassword;
-  }
 }
