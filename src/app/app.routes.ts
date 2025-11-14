@@ -6,6 +6,7 @@ import { SobreComponent } from './pages/sobre/sobre.component';
 import { AnimalDetalhesComponent } from './pages/animal-detalhes/animal-detalhes.component';
 import { VoluntarioComponent } from './pages/voluntario/voluntario.component';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 export const routes: Routes = [
     {
@@ -36,6 +37,7 @@ export const routes: Routes = [
         path:"auth",
         children: [
             {path: 'login', component: LoginComponent},
+            {path: 'register', component: RegisterComponent}
         ]
     },
     {
