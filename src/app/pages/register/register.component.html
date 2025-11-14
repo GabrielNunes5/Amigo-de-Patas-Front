@@ -1,0 +1,313 @@
+<main class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center px-4 py-12">
+  <article class="w-full max-w-2xl">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-green-600 rounded-full mb-4 shadow-lg" aria-hidden="true">
+        <lucide-angular [img]="User" class="w-8 h-8 text-white" />
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Junte-se a nós!</h1>
+      <p class="text-gray-600">Crie sua conta e comece a transformar vidas</p>
+    </div>
+    <section class="bg-white rounded-2xl shadow-xl p-8" aria-labelledby="register-heading">
+      <form [formGroup]="registerForm" (ngSubmit)="submit()" [attr.aria-busy]="isLoading()">
+        <fieldset class="mb-8 border-0 p-0 m-0">
+          <legend class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span class="w-8 h-8 bg-gradient-to-r from-blue-600 to-green-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">1</span>
+            Informações Pessoais
+          </legend>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="md:col-span-2">
+              <label for="fullName" class="block text-sm font-semibold text-gray-700 mb-2">
+                Nome Completo
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                formControlName="adopterFullName"
+                class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                placeholder="Seu nome completo"
+                [attr.aria-invalid]="registerForm.controls.adopterFullName.invalid && registerForm.controls.adopterFullName.touched"
+                [attr.aria-describedby]="registerForm.controls.adopterFullName.invalid && registerForm.controls.adopterFullName.touched ? 'fullName-error' : null"
+                [class.border-red-500]="registerForm.controls.adopterFullName.invalid && registerForm.controls.adopterFullName.touched"
+                autocomplete="name"
+                required/>
+              @if (registerForm.controls.adopterFullName.touched && registerForm.controls.adopterFullName.invalid) {
+                <div id="fullName-error" class="mt-2 flex items-start gap-2" role="alert">
+                  <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <p class="text-red-600 text-sm">
+                    @if (registerForm.controls.adopterFullName.errors?.['required']) { 
+                      O nome completo é obrigatório. 
+                    }
+                  </p>
+                </div>
+              }
+            </div>
+            <div>
+              <label for="birthDate" class="block text-sm font-semibold text-gray-700 mb-2">
+                Data de Nascimento
+              </label>
+              <input
+                id="birthDate"
+                type="date"
+                formControlName="adopterBirthDate"
+                class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                [attr.aria-invalid]="registerForm.controls.adopterBirthDate.invalid && registerForm.controls.adopterBirthDate.touched"
+                [attr.aria-describedby]="registerForm.controls.adopterBirthDate.invalid && registerForm.controls.adopterBirthDate.touched ? 'birthDate-error' : null"
+                [class.border-red-500]="registerForm.controls.adopterBirthDate.invalid && registerForm.controls.adopterBirthDate.touched"
+                autocomplete="bday"
+                required/>
+              @if (registerForm.controls.adopterBirthDate.touched && registerForm.controls.adopterBirthDate.invalid) {
+                <div id="birthDate-error" class="mt-2 flex items-start gap-2" role="alert">
+                  <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <p class="text-red-600 text-sm">
+                    @if (registerForm.controls.adopterBirthDate.errors?.['required']) { 
+                      A data de nascimento é obrigatória. 
+                    }
+                    @if (registerForm.controls.adopterBirthDate.errors?.['pattern']) { 
+                      Data inválida. Use o formato AAAA-MM-DD. 
+                    }
+                  </p>
+                </div>
+              }
+            </div>
+            <div>
+              <label for="cpf" class="block text-sm font-semibold text-gray-700 mb-2">
+                CPF
+              </label>
+              <input
+                id="cpf"
+                type="text"
+                formControlName="adopterCPF"
+                class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                placeholder="Apenas números"
+                mask="000.000.000-00"
+                [attr.aria-invalid]="registerForm.controls.adopterCPF.invalid && registerForm.controls.adopterCPF.touched"
+                [attr.aria-describedby]="registerForm.controls.adopterCPF.invalid && registerForm.controls.adopterCPF.touched ? 'cpf-error' : null"
+                [class.border-red-500]="registerForm.controls.adopterCPF.invalid && registerForm.controls.adopterCPF.touched"
+                required/>
+              @if (registerForm.controls.adopterCPF.touched && registerForm.controls.adopterCPF.invalid) {
+                <div id="cpf-error" class="mt-2 flex items-start gap-2" role="alert">
+                  <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <p class="text-red-600 text-sm">
+                    @if (registerForm.controls.adopterCPF.errors?.['required']) { 
+                      O CPF é obrigatório. 
+                    }
+                    @if (registerForm.controls.adopterCPF.errors?.['pattern']) { 
+                      CPF deve conter 11 dígitos numéricos. 
+                    }
+                  </p>
+                </div>
+              }
+            </div>
+            <div>
+              <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                Telefone
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                formControlName="adopterPhone"
+                class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                placeholder="DDD + número"
+                mask="(00) 0000-0000||(00) 00000-0000"
+                [attr.aria-invalid]="registerForm.controls.adopterPhone.invalid && registerForm.controls.adopterPhone.touched"
+                [attr.aria-describedby]="registerForm.controls.adopterPhone.invalid && registerForm.controls.adopterPhone.touched ? 'phone-error' : null"
+                [class.border-red-500]="registerForm.controls.adopterPhone.invalid && registerForm.controls.adopterPhone.touched"
+                autocomplete="tel"
+                required/>
+              @if (registerForm.controls.adopterPhone.touched && registerForm.controls.adopterPhone.invalid) {
+                <div id="phone-error" class="mt-2 flex items-start gap-2" role="alert">
+                  <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <p class="text-red-600 text-sm">
+                    @if (registerForm.controls.adopterPhone.errors?.['required']) { 
+                      O telefone é obrigatório. 
+                    }
+                    @if (registerForm.controls.adopterPhone.errors?.['pattern']) { 
+                      Telefone deve ter 10 ou 11 dígitos. 
+                    }
+                  </p>
+                </div>
+              }
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                formControlName="adopterEmail"
+                class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                placeholder="seu@email.com"
+                [attr.aria-invalid]="registerForm.controls.adopterEmail.invalid && registerForm.controls.adopterEmail.touched"
+                [attr.aria-describedby]="registerForm.controls.adopterEmail.invalid && registerForm.controls.adopterEmail.touched ? 'email-error' : null"
+                [class.border-red-500]="registerForm.controls.adopterEmail.invalid && registerForm.controls.adopterEmail.touched"
+                autocomplete="email"
+                required/>
+              @if (registerForm.controls.adopterEmail.touched && registerForm.controls.adopterEmail.invalid) {
+                <div id="email-error" class="mt-2 flex items-start gap-2" role="alert">
+                  <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <p class="text-red-600 text-sm">
+                    @if (registerForm.controls.adopterEmail.errors?.['required']) { 
+                      O email é obrigatório. 
+                    }
+                    @if (registerForm.controls.adopterEmail.errors?.['email']) { 
+                      Insira um email válido. 
+                    }
+                  </p>
+                </div>
+              }
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="mb-8 border-0 p-0 m-0">
+          <legend class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span class="w-8 h-8 bg-gradient-to-r from-blue-600 to-green-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">2</span>
+            Segurança
+          </legend>
+          <div>
+            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+              Senha
+            </label>
+            <input
+              id="password"
+              type="password"
+              formControlName="adopterPassword"
+              class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+              placeholder="Mínimo 8 caracteres"
+              [attr.aria-invalid]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched"
+              [attr.aria-describedby]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched ? 'password-error' : null"
+              [class.border-red-500]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched"
+              autocomplete="new-password"
+              required/>
+            @if (registerForm.controls.adopterPassword.touched && registerForm.controls.adopterPassword.invalid) {
+              <div id="password-error" class="mt-2 flex items-start gap-2" role="alert">
+                <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                <p class="text-red-600 text-sm">
+                  @if (registerForm.controls.adopterPassword.errors?.['required']) { 
+                    A senha é obrigatória. 
+                  }
+                  @if (registerForm.controls.adopterPassword.errors?.['minlength']) { 
+                    A senha deve ter ao menos 8 caracteres. 
+                  }
+                  @if (registerForm.controls.adopterPassword.errors?.['pattern']) { 
+                    A senha deve conter ao menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.
+                  }
+                </p>
+              </div>
+            }
+          </div>
+        </fieldset>
+        <fieldset class="mb-8 border-0 p-0 m-0">
+          <legend class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span class="w-8 h-8 bg-gradient-to-r from-blue-600 to-green-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">3</span>
+            Informações de Residência
+          </legend>
+          <div class="space-y-6">
+            <div>
+              <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">
+                Endereço Completo
+              </label>
+              <input
+                id="address"
+                type="text"
+                formControlName="adopterAddress"
+                class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                placeholder="Rua, número, bairro, cidade - UF"
+                [attr.aria-invalid]="registerForm.controls.adopterAddress.invalid && registerForm.controls.adopterAddress.touched"
+                [attr.aria-describedby]="registerForm.controls.adopterAddress.invalid && registerForm.controls.adopterAddress.touched ? 'address-error' : null"
+                [class.border-red-500]="registerForm.controls.adopterAddress.invalid && registerForm.controls.adopterAddress.touched"
+                autocomplete="street-address"
+                required/>
+              @if (registerForm.controls.adopterAddress.touched && registerForm.controls.adopterAddress.invalid) {
+                <div id="address-error" class="mt-2 flex items-start gap-2" role="alert">
+                  <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <p class="text-red-600 text-sm">
+                    O endereço é obrigatório.
+                  </p>
+                </div>
+              }
+            </div>
+            <div>
+              <label for="houseType" class="block text-sm font-semibold text-gray-700 mb-2">
+                Tipo de Moradia
+              </label>
+              <select
+                id="houseType"
+                formControlName="typeHouse"
+                class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                [attr.aria-invalid]="registerForm.controls.typeHouse.invalid && registerForm.controls.typeHouse.touched"
+                [attr.aria-describedby]="registerForm.controls.typeHouse.invalid && registerForm.controls.typeHouse.touched ? 'houseType-error' : null"
+                [class.border-red-500]="registerForm.controls.typeHouse.invalid && registerForm.controls.typeHouse.touched"
+                required>
+                <option value="" disabled>Selecione o tipo de moradia</option>
+                <option value="Casa">Casa</option>
+                <option value="Apartamento">Apartamento</option>
+                <option value="Sitio/Chácara">Sítio/Chácara</option>
+              </select>
+              @if (registerForm.controls.typeHouse.touched && registerForm.controls.typeHouse.invalid) {
+                <div id="houseType-error" class="mt-2 flex items-start gap-2" role="alert">
+                  <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <p class="text-red-600 text-sm">
+                    Selecione o tipo de moradia.
+                  </p>
+                </div>
+              }
+            </div>
+            <div class="flex items-center gap-3">
+              <input
+                id="hasGarden"
+                type="checkbox"
+                formControlName="hasGarden"
+                class="w-5 h-5 border-2 border-gray-300 rounded focus:ring-2 focus:ring-blue-600/20 text-blue-600 transition-all duration-200"/>
+              <label for="hasGarden" class="text-sm font-medium text-gray-700 cursor-pointer">
+                Possuo jardim ou quintal
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        @if (errorMessage()) {
+          <aside role="alert" aria-live="polite" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+            <div class="flex items-start gap-3">
+              <lucide-angular [img]="CircleAlert" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+              <p class="text-red-800 text-sm font-medium">{{ errorMessage() }}</p>
+            </div>
+          </aside>
+        }
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3.5 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
+          [attr.aria-disabled]="isLoading() || registerForm.invalid"
+          [disabled]="isLoading() || registerForm.invalid">
+          @if (isLoading()) {
+            <span class="flex items-center justify-center gap-2">
+              <span class="inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
+              <span>Criando conta...</span>
+            </span>
+          } @else {
+            Criar Conta
+          }
+        </button>
+      </form>
+        <div class="relative my-4" >
+            <div class="relative flex justify-center text-sm">
+                <span class="px-4 text-gray-500 font-medium">
+                    Já tem uma conta?
+                </span>
+            </div>
+        </div>
+        <a 
+        routerLink="/auth/login" 
+        class="block m-auto cursor-pointer w-fit text-center border-2 border-blue-600 text-blue-600 hover:bg-blue-200 font-semibold py-3.5 px-6 rounded-lg transition-all duration-200">
+            Fazer login
+        </a>
+    </section>
+        <div class="text-center text-sm text-gray-600 mt-6">
+            <p>
+                Ao criar uma conta, você concorda com nossos 
+                <a routerLink="/termos" class="text-blue-600 hover:text-blue-700 underline">Termos de Uso</a>
+                e
+                <a routerLink="/privacidade" class="text-blue-600 hover:text-blue-700 underline">Política de Privacidade</a>
+            </p>
+        </div>
+    </article>
+</main>
