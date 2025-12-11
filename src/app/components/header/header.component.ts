@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
     { title: 'Sobre Nós', url: '/sobre', icon: Users },
     { title: 'Contato', url: '/contato', icon: Phone }
   ];
-
+  
   readonly router = inject(Router);
   public auth = inject(AuthService);
 
@@ -31,6 +31,13 @@ export class HeaderComponent implements OnInit {
     return user;
   });
 
+  isAdmin(): boolean {
+    return this.auth.isAdmin();
+  }
+
+  goToAdmin(){
+    this.router.navigate(['/admin']);
+  }
 
   toggleDropdown(): void {
     this.isDropdownOpen.update((v) => !v);

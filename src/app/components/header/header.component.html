@@ -58,6 +58,13 @@ class="backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-
                             <button (click)="logout()" class="cursor-pointer text-left ml-2 px-1 py-1 text-md font-semibold text-red-700 hover:text-red-800 transition">
                                 Sair
                             </button>
+                            @if(isAdmin()){
+                                <button 
+                                (click)="goToAdmin()" 
+                                class="cursor-pointer text-left font-semibold mt-1 px-1 py-1 text-md text-blue-700 hover:text-blue-800 transition">
+                                    Admin
+                                </button>
+                            }
                         </div>
                     }
                     } @else {
@@ -96,6 +103,11 @@ class="backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-
                         <button (click)="logout()" class="font-semibold bg-red-200 rounded mt-1 px-2 py-1 text-md text-red-700">
                             Sair
                         </button>
+                        @if(isAdmin()){
+                            <button (click)="goToAdmin()" class="font-semibold bg-blue-200 rounded mt-1 px-2 py-1 text-md text-blue-700">
+                                Admin
+                            </button>
+                        }
                     </div>
                 }@else {
                     <a class="py-2 px-2 gap-2 mx-auto w-fit flex font-medium items-center rounded-lg transition-all duration-200"
