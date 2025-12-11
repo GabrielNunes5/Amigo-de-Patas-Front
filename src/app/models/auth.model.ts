@@ -36,3 +36,11 @@ export interface AuthResponse {
     tokenType: string,
     expiresIn: string
 }
+
+export interface JwtPayload{
+    adopterId: string,
+    sub: string,
+    exp: number,
+    iat: number
+    scope: string[],
+}
