@@ -2,7 +2,8 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, switchMap, map } from 'rxjs';
-import { AdopterResponse, AuthResponse, LoginRequest, RegisterRequest } from '../../models/auth.model';
+import { AdopterResponse, AuthResponse, JwtPayload, LoginRequest, RegisterRequest } from '../../models/auth.model';
+import { jwtDecode } from "jwt-decode"
 
 interface ApiResponse<T> {
   data: T;
@@ -21,6 +22,15 @@ export class AuthService {
       return this.currentUser.asReadonly();
     }
 
+    private pickRole(token: string): string[] {
+      try{
+        const decoded = jwtDecode<JwtPayload>(token);
+        return decoded.scope || [];
+      }catch {
+        return []
+      }
+    }
+
     register(data: RegisterRequest): Observable<AuthResponse>{
       return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data)
       .pipe(tap((response) => {
@@ -33,6 +43,9 @@ export class AuthService {
         .pipe(
           tap((response) => {
             localStorage.setItem('accessToken', response.accessToken);
+
+            const roles = this.pickRole(response.accessToken);
+            localStorage.setItem('roles', JSON.stringify(roles))
           }),
           switchMap((authResponse) => 
             this.profile().pipe(
@@ -61,13 +74,18 @@ export class AuthService {
     }
 
     logout(): void {
-      localStorage.removeItem('accessToken');
+      localStorage.clear();
       this.currentUser.set(null);
   }
 
     isAuthenticated(): boolean {
       return !!localStorage.getItem('accessToken');
   }
+
+    isAdmin(): boolean {
+      const roles = JSON.parse(localStorage.getItem('roles') || '[]');
+      return roles.includes('ADMIN');
+    }
 
   loadUserProfile(): void {
     if (this.isAuthenticated()) {
