@@ -7,6 +7,8 @@ import { AnimalDetalhesComponent } from './pages/animal-detalhes/animal-detalhes
 import { VoluntarioComponent } from './pages/voluntario/voluntario.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import { adminGuard } from './_guard/admin-guard.guard';
 
 export const routes: Routes = [
     {
@@ -39,6 +41,11 @@ export const routes: Routes = [
             {path: 'login', component: LoginComponent},
             {path: 'register', component: RegisterComponent}
         ]
+    },
+    {
+        path:"admin",
+        canActivate: [adminGuard],
+        loadComponent: () => import('./pages/admin/admin.component').then(m => m.AdminComponent)
     },
     {
         path:"**",
