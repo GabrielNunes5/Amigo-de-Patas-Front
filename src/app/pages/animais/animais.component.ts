@@ -22,7 +22,6 @@ interface Filtros {
   styleUrl: './animais.component.css'
 })
 export class AnimaisComponent {
-  // Ícones do Lucide
   readonly Heart = Heart;
   readonly Filter = Filter;
   readonly Search = Search;
