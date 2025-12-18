@@ -41,8 +41,6 @@ export class AnimaisComponent {
 
   loading = computed(() => !this.animaisResponse());
 
-  animais = computed(() => this.animaisResponse());
-
   filtros = signal<Filtros>({
     busca: '',
     tipo: 'todos',
@@ -51,7 +49,7 @@ export class AnimaisComponent {
   });
 
   animaisFiltrados = computed(() => {
-    const animals = this.animais();
+    const animals = this.animaisDisponiveis();
     const filters = this.filtros();
 
     if (!animals.length) return [];
@@ -73,7 +71,11 @@ export class AnimaisComponent {
     });
   });
 
-  totalAnimais = computed(() => this.animais().length);
+  animaisDisponiveis = computed(() =>
+    this.animaisResponse().filter(a => !a.animalAdopted)
+  );
+
+  totalAnimais = computed(() => this.animaisDisponiveis().length);
   hasResultados = computed(() => this.animaisFiltrados().length > 0);
 
 
