@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AnimalService {
-  private apiUrl = `${environment.apiUrl}animals`;
+  private apiUrl = `${environment.apiUrl}animals?sort=createdAt,asc`;
   private http = inject(HttpClient);
 
   private animalsCache$?: Observable<Animal[]>;
@@ -32,6 +32,19 @@ export class AnimalService {
       this.animalCache.set(id, animal$);
     }
     return this.animalCache.get(id)!;
+  }
+
+
+  createAnimal(data: Partial<Animal>): Observable<Animal> {
+    return this.http.post<Animal>(this.apiUrl, data);
+  }
+
+  deleteAnimal(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  updateAnimal(id: string, data: Partial<Animal>): Observable<Animal> {
+    return this.http.put<Animal>(`${this.apiUrl}/${id}`, data);
   }
 
   enviarSolicitacaoAdocao(formData: AdocaoFormData): Observable<any> {
