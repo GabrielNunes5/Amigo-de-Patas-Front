@@ -6,7 +6,8 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AnimalService {
-  private apiUrl = `${environment.apiUrl}animals?sort=createdAt,asc`;
+  private apiUrl = `${environment.apiUrl}animals`;
+  private apiUrlSorter = `${environment.apiUrl}animals?sort=createdAt,asc`;
   private http = inject(HttpClient);
 
   private animalsCache$?: Observable<Animal[]>;
@@ -15,7 +16,7 @@ export class AnimalService {
 
   getAnimals(): Observable<Animal[]> {
     if (!this.animalsCache$) {
-      this.animalsCache$ = this.http.get<{ data: { content: Animal[] } }>(this.apiUrl).pipe(
+      this.animalsCache$ = this.http.get<{ data: { content: Animal[] } }>(this.apiUrlSorter).pipe(
         map(response => response.data.content),
         shareReplay({ bufferSize: 1, refCount: true })
       );
