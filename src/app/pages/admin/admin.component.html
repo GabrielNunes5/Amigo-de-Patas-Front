@@ -1,0 +1,10 @@
+<div class="p-4">
+  <h1 class="text-2xl font-bold mb-4">Administração de Animais</h1>
+  <app-admin-animais
+    [animais]="animais()"
+    [loading]="loading()"
+    [saving]="saving()"
+    (create)="createAnimal($event)"
+    (delete)="deleteAnimal($event)"
+    (update)="updateAnimal($event)"/>
+</div>
