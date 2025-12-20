@@ -1,0 +1,413 @@
+<main class="space-y-6 p-4">
+    <!-- Header e Filtros -->
+    <section class="border-none shadow-lg rounded-xl bg-white">
+        <div class="p-6">
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+                <div class="flex flex-col sm:flex-row gap-4 flex-1">
+                    <!-- Campo de Busca -->
+                    <div class="relative flex-1">
+                        <lucide-angular [img]="Search" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"/>
+                        <input
+                        type="search"
+                        placeholder="Buscar por nome..."
+                        [ngModel]="searchTerm()"
+                        (ngModelChange)="onSearchChange($event)"
+                        class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+
+                    <!-- Filtro por Tipo -->
+                    <div class="w-full sm:w-40">
+                        <select
+                        [ngModel]="filterTipo()"
+                        (ngModelChange)="onFilterTipoChange($event)"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="todos">Todos os tipos</option>
+                        <option value="Cachorro">🐕 Cachorros</option>
+                        <option value="Gato">🐱 Gatos</option>
+                      </select>
+                    </div>
+
+                    <!-- Filtro por Status -->
+                    <div class="w-full sm:w-40">
+                        <select
+                        [ngModel]="filterStatus()"
+                        (ngModelChange)="onFilterStatusChange($event)"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="todos">Todos</option>
+                        <option value="Disponível">Disponíveis</option>
+                        <option value="Adotado">Adotados</option>
+                      </select>
+                    </div>
+                </div>
+
+                <!-- Botão Novo Animal -->
+                <button 
+                type="button"
+                (click)="openNewForm()"
+                class="bg-gradient-to-r from-blue-600 to-green-600 text-white px-4 py-2 rounded-md flex items-center hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <lucide-angular [img]="Plus" class="w-4 h-4 mr-2"/>
+                Novo Animal
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabela de Animais -->
+    <section class="border-none shadow-lg rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+              <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Foto
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Nome
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tipo
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Idade
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Sexo
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Porte
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Ações
+                  </th>
+              </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-300">
+              <!-- Estado de Carregamento -->
+              @if (loading()) {
+                  @for (item of [1,2,3,4,5]; track $index) {
+                  <tr>
+                      <td colspan="8" class="px-6 py-4">
+                        <div class="h-12 bg-gray-100 animate-pulse rounded" >
+                            <span>Carregando...</span>
+                        </div>
+                      </td>
+                  </tr>
+                  }
+              }
+              <!-- Estado Vazio -->
+              @else if (filteredAnimais().length === 0) {
+                  <tr>
+                    <td colspan="8" class="px-6 py-8 text-center text-gray-500">
+                        <div>
+                          <lucide-angular [img]="Heart" class="w-12 h-12 mx-auto mb-2 text-gray-300"/>
+                          <p>Nenhum animal encontrado</p>
+                        </div>
+                    </td>
+                  </tr>
+              }
+              <!-- Lista de Animais -->
+              @else {
+                  @for (animal of filteredAnimais(); track animal.animalId) {
+                  <tr class="hover:bg-gray-300 transition-colors">
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <img 
+                        [src]="animal.animalImageUrl" 
+                        [alt]="'Foto de ' + animal.animalName"
+                        class="w-14 h-14 rounded-lg object-cover"
+                        loading="lazy"/>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="font-medium text-gray-900">
+                          {{ animal.animalName }}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border border-gray-300 bg-gray-50">
+                            <span>
+                              {{ animal.animalSpecies === 'Cachorro' ? '🐕' : '🐱' }}
+                            </span>
+                            <span class="ml-1">
+                              {{ animal.animalSpecies }}
+                            </span>
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                        {{ animal.animalAge }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                        {{ animal.animalSex }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                        {{ animal.animalSize }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                        [class]="getStatusColor(animal.animalAdopted) + ' px-2.5 py-0.5 rounded-full text-xs font-medium'">
+                            {{ animal.animalAdopted ? 'Adotado' : "Disponível" }}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <div class="flex justify-end gap-2">
+                            <button 
+                            type="button"
+                            (click)="openEditForm(animal)"
+                            class="p-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:ring-2 focus:outline-none focus:ring-blue-500 transition-colors"
+                            title="Editar">
+                            <lucide-angular [img]="Pencil" class="w-4 h-4"/>
+                            </button>
+                            <button 
+                            type="button"
+                            (click)="openDeleteDialog(animal)"
+                            class="p-2 border border-gray-300 rounded-md text-red-600 hover:text-red-700 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
+                            title="Excluir">
+                            <lucide-angular [img]="Trash" class="w-4 h-4"/>
+                            </button>
+                        </div>
+                      </td>
+                  </tr>
+                  }
+              }
+              </tbody>
+          </table>
+        </div>
+    </section>
+</main>
+
+<!-- Modal de Formulário -->
+@if (isFormOpen()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" (click)="!saving() && closeForm()">
+    <!-- Modal Content -->
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-2">
+            <lucide-angular [img]="selectedAnimal() ? Pencil : Plus" class="w-6 h-6 text-gray-600"/>
+            <h2 class="text-lg font-medium text-gray-900">
+              {{ selectedAnimal() ? 'Editar Animal' : 'Novo Animal' }}
+            </h2>
+          </div>
+          <button 
+            type="button" 
+            (click)="!saving() && closeForm()"
+            class="text-gray-400 hover:text-gray-600">
+            <lucide-angular [img]="X" class="w-6 h-6"/>
+          </button>
+        </div>
+
+        <form [formGroup]="animalForm" (ngSubmit)="handleSubmit()" class="space-y-6" novalidate>
+          <div class="grid md:grid-cols-2 gap-4">
+            <!-- Nome -->
+            <div>
+              <label for="nome" class="text-sm font-medium mb-1 block text-gray-700">
+                Nome <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="nome"
+                type="text"
+                formControlName="animalName"
+                placeholder="Nome do animal"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+              @if (isFieldInvalid('animalName')) {
+                <span class="text-red-500 text-sm">{{ getFieldError('animalName') }}</span>
+              }
+            </div>
+
+            <!-- Tipo -->
+            <div>
+              <label for="tipo" class="text-sm font-medium mb-1 block text-gray-700">
+                Tipo <span class="text-red-500">*</span>
+              </label>
+              <select 
+                id="tipo"
+                formControlName="animalSpecies"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Cachorro">🐕 Cachorro</option>
+                <option value="Gato">🐱 Gato</option>
+              </select>
+            </div>
+
+            <!-- Idade -->
+            <div>
+              <label for="idade" class="text-sm font-medium mb-1 block text-gray-700">
+                Idade <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="idade"
+                type="text"
+                formControlName="animalAge"
+                placeholder="Ex: 2 anos"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            </div>
+
+            <!-- Sexo -->
+            <div>
+              <label for="sexo" class="text-sm font-medium mb-1 block text-gray-700">
+                Sexo <span class="text-red-500">*</span>
+              </label>
+              <select 
+                id="sexo"
+                formControlName="animalSex"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Macho">Macho</option>
+                <option value="Fêmea">Fêmea</option>
+              </select>
+            </div>
+
+            <!-- Peso -->
+            <div>
+              <label for="peso" class="text-sm font-medium mb-1 block text-gray-700">
+                Peso (kg) <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="peso"
+                type="number"
+                formControlName="animalWeight"
+                placeholder="Ex: 12.5"
+                step="0.1"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            </div>
+
+            <!-- Porte -->
+            <div>
+              <label for="porte" class="text-sm font-medium mb-1 block text-gray-700">
+                Porte <span class="text-red-500">*</span>
+              </label>
+              <select 
+                id="porte"
+                formControlName="animalSize"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Pequeno">Pequeno</option>
+                <option value="Médio">Médio</option>
+                <option value="Grande">Grande</option>
+              </select>
+            </div>
+
+            <!-- Cor -->
+            <div>
+              <label for="cor" class="text-sm font-medium mb-1 block text-gray-700">Cor</label>
+              <input
+                id="cor"
+                type="text"
+                formControlName="animalColor"
+                placeholder="Ex: Marrom"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            </div>
+
+            <!-- Status -->
+            <div>
+              <label for="status" class="text-sm font-medium mb-1 block text-gray-700">Status</label>
+              <select 
+                id="status"
+                formControlName="animalAdopted"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option [ngValue]="false">Disponível</option>
+                <option [ngValue]="true">Adotado</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- URL da Foto -->
+          <div>
+            <label for="foto-url" class="text-sm font-medium mb-1 block text-gray-700">
+              URL da Foto <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="foto-url"
+              type="url"
+              formControlName="animalImageUrl"
+              placeholder="https://exemplo.com/foto.jpg"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          </div>
+
+          <!-- Vacinas -->
+          <div>
+            <label for="vacinas" class="text-sm font-medium mb-1 block text-gray-700">Vacinas</label>
+            <input
+              id="vacinas"
+              type="text"
+              formControlName="animalVaccines"
+              placeholder="Ex: Antirrábica, V10"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          </div>
+
+          <!-- Necessidades Especiais -->
+          <div>
+            <label for="necessidades" class="text-sm font-medium mb-1 block text-gray-700">Condições Especiais</label>
+            <textarea
+              id="necessidades"
+              formControlName="animalSpecialConditions"
+              placeholder="Algum cuidado especial?"
+              rows="2"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+          </div>
+
+          <!-- Checkbox Castrado -->
+          <div class="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="castrado"
+              formControlName="animalNeutered"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"/>
+            <label for="castrado" class="text-sm font-medium text-gray-700">Castrado</label>
+          </div>
+
+          <!-- Botões -->
+          <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+            <button 
+              type="button" 
+              (click)="!saving() && closeForm()"
+              class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+              Cancelar
+            </button>
+            <button 
+              type="submit" 
+              [disabled]="animalForm.invalid || saving()"
+              class="bg-gradient-to-r from-blue-600 to-green-600 text-white px-4 py-2 rounded-md hover:opacity-90 disabled:opacity-50 transition-opacity">
+              {{ saving() ? "Salvando..." : (selectedAnimal() ? "Atualizar" : "Criar") }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Dialog de Exclusão -->
+@if (isDeleteOpen()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" (click)="closeDeleteDialog()">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md" (click)="$event.stopPropagation()">
+      <div class="p-6">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-full bg-red-00 flex items-center justify-center">
+            <lucide-angular [img]="TriangleAlert" class="w-8 h-8 text-red-600"/>
+          </div>
+          <div class="flex-1">
+            <h2 class="text-lg font-medium text-gray-900 mb-2">Confirmar Exclusão</h2>
+            <p class="text-sm text-gray-500">
+              Tem certeza que deseja excluir o animal <strong>"{{ selectedAnimal()?.animalName }}"</strong>?
+              Esta ação não pode ser desfeita.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-50 px-6 py-3 flex justify-end gap-3">
+        <button 
+          type="button" 
+          (click)="closeDeleteDialog()"
+          class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+          Cancelar
+        </button>
+        <button 
+          type="button" 
+          (click)="handleDelete()"
+          class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+          Excluir
+        </button>
+      </div>
+    </div>
+  </div>
+}
