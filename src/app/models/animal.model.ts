@@ -15,9 +15,10 @@ export interface Animal {
 }
 
 export interface AdocaoFormData {
-    animal_id: string;
-    animal_name: string;
-    experiencia_animais: string;
-    outros_animais: string;
-    mensagem: string;
+    animalId: string;
+    animalName: string;
+    adopterName: string;
+    experience?: string;
+    otherAnimals?: string;
+    message?: string;
 }
