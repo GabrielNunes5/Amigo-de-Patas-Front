@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable, shareReplay } from "rxjs";
-import { Animal, AdocaoFormData } from "../../models/animal.model";
+import { Animal } from "../../models/animal.model";
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -48,7 +48,4 @@ export class AnimalService {
     return this.http.put<Animal>(`${this.apiUrl}/${id}`, data);
   }
 
-  enviarSolicitacaoAdocao(formData: AdocaoFormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/adocao`, formData);
-  }
 }
