@@ -7,4 +7,10 @@
     (create)="createAnimal($event)"
     (delete)="deleteAnimal($event)"
     (update)="updateAnimal($event)"/>
+
+  <h1 class="text-2xl font-bold my-4">Formulários de Adoção</h1>
+  <app-admin-adoption-form
+    [adoptionForm]="adoptionForm()"
+    [loading]="loading()"
+  />
 </div>
