@@ -1,7 +1,7 @@
 import { Component, HostListener, inject, signal, computed, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Heart, Home, Menu, PawPrint, Phone, Users, X, LogIn, LogOut } from 'lucide-angular';
+import { LucideAngularModule, Heart, Home, Menu, PawPrint, Phone, Users, X, LogIn, LogOut, ShieldUser } from 'lucide-angular';
 import { AuthService } from '../../service/auth/auth.service';
 import { filter } from 'rxjs';
 
@@ -97,4 +97,5 @@ export class HeaderComponent implements OnInit {
   readonly X = X;
   readonly LogIn = LogIn;
   readonly LogOut = LogOut;
+  readonly ShieldUser = ShieldUser;
 }

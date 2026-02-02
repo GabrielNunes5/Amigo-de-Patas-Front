@@ -46,7 +46,7 @@ class="backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-
                             </span>
                         </div>
                     @if (isDropdownOpen()) {
-                        <div class="absolute right-0 mt-2 min-w-64 bg-gray-200 border border-gray-400 rounded-lg shadow-lg py-2 z-50">
+                        <div class="flex-col absolute right-0 mt-2 min-w-64 bg-gray-200 border border-gray-400 rounded-lg shadow-lg py-2 z-50">
                             <div class="m-2 px-1 border-b border-gray-100">
                                 <p class="font-semibold text-gray-800 text-sm">
                                     {{ currentUser()?.adopterFullName }}
@@ -55,16 +55,24 @@ class="backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-
                                     {{ currentUser()?.adopterEmail }}
                                 </p>
                             </div>
-                            <button (click)="logout()" class="cursor-pointer text-left ml-2 px-1 py-1 text-md font-semibold text-red-700 hover:text-red-800 transition">
-                                Sair
-                            </button>
-                            @if(isAdmin()){
-                                <button 
-                                (click)="goToAdmin()" 
-                                class="cursor-pointer text-left font-semibold mt-1 px-1 py-1 text-md text-blue-700 hover:text-blue-800 transition">
-                                    Admin
-                                </button>
-                            }
+                            <div class="flex m-2 px-1">
+                                <div class="flex items-center p-1">
+                                    <lucide-angular [img]="LogOut" class="w-5 h-5 text-red-700"/>
+                                    <button (click)="logout()" class="cursor-pointer text-left ml-1 px-1 py-1 text-md font-semibold text-red-700 hover:text-red-800 transition">
+                                        Sair
+                                    </button>
+                                </div>
+                                @if(isAdmin()){
+                                    <div class="flex items-center p-1">
+                                        <lucide-angular [img]="ShieldUser" class="w-5 h-5 text-blue-700"/>
+                                        <button 
+                                        (click)="goToAdmin()" 
+                                        class="cursor-pointer text-left font-semibold mt-1 px-1 py-1 text-md text-blue-700 hover:text-blue-800 transition">
+                                            Admin
+                                        </button>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     }
                     } @else {
@@ -100,13 +108,19 @@ class="backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-
                         <p class="font-semibold text-gray-800">
                             {{ currentUser()?.adopterFullName }}
                         </p>
-                        <button (click)="logout()" class="font-semibold bg-red-200 rounded mt-1 px-2 py-1 text-md text-red-700">
-                            Sair
-                        </button>
-                        @if(isAdmin()){
-                            <button (click)="goToAdmin()" class="font-semibold bg-blue-200 rounded mt-1 px-2 py-1 text-md text-blue-700">
-                                Admin
+                        <div class="flex items-center gap-1 bg-red-200 rounded mt-1 px-2 py-1">
+                            <lucide-angular [img]="LogOut" class="w-5 h-5 text-red-700"/>
+                            <button (click)="logout()" class="font-semibold  text-md text-red-700">
+                                Sair
                             </button>
+                        </div>
+                        @if(isAdmin()){
+                            <div class="flex items-center gap-1 bg-blue-200 rounded mt-1 px-2 py-1">
+                                <lucide-angular [img]="ShieldUser" class="w-5 h-5 text-blue-700"/>
+                                <button (click)="goToAdmin()" class="font-semibold  text-md text-blue-700">
+                                    Admin
+                                </button>
+                            </div>
                         }
                     </div>
                 }@else {
