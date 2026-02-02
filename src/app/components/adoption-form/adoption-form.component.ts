@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, EffectRef, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CheckCircle, LucideAngularModule, MessageSquare } from 'lucide-angular';
 import { Animal, AdocaoFormData } from '../../models/animal.model';
-import { AnimalService } from '../../service/animal/animal.service';
 import { AuthService } from '../../service/auth/auth.service';
 import { RouterLink } from '@angular/router';
+import { AdoptionFormService } from '../../service/adoptionForm/adoptionForm.service';
 
 @Component({
   selector: 'app-adoption-form',
@@ -18,7 +18,7 @@ export class AdoptionFormComponent {
   readonly MessageSquare = MessageSquare;
 
   private readonly fb = inject(FormBuilder);
-  private readonly animalService = inject(AnimalService);
+  private readonly adoptionService = inject(AdoptionFormService);
   private readonly auth = inject(AuthService);
 
   animal = input.required<Animal>();
@@ -53,29 +53,28 @@ export class AdoptionFormComponent {
     this.formCancelled.emit();
   }
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     if (this.adoptionForm.invalid) return;
 
     this.submitting.set(true);
 
-    try {
-      const formData: AdocaoFormData = {
-        animal_id: this.animal().animalId,
-        animal_name: this.animal().animalName,
-        experiencia_animais: this.adoptionForm.value.experiencia_animais!,
-        outros_animais: this.adoptionForm.value.outros_animais!,
-        mensagem: this.adoptionForm.value.mensagem!,
-      };
+    const payload: Partial<AdocaoFormData> = {
+      animalId: this.animal().animalId,
+      experience: this.adoptionForm.value.experiencia_animais || undefined,
+      otherAnimals: this.adoptionForm.value.outros_animais || undefined,
+      message: this.adoptionForm.value.mensagem || undefined,
+    };
 
-      await this.animalService.enviarSolicitacaoAdocao(formData);
-
-      this.submitted.set(true);
-      this.formSubmitted.emit();
-    } catch (error) {
-      console.error('Erro ao enviar solicitação:', error);
-      // TODO: exibir toast ou mensagem de erro amigável
-    } finally {
-      this.submitting.set(false);
-    }
+    this.adoptionService.createAdoptionForm(payload).subscribe({
+      next: () => {
+        this.submitted.set(true);
+        this.formSubmitted.emit();
+        this.submitting.set(false);
+      },
+      error: err => {
+        console.error('Erro ao enviar solicitação:', err);
+        this.submitting.set(false);
+      }
+    });
   }
 }
