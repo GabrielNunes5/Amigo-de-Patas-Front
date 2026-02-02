@@ -9,7 +9,7 @@
     "test": "ng test",
     "build-gh-pages": "ng build --base-href='/Amigo-de-Patas-Front/'",
     "ghpages": "angular-cli-ghpages --dir=dist/amigo-de-patas",
-    "deploy-gh": "npm run build-gh-pages & npm run ghpages"
+    "deploy-gh": "npm run build-gh-pages && npm run ghpages"
   },
   "private": true,
   "dependencies": {
