@@ -1,8 +1,9 @@
-export interface VoluntaryRequest {
+export interface Voluntary {
+    voluntaryId: string;
     voluntaryName: string;
     voluntaryEmail: string;
     voluntaryPhone: string;
-    voluntaryBirthDate: Date;
+    voluntaryBirthDate: string;
     voluntaryOccupation: string;
     voluntaryInterestArea: string;
     voluntaryAvailability: string;
@@ -12,4 +13,4 @@ export interface VoluntaryRequest {
     hasRescueExperience: boolean;
     canWorkOnWeekends: boolean;
     voluntarySpecialSkills: string;
-    }
+}
