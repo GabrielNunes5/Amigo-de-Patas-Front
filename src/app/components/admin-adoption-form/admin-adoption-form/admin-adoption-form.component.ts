@@ -19,7 +19,7 @@ export class AdminAdoptionFormComponent {
   readonly HeartIcon = Heart;
   readonly UserIcon = User;
   readonly PawPrintIcon = PawPrint;
-  readonly EyeIcon = Eye;
+  readonly Eye = Eye;
   readonly Trash2Icon = Trash2;
   readonly HomeIcon = Home;
 

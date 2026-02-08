@@ -18,13 +18,13 @@
         <div class="p-0">
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead>
+              <thead class="bg-gray-50">
                 <tr class="bg-gray-50 border-b">
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interessado</th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Animal</th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Experiência</th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Outros Animais</th>
-                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interessado</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Animal</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Experiência</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Outros Animais</th>
+                  <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
@@ -47,47 +47,46 @@
                     </td>
                   </tr>
                 }
-                @for (AdoptionselectedAdoptions of filteredAdoptions(); track AdoptionselectedAdoptions.animalId + AdoptionselectedAdoptions.adopterName) {
-                  <tr class="hover:bg-gray-50 transition-colors">
-                    <th scope="row" class="px-6 py-4 whitespace-nowrap">
+                @for (adoptions of filteredAdoptions(); track adoptions.animalId) {
+                  <tr class="hover:bg-gray-300 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
                       <div class="flex items-center gap-2">
                         <lucide-icon [img]="UserIcon" class="w-4 h-4 text-gray-400"/>
-                        <span class="font-medium">{{ AdoptionselectedAdoptions.adopterName }}</span>
+                        <span class="font-medium text-gray-900">
+                          {{ adoptions.adopterName }}
+                        </span>
                       </div>
-                    </th>
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="flex items-center gap-2">
                         <lucide-icon [img]="PawPrintIcon" class="w-4 h-4 text-blue-500"/>
-                        <span>{{ AdoptionselectedAdoptions.animalName }}</span>
+                        <span class="font-medium text-gray-900">
+                          {{ adoptions.animalName }}
+                        </span>
                       </div>
                     </td>
-                    <td class="px-6 py-4">
-                      <div class="text-sm text-gray-600 max-w-xs truncate">
-                        {{ AdoptionselectedAdoptions.experience || 'Não informado' }}
-                      </div>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                        {{ adoptions.experience || 'Não informado' }}
                     </td>
-                    <td class="px-6 py-4">
-                      <div class="text-sm text-gray-600 max-w-xs truncate">
-                        {{ AdoptionselectedAdoptions.otherAnimals || 'Não informado' }}
-                      </div>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                        {{ adoptions.otherAnimals || 'Não informado' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right">
                       <nav>
-                        <ul class="flex justify-end gap-2 list-none">
+                        <ul class="flex justify-center gap-2 list-none">
                           <li>
                             <button 
-                              type="button"
-                              (click)="openView(AdoptionselectedAdoptions)"
-                              class="p-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-                              <lucide-icon [img]="EyeIcon" class="w-4 h-4"/>
+                            type="button"
+                            (click)="openView(adoptions)"
+                            class="p-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                              <lucide-icon [img]="Eye" class="w-4 h-4"/>
                             </button>
                           </li>
                           <li>
                             <button 
-                              type="button"
-                              (click)="openDeleteDialog(AdoptionselectedAdoptions)"
-                              class="p-2 border border-gray-300 rounded-md text-red-500 hover:bg-red-50 transition-colors"
-                            >
+                            type="button"
+                            (click)="openDeleteDialog(adoptions)"
+                            class="p-2 border border-gray-300 rounded-md text-red-500 hover:bg-red-50 transition-colors">
                               <lucide-icon [img]="Trash2Icon" class="w-4 h-4"/>
                             </button>
                           </li>
@@ -101,119 +100,105 @@
           </div>
         </div>
       </section>
-
-      <!-- Modal de Visualização -->
-      @if (isViewOpen()) {
-        <aside 
-          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          (click)="closeView()"
-          role="dialog"
-          ledby="view-dialog-title"
-        >
-          <article 
-            class="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto"
-            (click)="$event.stopPropagation()"
-          >
-            <header class="p-6 border-b">
-              <h2 id="view-dialog-title" class="text-xl font-semibold flex items-center gap-2">
-                <lucide-icon [img]="HeartIcon" class="w-5 h-5 text-red-500"/>
-                Detalhes da Solicitação
-              </h2>
-            </header>
-            
-            @if (selectedAdoptions()) {
-              <div class="p-6 space-y-6">
-                <dl class="grid grid-cols-2 gap-4">
-                  <div>
-                    <dt class="text-sm text-gray-500">Nome do Interessado</dt>
-                    <dd class="font-medium">{{ selectedAdoptions()?.adopterName }}</dd>
-                  </div>
-                  <div>
-                    <dt class="text-sm text-gray-500">Animal de Interesse</dt>
-                    <dd class="font-medium flex items-center gap-1">
-                      <lucide-icon [img]="PawPrintIcon" class="w-4 h-4 text-blue-500"/>
-                      {{ selectedAdoptions()?.animalName }}
-                    </dd>
-                  </div>
-                </dl>
-
-                @if (selectedAdoptions()?.experience) {
-                  <section ledby="experience-heading">
-                    <h3 id="experience-heading" class="text-sm text-gray-500 mb-1">Experiência com Animais</h3>
-                    <p class="text-gray-700 bg-gray-50 p-3 rounded-lg">{{ selectedAdoptions()?.experience }}</p>
-                  </section>
-                }
-
-                @if (selectedAdoptions()?.otherAnimals) {
-                  <section ledby="other-animals-heading">
-                    <h3 id="other-animals-heading" class="text-sm text-gray-500 mb-1">Outros Animais em Casa</h3>
-                    <p class="text-gray-700 bg-gray-50 p-3 rounded-lg">{{ selectedAdoptions()?.otherAnimals }}</p>
-                  </section>
-                }
-
-                @if (selectedAdoptions()?.message) {
-                  <section ledby="message-heading">
-                    <h3 id="message-heading" class="text-sm text-gray-500 mb-1">Mensagem</h3>
-                    <p class="text-gray-700 bg-gray-50 p-3 rounded-lg">{{ selectedAdoptions()?.message }}</p>
-                  </section>
-                }
-              </div>
-            }
-
-            <footer class="p-6 border-t flex justify-end">
-              <button 
-                type="button"
-                (click)="closeView()"
-                class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                Fechar
-              </button>
-            </footer>
-          </article>
-        </aside>
-      }
-
-      <!-- Dialog de Confirmação de Exclusão -->
-      @if (isDeleteOpen()) {
-        <aside 
-          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          (click)="closeDeleteDialog()"
-          role="alertdialog"
-          -modal="true"
-          ledby="delete-dialog-title"
-          -describedby="delete-dialog-description"
-        >
-          <article 
-            class="bg-white rounded-lg max-w-md w-full"
-            (click)="$event.stopPropagation()"
-          >
-            <header class="p-6">
-              <h2 id="delete-dialog-title" class="text-xl font-semibold mb-2">Confirmar Exclusão</h2>
-              <p id="delete-dialog-description" class="text-gray-600">
-                Tem certeza que deseja excluir a solicitação de 
-                <strong>{{ selectedAdoptions()?.adopterName }}</strong> 
-                para o animal 
-                <strong>{{ selectedAdoptions()?.animalName }}</strong>? 
-                Esta ação não pode ser desfeita.
-              </p>
-            </header>
-            <footer class="p-6 border-t flex justify-end gap-2">
-              <button 
-                type="button"
-                (click)="closeDeleteDialog()"
-                class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                Cancelar
-              </button>
-              <button 
-                type="button"
-                (click)="handleDelete()"
-                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-              >
-                Excluir
-              </button>
-            </footer>
-          </article>
-        </aside>
-      }
     </main>
+
+@if (isViewOpen()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" (click)="closeView()">
+    <div class="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="p-6 border-b">
+        <h2 class="text-xl font-semibold flex items-center gap-2">
+          <lucide-icon [img]="HeartIcon" class="w-5 h-5 text-red-500"/>
+          Detalhes da Solicitação
+        </h2>
+      </div>
+      <div class="p-6 space-y-6">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <dt class="text-sm text-gray-500">Nome do Interessado</dt>
+            <dd class="font-medium">
+              {{ selectedAdoptions()?.adopterName }}
+            </dd>
+          </div>
+          <div>
+            <dt class="text-sm text-gray-500">Animal de Interesse</dt>
+            <dd class="font-medium flex items-center gap-1">
+              {{ selectedAdoptions()?.animalName }}
+            </dd>
+          </div>
+        </div>
+
+        @if (selectedAdoptions()?.experience) {
+          <section>
+            <h3 class="text-sm text-gray-500 mb-1">
+              Experiência com Animais
+            </h3>
+            <p class="text-gray-700 bg-gray-50 p-3 rounded-lg">
+              {{ selectedAdoptions()?.experience }}
+            </p>
+          </section>
+        }
+
+        @if (selectedAdoptions()?.otherAnimals) {
+          <section>
+            <h3 class="text-sm text-gray-500 mb-1">
+              Outros Animais em Casa
+            </h3>
+            <p class="text-gray-700 bg-gray-50 p-3 rounded-lg">
+              {{ selectedAdoptions()?.otherAnimals }}
+            </p>
+          </section>
+        }
+
+        @if (selectedAdoptions()?.message) {
+          <section>
+            <h3 class="text-sm text-gray-500 mb-1">Mensagem</h3>
+            <p class="text-gray-700 bg-gray-50 p-3 rounded-lg">
+              {{ selectedAdoptions()?.message }}
+            </p>
+          </section>
+        }
+      </div>
+
+      <div class="p-2 border-t flex justify-end">
+        <button 
+        type="button" 
+        (click)="closeView()" 
+        class="px-4 py-2 cursor-pointer border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
+@if (isDeleteOpen()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" (click)="closeDeleteDialog()">
+      <div class="bg-white rounded-lg max-w-md w-full"
+      (click)="$event.stopPropagation()">
+        <div class="p-6">
+          <h2 class="text-xl font-semibold mb-2">Confirmar Exclusão</h2>
+          <p class="text-gray-600">
+            Tem certeza que deseja excluir a solicitação de 
+            <strong>{{ selectedAdoptions()?.adopterName }}</strong> 
+            para o animal 
+            <strong>{{ selectedAdoptions()?.animalName }}</strong>? 
+            Esta ação não pode ser desfeita.
+          </p>
+        </div>
+        <div class="p-6 border-t flex justify-end gap-2">
+          <button 
+          type="button"
+          (click)="closeDeleteDialog()"
+          class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+            Cancelar
+          </button>
+          <button 
+          type="button"
+          (click)="handleDelete()"
+          class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+            Excluir
+          </button>
+        </div>
+      </div>
+    </div>
+  }
