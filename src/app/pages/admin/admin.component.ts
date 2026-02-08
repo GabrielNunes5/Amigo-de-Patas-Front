@@ -1,31 +1,57 @@
-import { Component, signal, inject, effect, afterNextRender, DestroyRef, OnInit } from '@angular/core';
+import { Component, signal, inject, effect, afterNextRender, DestroyRef, OnInit, computed } from '@angular/core';
 import { AnimalService } from '../../service/animal/animal.service';
 import { AdocaoFormData, Animal } from '../../models/animal.model';
-import { LucideAngularModule } from 'lucide-angular';
+import { AlertCircle, CheckCircle, Clock, Heart, LayoutDashboard, LucideAngularModule, PawPrint, Users } from 'lucide-angular';
 import { AdminAnimaisComponent } from '../../components/admin-animais/admin-animais.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AdminAdoptionFormComponent } from "../../components/admin-adoption-form/admin-adoption-form/admin-adoption-form.component";
 import { AdoptionFormService } from '../../service/adoptionForm/adoptionForm.service';
+import { Voluntary } from '../../models/voluntary.model';
+import { VoluntarioService } from '../../service/voluntario/voluntario.service';
+import { AdminVoluntaryComponent } from '../../components/admin-voluntary/admin-voluntary/admin-voluntary.component';
+import { CommonModule } from '@angular/common';
+
+type AdminTab = 'dashboard' | 'animais' | 'adocoes' | 'voluntarios';
 
 @Component({
   selector: 'app-admin',
-  imports: [LucideAngularModule, AdminAnimaisComponent, AdminAdoptionFormComponent],
+  imports: [CommonModule,LucideAngularModule, AdminAnimaisComponent, AdminAdoptionFormComponent, AdminVoluntaryComponent],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
 export class AdminComponent implements OnInit {
+  readonly PawPrint = PawPrint;
+  readonly Heart = Heart;
+  readonly Users = Users;
+  readonly Clock = Clock;
+  readonly CheckCircle = CheckCircle;
+  readonly AlertCircle = AlertCircle;
+  readonly LayoutDashboard = LayoutDashboard;
+  
   private readonly animalService = inject(AnimalService);
   private readonly adoptionFormService = inject(AdoptionFormService);
+  private readonly voluntaryService = inject(VoluntarioService);
   private readonly destroyRef = inject(DestroyRef);
 
+  setTab(tab: AdminTab): void {
+    this.activeTab.set(tab);
+  }
+
+  activeTab = signal<AdminTab>('dashboard');
   loading = signal(false);
   saving = signal(false);
   animais = signal<Animal[]>([]);
   adoptionForm = signal<AdocaoFormData[]>([]);
+  voluntaries = signal<Voluntary[]>([]);
+
+  animaisAdotados = computed(() =>
+    this.animais().filter(a => a.animalAdopted)
+  );
 
   ngOnInit(): void {
     this.loadAnimais();
     this.loadAdoptionForm();
+    this.loadVoluntaries();
   }
 
   loadAnimais(): void {
@@ -109,5 +135,20 @@ export class AdminComponent implements OnInit {
         },
         complete: () => this.loading.set(false),
       });
+  }
+
+  loadVoluntaries(): void {
+    this.loading.set(true);
+
+    this.voluntaryService.getVoluntaries()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: list => this.voluntaries.set(list),
+        error: err => {
+          console.error('Erro ao carregar voluntários', err);
+          this.voluntaries.set([]);
+        },
+        complete: () => this.loading.set(false),
+      })
   }
 }
