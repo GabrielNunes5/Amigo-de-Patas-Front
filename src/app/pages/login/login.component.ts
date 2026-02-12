@@ -6,7 +6,7 @@ import { AuthService } from '../../service/auth/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize, switchMap, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CircleAlert, LucideAngularModule, User } from 'lucide-angular';
+import { CircleAlert, Eye, EyeOff, LucideAngularModule, User } from 'lucide-angular';
 
 @Component({
   selector: 'app-login',
@@ -27,11 +27,18 @@ export class LoginComponent {
     adopterPassword: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  readonly isLoading = signal(false);
-  readonly errorMessage = signal<string | null>(null);
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+  passwordVisible = signal(false);
 
   readonly User = User;
   readonly CircleAlert = CircleAlert;
+  readonly Eye = Eye;
+  readonly EyeOff = EyeOff;
+
+  togglePassword(): void {
+    this.passwordVisible.update(value => !value);
+  }
 
   submit(): void {
     if (this.loginForm.invalid) {
