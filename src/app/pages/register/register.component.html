@@ -168,17 +168,30 @@
             <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
               Senha
             </label>
-            <input
-              id="password"
-              type="password"
-              formControlName="adopterPassword"
-              class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
-              placeholder="Mínimo 8 caracteres"
-              [attr.aria-invalid]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched"
-              [attr.aria-describedby]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched ? 'password-error' : null"
-              [class.border-red-500]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched"
-              autocomplete="new-password"
-              required/>
+            <div class="flex items-center">
+              <input
+                id="password"
+                type="password"
+                formControlName="adopterPassword"
+                class="flex-1 w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                placeholder="Mínimo 8 caracteres"
+                [attr.aria-invalid]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched"
+                [attr.aria-describedby]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched ? 'password-error' : null"
+                [class.border-red-500]="registerForm.controls.adopterPassword.invalid && registerForm.controls.adopterPassword.touched"
+                autocomplete="new-password"
+                required/>
+                <span>
+                  <button
+                  type="button"
+                  class="flex-none px-4 py-3 border-l-2 border-gray-400 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-colors duration-200">
+                    <lucide-angular
+                    [img]="passwordVisible() ? EyeOff : Eye"
+                    class="w-5 h-5 text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                    (click)="togglePassword()"
+                    [attr.aria-label]="passwordVisible() ? 'Esconder senha' : 'Mostrar senha'"/>
+                  </button>
+                </span>
+            </div>
             @if (registerForm.controls.adopterPassword.touched && registerForm.controls.adopterPassword.invalid) {
               <div id="password-error" class="mt-2 flex items-start gap-2" role="alert">
                 <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />

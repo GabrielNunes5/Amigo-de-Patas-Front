@@ -4,7 +4,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { finalize, switchMap } from 'rxjs';
-import { LucideAngularModule, User, CircleAlert } from 'lucide-angular';
+import { LucideAngularModule, User, CircleAlert, Eye, EyeOff } from 'lucide-angular';
 import { AuthService } from '../../service/auth/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -40,11 +40,14 @@ export class RegisterComponent {
     hasGarden: [false]
   });
 
-  readonly isLoading = signal(false);
-  readonly errorMessage = signal<string | null>(null);
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+  passwordVisible = signal(false);
 
   readonly User = User;
   readonly CircleAlert = CircleAlert;
+  readonly Eye = Eye;
+  readonly EyeOff = EyeOff;
 
   submit(): void {
     if (this.registerForm.invalid) {
@@ -68,6 +71,10 @@ export class RegisterComponent {
         next: () => this.router.navigate(['/']),
         error: (err: unknown) => this.handleError(err)
       });
+  }
+
+  togglePassword(): void {
+    this.passwordVisible.update(value => !value);
   }
 
   private handleError(err: unknown): void {
