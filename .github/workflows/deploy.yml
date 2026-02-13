@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -17,29 +20,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Angular app
+        run: npm run build:prod
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v4
         with:
-          node-version: 20
-          cache: npm
-
-      - run: npm ci
-
-      - run: npm run build -- --base-href=/Amigo-de-Patas-Front/
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/amigo-de-patas
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    permissions:
-      pages: write
-      id-token: write
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+          target_branch: gh-pages
+          build_dir: dist/amigo-de-patas
+          commit_message: "Deploy Angular app to GitHub Pages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

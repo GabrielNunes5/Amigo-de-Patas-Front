@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build-gh-pages": "ng build --base-href='/Amigo-de-Patas-Front/'",
@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@tailwindcss/postcss": "^4.1.12",
-    "json-server": "^1.0.0-beta.3",
     "jwt-decode": "^4.0.0",
     "lucide-angular": "^0.542.0",
     "ngx-mask": "^20.0.3",
