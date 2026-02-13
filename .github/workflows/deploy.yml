@@ -30,10 +30,12 @@ jobs:
       - name: Build Angular
         run: npm run build -- --base-href=/Amigo-de-Patas-Front/
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/amigo-de-patas/browser
+      - name: Debug dist
+        run: |
+              echo "---- DIST ----"
+              ls -la dist
+              echo "---- SUBPASTAS ----"
+              ls -la dist/amigo-de-patas || true
 
   deploy:
     needs: build
