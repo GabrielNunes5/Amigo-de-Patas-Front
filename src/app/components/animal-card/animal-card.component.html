@@ -3,7 +3,7 @@ class="overflow-hidden m-3 bg-gray-200 shadow-lg hover:shadow-xl transition-all 
     <div class="relative">
         <div class="aspect-square overflow-hidden">
             <img
-            [src]="animal().animalImageUrl"
+            [src]="animal().animalImages[0]"
             [alt]="'Foto de ' + animal().animalName + ', ' + animal().animalSpecies + ' para adoção'"
             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
             loading="lazy"/>

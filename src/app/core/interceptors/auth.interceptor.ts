@@ -10,14 +10,24 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     const token = localStorage.getItem('accessToken');
 
-    const authReq = token
-        ? req.clone({
+    let authReq = req;
+
+    if (token) {
+        if (req.body instanceof FormData) {
+        authReq = req.clone({
+            setHeaders: {
+            Authorization: `Bearer ${token}`,
+            },
+        });
+        } else {
+        authReq = req.clone({
             setHeaders: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             },
-        })
-        : req;
+        });
+        }
+    }
 
     return next(authReq).pipe(
         catchError((err: HttpErrorResponse) => {

@@ -40,6 +40,17 @@ export class AnimalService {
     return this.http.post<Animal>(this.apiUrl, data);
   }
 
+  addAnimalImages(id: string, images: File[]): Observable<void> {
+    const formData = new FormData();
+
+    images.forEach(file => {
+      formData.append('files', file);
+    });
+
+    return this.http.post<void>(`${this.apiUrl}/${id}/images`, formData);
+  }
+
+
   deleteAnimal(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

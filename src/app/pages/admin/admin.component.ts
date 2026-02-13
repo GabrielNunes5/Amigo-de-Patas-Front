@@ -10,6 +10,7 @@ import { Voluntary } from '../../models/voluntary.model';
 import { VoluntarioService } from '../../service/voluntario/voluntario.service';
 import { AdminVoluntaryComponent } from '../../components/admin-voluntary/admin-voluntary/admin-voluntary.component';
 import { CommonModule } from '@angular/common';
+import { finalize, map, of, switchMap } from 'rxjs';
 
 type AdminTab = 'dashboard' | 'animais' | 'adocoes' | 'voluntarios';
 
@@ -58,39 +59,54 @@ export class AdminComponent implements OnInit {
     this.loading.set(true);
 
     this.animalService.getAnimals()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loading.set(false))
+      )
       .subscribe({
         next: list => this.animais.set(list),
         error: err => {
           console.error('Erro ao carregar animais', err);
           this.animais.set([]);
-        },
-        complete: () => this.loading.set(false),
+        }
       });
   }
 
-  createAnimal(data: Partial<Animal>): void {
+  createAnimal(payload: { data: Partial<Animal>; images: File[] }): void {
     this.saving.set(true);
-    
-    this.animalService.createAnimal(data)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+
+    this.animalService.createAnimal(payload.data)
+      .pipe(
+        switchMap(animal => {
+          if (payload.images.length === 0) {
+            return of(animal);
+          }
+          return this.animalService
+            .addAnimalImages(animal.animalId, payload.images)
+            .pipe(map(() => animal));
+        }),
+        finalize(() => this.saving.set(false)),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe({
         next: animal => {
           this.animais.update(list => [...list, animal]);
         },
         error: err => {
-          console.error('Erro ao criar animal', err);
-          // Adicionar toast/notificação
-        },
-        complete: () => this.saving.set(false)
+          console.error('Erro ao criar animal ou enviar imagens', err);
+        }
       });
   }
+
 
   deleteAnimal(id: string): void {
     this.saving.set(true);
     
     this.animalService.deleteAnimal(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.saving.set(false)),
+      )
       .subscribe({
         next: () => {
           this.animais.update(lista =>
@@ -99,16 +115,27 @@ export class AdminComponent implements OnInit {
         },
         error: err => {
           console.error('Erro ao deletar animal', err);
-        },
-        complete: () => this.saving.set(false)
+        }
       });
   }
 
-  updateAnimal(payload: { id: string; data: Partial<Animal> }): void {
+  updateAnimal(
+    payload: { id: string; data: Partial<Animal>; images: File[] }): void {
     this.saving.set(true);
     
     this.animalService.updateAnimal(payload.id, payload.data)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        switchMap(animalUpdated => {
+          if(payload.images.length === 0) {
+            return of(animalUpdated);
+          }
+          return this.animalService
+            .addAnimalImages(animalUpdated.animalId, payload.images)
+            .pipe(map(() => animalUpdated));
+        }),
+        finalize(() => this.saving.set(false)),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe({
         next: updated => {
           this.animais.update(list =>
@@ -117,8 +144,7 @@ export class AdminComponent implements OnInit {
         },
         error: err => {
           console.error('Erro ao atualizar animal', err);
-        },
-        complete: () => this.saving.set(false)
+        }
       });
   }
 
