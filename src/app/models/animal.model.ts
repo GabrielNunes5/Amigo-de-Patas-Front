@@ -10,7 +10,7 @@ export interface Animal {
     animalSize?: string;
     animalNeutered?: boolean;
     animalSpecialConditions?: string;
-    animalImageUrl: string;
+    animalImages: string[];
     animalAdopted: boolean;
 }
 
