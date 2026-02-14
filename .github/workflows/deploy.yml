@@ -10,8 +10,7 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
 
 jobs:
   build:
@@ -22,18 +21,12 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build Angular app
-        run: npm run build:prod
-
-      - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v4
-        with:
-          target_branch: gh-pages
-          build_dir: dist/amigo-de-patas
-          commit_message: "Deploy Angular app to GitHub Pages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run deploy-gh
