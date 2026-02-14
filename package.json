@@ -7,7 +7,7 @@
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build-gh-pages": "ng build --base-href='/Amigo-de-Patas-Front/'",
+    "build-gh-pages": "ng build --base-href='/Amigo-de-Patas-Front/' --name='GabrielNunes5' --email='gabrielnunesdev01@gmail.com'",
     "ghpages": "angular-cli-ghpages --dir=dist/amigo-de-patas",
     "deploy-gh": "npm run build-gh-pages && npm run ghpages"
   },
