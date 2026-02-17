@@ -10,7 +10,8 @@ import {
   CheckCircle, 
   Palette,
   Syringe,
-  AlertTriangle
+  AlertTriangle,
+  X
 } from 'lucide-angular';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AnimalService } from '../../service/animal/animal.service';
@@ -38,11 +39,13 @@ export class AnimalDetalhesComponent {
   readonly Palette = Palette;
   readonly Syringe = Syringe;
   readonly AlertTriangle = AlertTriangle;
+  readonly X = X;
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly animalService = inject(AnimalService);
 
+  selectedImage = signal<string | null>(null);
   showForm = signal(false);
   submitted = signal(false);
 
@@ -67,6 +70,14 @@ export class AnimalDetalhesComponent {
     ),
     { initialValue: null }
   );
+
+  openImage(img: string){
+    this.selectedImage.set(img);
+  }
+
+  closeImage(){
+    this.selectedImage.set(null);
+  }
 
   mostrarFormulario(): void {
     this.showForm.set(true);

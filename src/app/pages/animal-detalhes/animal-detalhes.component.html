@@ -33,7 +33,24 @@
               loading="lazy"
             />
           </figure>
+
+          @if (animal.animalImages.length > 1) {
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+
+              @for (img of animal.animalImages.slice(1); track img) {
+                <div class="aspect-square rounded-xl overflow-hidden shadow-lg cursor-pointer">
+                  <img
+                  [src]="img"
+                  [alt]="'Fotos de ' + animal.animalName"
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  (click)="openImage(img)"/>
+                </div>
+              }
+            </div>
+          }
         </div>
+
 
         <div class="space-y-8">
           
@@ -190,4 +207,21 @@
       }
     </div>
   </main>
+}
+
+@if (selectedImage()) {
+  <div 
+  class="fixed inset-0 bg-black/80 flex items-center justify-center z-50" 
+  (click)="closeImage()">
+    <img 
+    [src]="selectedImage()"
+    class="max-w-[90%] max-h-[90%] object-contain rounded-lg shadow-lg"
+    (click)="$event.stopPropagation()"/>
+    <button
+    type="button"
+    class="absolute top-4 right-6 text-white text-3xl cursor-pointer"
+    (click)="closeImage()">
+      <lucide-angular [img]="X" class="w-8 h-8"/>
+    </button>
+  </div>
 }
