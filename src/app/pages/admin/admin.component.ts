@@ -83,7 +83,6 @@ export class AdminComponent implements OnInit {
           }
           return this.animalService
             .addAnimalImages(animal.animalId, payload.images)
-            .pipe(map(() => animal));
         }),
         finalize(() => this.saving.set(false)),
         takeUntilDestroyed(this.destroyRef)
@@ -131,7 +130,6 @@ export class AdminComponent implements OnInit {
           }
           return this.animalService
             .addAnimalImages(animalUpdated.animalId, payload.images)
-            .pipe(map(() => animalUpdated));
         }),
         finalize(() => this.saving.set(false)),
         takeUntilDestroyed(this.destroyRef)

@@ -285,17 +285,6 @@
             </div>
           </div>
           <div>
-            <label for="foto-url" class="text-sm font-medium mb-1 block text-gray-700">
-              URL da Foto <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="foto-url"
-              type="url"
-              formControlName="animalImages"
-              placeholder="https://exemplo.com/foto.jpg"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-          </div>
-          <div>
             <label for="vacinas" class="text-sm font-medium mb-1 block text-gray-700">Vacinas</label>
             <input
               id="vacinas"
@@ -323,7 +312,7 @@
             <label for="castrado" class="text-sm font-medium text-gray-700">Castrado</label>
           </div>
           <div>
-            <label for="imagens" class="text-sm font-medium mb-1 block text-gray-700">Imagens Adicionais</label>
+            <label for="imagens" class="text-sm font-medium mb-1 block text-gray-700">Imagens do Animal</label>
             <input
               id="imagens"
               type="file"
@@ -332,14 +321,27 @@
               accept="image/*"
               class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:font-medium file:bg-gray-50 hover:file:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"/>
           </div>
-          @if (selectedAnimal()) {
-            <div>
-              <label class="text-sm font-medium mb-1 block text-gray-700">Imagens do Animal</label>
-              <div class="grid grid-cols-3 gap-2 mt-2">
-                @for (img of selectedAnimal()?.animalImages; track selectedAnimal()?.animalId) {
-                  <img [src]="img" [alt]="selectedAnimal()?.animalName" class="w-full h-24 object-cover rounded-md border border-gray-200"/>
+          @if (imagesLoading()) {
+            <div class="grid grid-cols-3 gap-2 mt-2">
+              @for (i of [1,2,3]; track i) {
+                <div class="h-24 bg-gray-200 animate-pulse rounded-md"></div>
+              }
+            </div>
+          }
+          @if (!imagesLoading() && selectedAnimal()) {
+            <label class="text-sm font-medium mb-1 block text-gray-700">
+              Galeria do Animal
+            </label>
+            <div class="grid grid-cols-3 gap-2 mt-2">
+              @for (img of selectedAnimal()?.animalImages; track img) {
+                  <div class="aspect-square overflow-hidden rounded-lg border border-gray-200">
+                    <img 
+                    [src]="img" 
+                    [alt]="selectedAnimal()?.animalName"
+                    (load)="onImageLoad()"
+                    class="w-full h-full object-contain transition-transform duration-300 hover:scale-105"/>
+                </div>
                 }
-              </div>
             </div>
           }
           <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
@@ -351,7 +353,7 @@
             </button>
             <button 
               type="submit" 
-              [disabled]="animalForm.invalid || saving()"
+              [disabled]="animalForm.invalid || saving() || imagesLoading()"
               class="bg-gradient-to-r from-blue-600 to-green-600 text-white px-4 py-2 rounded-md hover:opacity-90 disabled:opacity-50 transition-opacity">
               {{ saving() ? "Salvando..." : (selectedAnimal() ? "Atualizar" : "Criar") }}
             </button>

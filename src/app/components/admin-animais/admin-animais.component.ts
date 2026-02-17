@@ -41,6 +41,9 @@ export class AdminAnimaisComponent {
   isDeleteOpen = signal(false);
   selectedAnimal = signal<Animal | null>(null);
   selectedImages = signal<File[]>([]);
+  imagesLoading = signal(false);
+
+  private imagesToLoad = 0;
 
   animalForm = this.fb.group({
     animalName: ['', [Validators.required, Validators.minLength(3)]],
@@ -106,8 +109,16 @@ export class AdminAnimaisComponent {
 
   openEditForm(animal: Animal): void {
     this.selectedAnimal.set(animal);
+    this.imagesToLoad = animal.animalImages?.length;
     this.animalForm.patchValue(animal);
     this.isFormOpen.set(true);
+  }
+
+  onImageLoad(): void {
+    this.imagesToLoad--;
+    if (this.imagesToLoad <= 0) {
+      this.imagesLoading.set(false);
+    }
   }
 
   openDeleteDialog(animal: Animal): void {
