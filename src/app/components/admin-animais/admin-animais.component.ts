@@ -40,6 +40,7 @@ export class AdminAnimaisComponent {
   isFormOpen = signal(false);
   isDeleteOpen = signal(false);
   selectedAnimal = signal<Animal | null>(null);
+  selectedImage = signal<string | null>(null);
   selectedImages = signal<File[]>([]);
   imagesLoading = signal(false);
 
@@ -74,6 +75,14 @@ export class AdminAnimaisComponent {
       return matchSearch && matchTipo && matchStatus;
     });
   });
+
+  openImage(img: string){
+    this.selectedImage.set(img);
+  }
+
+  closeImage(){
+    this.selectedImage.set(null);
+  }
 
   getStatusColor(adopted: boolean): string {
     return adopted ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700';

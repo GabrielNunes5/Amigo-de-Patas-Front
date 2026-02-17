@@ -334,11 +334,12 @@
             </label>
             <div class="grid grid-cols-3 gap-2 mt-2">
               @for (img of selectedAnimal()?.animalImages; track img) {
-                  <div class="aspect-square overflow-hidden rounded-lg border border-gray-200">
+                  <div class="aspect-square overflow-hidden rounded-lg border border-gray-200 cursor-pointer">
                     <img 
                     [src]="img" 
                     [alt]="selectedAnimal()?.animalName"
                     (load)="onImageLoad()"
+                    (click)="openImage(img)"
                     class="w-full h-full object-contain transition-transform duration-300 hover:scale-105"/>
                 </div>
                 }
@@ -396,5 +397,22 @@
         </button>
       </div>
     </div>
+  </div>
+}
+
+@if (selectedImage()) {
+  <div 
+  class="fixed inset-0 bg-black/80 flex items-center justify-center z-50" 
+  (click)="closeImage()">
+    <img 
+    [src]="selectedImage()"
+    class="max-w-[90%] max-h-[90%] object-contain rounded-lg shadow-lg"
+    (click)="$event.stopPropagation()"/>
+    <button
+    type="button"
+    class="absolute top-4 right-6 text-white text-3xl cursor-pointer"
+    (click)="closeImage()">
+      <lucide-angular [img]="X" class="w-8 h-8"/>
+    </button>
   </div>
 }
