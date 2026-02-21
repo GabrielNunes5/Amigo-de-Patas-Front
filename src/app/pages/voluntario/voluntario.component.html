@@ -30,283 +30,301 @@
     </section>
 } @else {
     <main class="min-h-screen py-8">
-    <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
-        <nav class="mb-8">
-            <button
-            routerLink="/contato"
-            class="flex items-center gap-2 px-4 py-2 border border-gray-300 bg-gray-300 text-gray-700 rounded-full cursor-pointer hover:bg-gray-100 transition-colors"
-            aria-label="Voltar para pagina de contato">
-                <lucide-angular [img]="ArrowLeft" class="w-4 h-4" />
-                Voltar
-            </button>
-        </nav>
-        <section class="text-center mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-                Seja um
-                <span class="pb-1 block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                    Voluntário Amigo de patas
-                </span>
-            </h1>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Junte-se ao nosso time de pessoas apaixonadas por animais! 
-                Cada hora do seu tempo pode transformar a vida de um pet que precisa de cuidado e amor.
-            </p>
-        </section>
-        <section class="mb-12">
-            <div class="border-none shadow-lg">
-                <div class="p-6 bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                    <div class="font-bold text-center flex items-center justify-center gap-2">
-                        <lucide-angular [img]="User" class="w-6 h-6"/>
-                        <h1 class="text-2xl">Como Você Pode Ajudar</h1>
-                    </div>
-                </div>
-                <div class="p-8">
-                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        @for (area of areasInteresse; track area.id) {
-                            <div class="text-center">
-                                <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                                    <lucide-angular [img]="area.icon" class="w-8 h-8 text-white" />
-                                </div>
-                                <h3 class="font-semibold text-gray-900 text-lg">
-                                    {{area.label}}
-                                </h3>
-                            </div>
-                        }
-                    </div>
-                    <div class="mt-8 bg-blue-50 rounded-xl p-6">
-                        <h3 class="font-bold text-gray-900 mb-3">
-                            💡 Não encontrou sua área?
-                        </h3>
-                        <p class="text-gray-700 text-sm">
-                            Temos espaço para todos os talentos! Conte-nos suas habilidades especiais no formulário e encontraremos a melhor forma de você contribuir com nossa missão.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section>
-            <div class="border-none shadow-2xl">
-                <div class="p-6 bg-gradient-to-r from-blue-600 to-green-600 text-white">
-                    <h1 class="text-2xl font-bold text-center">
-                        Formulário de Inscrição - Voluntário
-                    </h1>
-                </div>
-                <form [formGroup]="voluntarioForm" (ngSubmit)="onSubmit()" class="space-y-8 px-2">
-                    <div class="p-4 bg-white">
-                        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <lucide-angular [img]="User" class="w-5 h-5 text-blue-600"/>
-                            Informações Pessoais
-                        </h3>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="nome" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                    Nome Completo *
-                                </label>
-                                <input
-                                id="nome" 
-                                type="text"
-                                formControlName="nome_completo"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                                placeholder="Seu nome completo"
-                                [class.border-red-500]="hasError('nome_completo')">
-                                @if (hasError('nome_completo')) {
-                                    <p class="text-red-500 text-sm mt-1" role="alert">
-                                    {{ getErrorMessage('nome_completo') }}
-                                    </p>
-                                }
-                            </div>
-                            <div>
-                                <label for="email" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                    Email *
-                                </label>
-                                <input
-                                id="email" 
-                                type="text"
-                                formControlName="email"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                                placeholder="seu@email.com"
-                                [class.border-red-500]="hasError('email')">
-                                @if (hasError('email')) {
-                                    <p class="text-red-500 text-sm mt-1" role="alert">
-                                    {{ getErrorMessage('email') }}
-                                    </p>
-                                }
-                            </div>
-                            <div>
-                                <label for="telefone" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                    Telefone *
-                                </label>
-                                <input 
-                                id="telefone"
-                                type="text"
-                                formControlName="telefone"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                                mask="(00) 0000-0000||(00) 00000-0000"
-                                placeholder="(85) 99999-9999"
-                                [class.border-red-500]="hasError('telefone')">
-                                @if (hasError('telefone')) {
-                                    <p class="text-red-500 text-sm mt-1" role="alert">
-                                    {{ getErrorMessage('telefone') }}
-                                    </p>
-                                }
-                            </div>
-                            <div>
-                                <label for="idade" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                    Idade
-                                </label>
-                                <input 
-                                id="idade"
-                                type="number"
-                                formControlName="idade"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                                placeholder="Sua idade">
-                            </div>
-                        </div>
-                        <div class="mt-6">
-                            <label for="profissão" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                Profissão
-                            </label>
-                            <input
-                            id="profissão" 
-                            type="text"
-                            formControlName="profissao"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="Sua profissão">
+        <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+            <nav class="mb-8">
+                <button
+                routerLink="/contato"
+                class="flex items-center gap-2 px-4 py-2 border border-gray-300 bg-gray-300 text-gray-700 rounded-full cursor-pointer hover:bg-gray-100 transition-colors"
+                aria-label="Voltar para pagina de contato">
+                    <lucide-angular [img]="ArrowLeft" class="w-4 h-4"/>
+                    Voltar
+                </button>
+            </nav>
+            <section class="text-center mb-12">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                    Seja um
+                    <span class="pb-1 block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
+                        Voluntário Amigo de patas
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Junte-se ao nosso time de pessoas apaixonadas por animais! 
+                    Cada hora do seu tempo pode transformar a vida de um pet que precisa de cuidado e amor.
+                </p>
+            </section>
+            <section class="mb-12">
+                <div class="border-none shadow-lg">
+                    <div class="p-6 bg-gradient-to-r from-orange-500 to-red-500 text-white">
+                        <div class="font-bold text-center flex items-center justify-center gap-2">
+                            <lucide-angular [img]="User" class="w-6 h-6"/>
+                            <h1 class="text-2xl">Como Você Pode Ajudar</h1>
                         </div>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <lucide-angular [img]="Heart" class="w-5 h-5 text-red-500"/>
-                            Áreas de Interesse
-                        </h3>
-                        <p class="text-gray-600 mb-4">
-                            Selecione as atividades que mais despertam seu interesse:
-                        </p>
-                        <div class="grid md:grid-cols-2 gap-4">
+                    <div class="p-8">
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                             @for (area of areasInteresse; track area.id) {
-                                <div class="flex items-center space-x-3">
-                                    <input
-                                    [id]=area.id
-                                    [checked]="areasInteresseArray.value.includes(area.id)"
-                                    (change)="toggleArea(area.id)"
-                                    type="checkbox"
-                                    class="w-4 h-4"/>
-                                    <label
-                                    [for]=area.id
-                                    class="text-sm font-medium text-gray-900 flex items-center gap-2">
-                                        <lucide-angular [img]="area.icon" class="w-5 h-5 text-gray-700"/>
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <lucide-angular [img]="area.icon" class="w-8 h-8 text-white" />
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 text-lg">
                                         {{area.label}}
-                                    </label>
+                                    </h3>
                                 </div>
                             }
                         </div>
+                        <div class="mt-8 bg-blue-50 rounded-xl p-6">
+                            <h3 class="font-bold text-gray-900 mb-3">
+                                💡 Não encontrou sua área?
+                            </h3>
+                            <p class="text-gray-700 text-sm">
+                                Temos espaço para todos os talentos! Conte-nos suas habilidades especiais no formulário e encontraremos a melhor forma de você contribuir com nossa missão.
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <lucide-angular [img]="Clock" class="w-5 h-5 text-green-600"/>
-                            Disponibilidade
-                        </h3>
-                        <p class="text-gray-600 mb-4">
-                            Quando você pode dedicar seu tempo ao voluntariado?
-                        </p>
-                        <div class="grid md:grid-cols-3 gap-3">
-                            @for (disp of disponibilidades; track $index) {
-                                <div class="flex items-center space-x-2">
+                </div>
+            </section>
+            <section>
+                <div class="border-none shadow-2xl">
+                    <div class="p-6 bg-gradient-to-r from-blue-600 to-green-600 text-white">
+                        <h1 class="text-2xl font-bold text-center">
+                            Formulário de Inscrição - Voluntário
+                        </h1>
+                    </div>
+                    <form 
+                    [formGroup]="voluntarioForm"
+                    (ngSubmit)="onSubmit()" 
+                    class="space-y-8 px-2">
+                        <div class="p-4 bg-white">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <lucide-angular [img]="User" class="w-5 h-5 text-blue-600"/>
+                                Informações Pessoais
+                            </h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="nome" class="text-sm font-semibold text-gray-900 mb-2 block">
+                                        Nome Completo *
+                                    </label>
                                     <input
-                                    [id]="'disp-'+$index"
-                                    [checked]="disponibilidadesArray.value.includes(disp)"
-                                    (change)="toggleDisponibilidade(disp)"
+                                    id="nome" 
+                                    type="text"
+                                    formControlName="voluntaryName"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                    placeholder="Seu nome completo"
+                                    [class.border-red-500]="hasError('voluntaryName')">
+                                    @if (hasError('voluntaryName')) {
+                                        <p class="text-red-500 text-sm mt-1" role="alert">
+                                        {{ getErrorMessage('voluntaryName') }}
+                                        </p>
+                                    }
+                                </div>
+                                <div>
+                                    <label for="email" class="text-sm font-semibold text-gray-900 mb-2 block">
+                                        Email *
+                                    </label>
+                                    <input
+                                    id="email" 
+                                    type="text"
+                                    formControlName="voluntaryEmail"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                    placeholder="seu@email.com"
+                                    [class.border-red-500]="hasError('voluntaryEmail')">
+                                    @if (hasError('voluntaryEmail')) {
+                                        <p class="text-red-500 text-sm mt-1" role="alert">
+                                        {{ getErrorMessage('voluntaryEmail') }}
+                                        </p>
+                                    }
+                                </div>
+                                <div>
+                                    <label for="telefone" class="text-sm font-semibold text-gray-900 mb-2 block">
+                                        Telefone *
+                                    </label>
+                                    <input 
+                                    id="telefone"
+                                    type="tel"
+                                    formControlName="voluntaryPhone"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                    mask="(00) 0000-0000||(00) 00000-0000"
+                                    placeholder="DDD + número"
+                                    [class.border-red-500]="hasError('voluntaryPhone')">
+                                    @if (hasError('voluntaryPhone')) {
+                                        <p class="text-red-500 text-sm mt-1" role="alert">
+                                        {{ getErrorMessage('voluntaryPhone') }}
+                                        </p>
+                                    }
+                                </div>
+                                <div>
+                                    <label for="voluntaryBirthDate" class="text-sm font-semibold text-gray-900 mb-2 block">
+                                        Idade
+                                    </label>
+                                    <input 
+                                    id="voluntaryBirthDate"
+                                    type="date"
+                                    formControlName="voluntaryBirthDate"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                    placeholder="Selecione sua data de nascimento"
+                                    [class.border-red-500]="hasError('voluntaryBirthDate')">
+                                    @if (hasError('voluntaryBirthDate')) {
+                                        <p class="text-red-500 text-sm mt-1" role="alert">
+                                        {{ getErrorMessage('voluntaryBirthDate') }}
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <label for="profissão" class="text-sm font-semibold text-gray-900 mb-2 block">
+                                    Profissão
+                                </label>
+                                <input
+                                id="profissão" 
+                                type="text"
+                                formControlName="voluntaryOccupation"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="Sua profissão">
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <lucide-angular [img]="Heart" class="w-5 h-5 text-red-500"/>
+                                Áreas de Interesse
+                            </h3>
+                            <p class="text-gray-600 mb-4">
+                                Selecione as atividades que mais despertam seu interesse:
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                @for (area of areasInteresse; track area.id) {
+                                    <div class="flex items-center space-x-3">
+                                        <input
+                                        [id]=area.id
+                                        [checked]="areasInteresseArray.value.includes(area.id)"
+                                        (change)="toggleArea(area.id)"
+                                        type="checkbox"
+                                        class="w-4 h-4"/>
+                                        <label
+                                        [for]=area.id
+                                        class="text-sm font-medium text-gray-900 flex items-center gap-2">
+                                            <lucide-angular [img]="area.icon" class="w-5 h-5 text-gray-700"/>
+                                            {{area.label}}
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <lucide-angular [img]="Clock" class="w-5 h-5 text-green-600"/>
+                                Disponibilidade
+                            </h3>
+                            <p class="text-gray-600 mb-4">
+                                Quando você pode dedicar seu tempo ao voluntariado?
+                            </p>
+                            <div class="grid md:grid-cols-3 gap-3">
+                                @for (disp of disponibilidades; track $index) {
+                                    <div class="flex items-center space-x-2">
+                                        <input
+                                        [id]="'disp-'+$index"
+                                        [checked]="disponibilidadesArray.value.includes(disp)"
+                                        (change)="toggleDisponibilidade(disp)"
+                                        type="checkbox"
+                                        class="w-4 h-4">
+                                        <label 
+                                        [for]="'disp-'+$index"
+                                        class="text-sm font-medium text-gray-900 flex items-center gap-2">
+                                            {{disp}}
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">
+                                Conte-nos Mais Sobre Você
+                            </h3>
+                            <div>
+                                <label for="experiencia_animais" class="text-sm font-semibold text-gray-900 mb-2 block">
+                                    Experiência com Animais
+                                </label>
+                                <input 
+                                type="text"
+                                id="experiencia_animais"
+                                formControlName="voluntaryExperience"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="Conte sobre sua experiência com animais">
+                            </div>
+                            <div>
+                                <label for="motivacao" class="text-sm font-semibold text-gray-900 mb-2 block">
+                                    Por que Quer Ser Voluntário?
+                                </label>
+                                <input 
+                                type="text" 
+                                id="motivacao"
+                                formControlName="voluntaryMotivation"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="Qual sua motivação para ajudar?">
+                            </div>
+                            <div>
+                                <label for="habilidades_especiais" class="text-sm font-semibold text-gray-900 mb-2 block">
+                                    Habilidades Especiais
+                                </label>
+                                <input 
+                                type="text" 
+                                id="habilidades_especiais"
+                                formControlName="voluntarySpecialSkills"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="Veterinária, design gráfico, redes sociais, fotografia">
+                            </div>
+                            <div class="space-y-4 bg-gray-50 p-6 rounded-xl">
+                                <div class="flex items-center space-x-3">
+                                    <input 
                                     type="checkbox"
-                                    class="w-4 h-4">
-                                    <label 
-                                    [for]="'disp-'+$index"
-                                    class="text-sm font-medium text-gray-900 flex items-center gap-2">
-                                        {{disp}}
+                                    id="transporte"
+                                    formControlName="hasTransportation">
+                                    <label for="transporte" class="text-sm font-medium text-gray-900 flex items-center gap-2">
+                                        <lucide-angular [img]="Car" class="w-5 h-5"/>
+                                        Possuo transporte próprio
                                     </label>
                                 </div>
-                            }
-                        </div>
-                    </div>
-                    <div class="space-y-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-4">
-                            Conte-nos Mais Sobre Você
-                        </h3>
-                        <div>
-                            <label for="experiencia_animais" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                Experiência com Animais
-                            </label>
-                            <input 
-                            type="text"
-                            id="experiencia_animais"
-                            formControlName="experiencia_animais"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="Conte sobre sua experiência com animais">
-                        </div>
-                        <div>
-                            <label for="motivacao" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                Por que Quer Ser Voluntário?
-                            </label>
-                            <input 
-                            type="text" 
-                            id="motivacao"
-                            formControlName="motivacao"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="Qual sua motivação para ajudar?">
-                        </div>
-                        <div>
-                            <label for="habilidades_especiais" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                Habilidades Especiais
-                            </label>
-                            <input 
-                            type="text" 
-                            id="habilidades_especiais"
-                            formControlName="habilidades_especiais"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="Veterinária, design gráfico, redes sociais, fotografia">
-                        </div>
-                        <div class="space-y-4 bg-gray-50 p-6 rounded-xl">
-                            <div class="flex items-center space-x-3">
-                                <input 
-                                type="checkbox"
-                                id="transporte"
-                                formControlName="tem_transporte">
-                                <label for="transporte" class="text-sm font-medium text-gray-900 flex items-center gap-2">
-                                    <lucide-angular [img]="Car" class="w-5 h-5"/>
-                                    Possuo transporte próprio
-                                </label>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <input 
-                                type="checkbox"
-                                id="resgate"
-                                formControlName="tem_experiencia_resgate">
-                                <label for="resgate" class="text-sm font-medium text-gray-900 flex items-center gap-2">
-                                    <lucide-angular [img]="Heart" class="w-5 h-5"/>
-                                    Tenho experiência com resgates
-                                </label>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <input 
-                                type="checkbox"
-                                id="pode_trabalhar_fins_semanas"
-                                formControlName="pode_trabalhar_fins_semanas">
-                                <label for="pode_trabalhar_fins_semanas" class="text-sm font-medium text-gray-900 flex items-center gap-2">
-                                    <lucide-angular [img]="Clock" class="w-5 h-5"/>
-                                    Posso trabalhar nos fins de semana
-                                </label>
+                                <div class="flex items-center space-x-3">
+                                    <input 
+                                    type="checkbox"
+                                    id="resgate"
+                                    formControlName="hasRescueExperience">
+                                    <label for="resgate" class="text-sm font-medium text-gray-900 flex items-center gap-2">
+                                        <lucide-angular [img]="Heart" class="w-5 h-5"/>
+                                        Tenho experiência com resgates
+                                    </label>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <input 
+                                    type="checkbox"
+                                    id="canWorkOnWeekends"
+                                    formControlName="canWorkOnWeekends">
+                                    <label for="canWorkOnWeekends" class="text-sm font-medium text-gray-900 flex items-center gap-2">
+                                        <lucide-angular [img]="Clock" class="w-5 h-5"/>
+                                        Posso trabalhar nos fins de semana
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="p-2 flex justify-center">
-                        <button type="submit"
-                        [disabled]="submitting() || areasInteresseArray.length === 0 || disponibilidadesArray.length === 0"
-                        class="w-fit bg-gradient-to-r cursor-pointer p-2 from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
-                            {{ submitting() ? 'Enviando...' : 'Enviar Inscrição de Voluntário ❤️' }}
-                        </button>
-                    </div>
-                </form>
-            </div>
+                        @if (errorMessage()) {
+                            <aside role="alert" aria-live="polite" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                                <div class="flex items-start gap-3">
+                                <lucide-angular [img]="CircleAlert" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                                <p class="text-red-800 text-sm font-medium">{{ errorMessage() }}</p>
+                                </div>
+                            </aside>
+                        }
+                        <div class="p-2 flex justify-center">
+                            <button 
+                            type="submit"
+                            [disabled]="submitting() || voluntarioForm.invalid "
+                            class="w-fit bg-gradient-to-r cursor-pointer p-2 from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl">
+                                {{ submitting() ? 'Enviando...' : 'Enviar Inscrição de Voluntário ❤️' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
         </section>
-    </section>
-</main>
+    </main>
 }

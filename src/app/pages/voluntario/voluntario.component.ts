@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormArray, FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ArrowLeft, Building2, Camera, Car, CheckCircle, Clock, Heart, LucideAngularModule, Megaphone, Star, Stethoscope, User, Users } from 'lucide-angular';
+import { ArrowLeft, Building2, Camera, Car, CheckCircle, CircleAlert, Clock, Heart, LucideAngularModule, Megaphone, Star, Stethoscope, User, Users } from 'lucide-angular';
 import { NgxMaskDirective } from 'ngx-mask';
+import { VoluntarioService } from '../../service/voluntario/voluntario.service';
 
 interface AreaInteresse {
   id: string;
@@ -16,7 +17,7 @@ interface AreaInteresse {
   templateUrl: './voluntario.component.html',
   styleUrl: './voluntario.component.css'
 })
-export class VoluntarioComponent implements OnInit {
+export class VoluntarioComponent {
   readonly ArrowLeft = ArrowLeft;
   readonly User = User;
   readonly Heart = Heart;
@@ -29,41 +30,37 @@ export class VoluntarioComponent implements OnInit {
   readonly Star = Star;
   readonly Clock = Clock;
   readonly CheckCircle = CheckCircle;
+  readonly CircleAlert = CircleAlert;
   
-  voluntarioForm!: FormGroup;
   submitting = signal(false);
   submitted = signal(false);
+  errorMessage = signal<string | null>(null);
 
-  ngOnInit(): void {
-    this.initializeForm();
-  }
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly voluntaryService = inject(VoluntarioService);
 
-  private readonly fb = inject(FormBuilder);
-
-  private initializeForm(): void {
-    this.voluntarioForm = this.fb.group({
-      nome_completo: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      telefone: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      idade: [''],
-      profissao: [''],
-      areas_interesse: this.fb.array<string>([]),
-      disponibilidade: this.fb.array<string>([]),
-      experiencia_animais: [''],
-      motivacao: [''],
-      tem_transporte: [false],
-      tem_experiencia_resgate: [false],
-      pode_trabalhar_fins_semanas: [false],
-      habilidades_especiais: ['']
-    })
-  }
+  readonly voluntarioForm = this.fb.group({
+      voluntaryName: ['', [Validators.required]],
+      voluntaryEmail: ['', [Validators.required, Validators.email]],
+      voluntaryPhone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
+      voluntaryBirthDate: ['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
+      voluntaryOccupation: [''],
+      voluntaryInterestArea: this.fb.array<string>([], [Validators.required, Validators.minLength(1)]),
+      voluntaryAvailability: this.fb.array<string>([], [Validators.required, Validators.minLength(1)]),
+      voluntaryExperience: [''],
+      voluntaryMotivation: [''],
+      hasTransportation: [false],
+      hasRescueExperience: [false],
+      canWorkOnWeekends: [false],
+      voluntarySpecialSkills: ['']
+  });
 
   get disponibilidadesArray(): FormArray {
-    return this.voluntarioForm.get('disponibilidade') as FormArray;
+    return this.voluntarioForm.get('voluntaryAvailability') as FormArray;
   }
 
   get areasInteresseArray(): FormArray {
-    return this.voluntarioForm.get('areas_interesse') as FormArray;
+    return this.voluntarioForm.get('voluntaryInterestArea') as FormArray;
   }
 
   toggleDisponibilidade(disponibilidade: string) {
@@ -106,14 +103,14 @@ export class VoluntarioComponent implements OnInit {
   }
 
   areasInteresse: AreaInteresse[] = [
-    { id: "resgates", label: "Resgates de Animais", icon: Heart },
-    { id: "cuidados", label: "Cuidados Diários", icon: Stethoscope },
-    { id: "adocao", label: "Feiras de Adoção", icon: Users },
-    { id: "transporte", label: "Transporte de Animais", icon: Car },
-    { id: "fotografia", label: "Fotografia", icon: Camera },
-    { id: "marketing", label: "Marketing e Divulgação", icon: Megaphone },
-    { id: "administrativo", label: "Trabalho Administrativo", icon: Building2 },
-    { id: "fundraising", label: "Captação de Recursos", icon: Star }
+    { id: "Resgates", label: "Resgates de Animais", icon: Heart },
+    { id: "Cuidados", label: "Cuidados Diários", icon: Stethoscope },
+    { id: "Adocao", label: "Feiras de Adoção", icon: Users },
+    { id: "Transporte", label: "Transporte de Animais", icon: Car },
+    { id: "Fotografia", label: "Fotografia", icon: Camera },
+    { id: "Marketing", label: "Marketing e Divulgação", icon: Megaphone },
+    { id: "Administrativo", label: "Trabalho Administrativo", icon: Building2 },
+    { id: "Fundraising", label: "Captação de Recursos", icon: Star }
   ];
 
   disponibilidades = [
@@ -133,18 +130,32 @@ export class VoluntarioComponent implements OnInit {
     "Domingo tarde"
   ];
 
-  async onSubmit(): Promise<void> {
-    if (this.voluntarioForm.invalid) return;
+  onSubmit(): void {
+    if (this.voluntarioForm.invalid) {
+      this.voluntarioForm.markAllAsTouched();
+      this.errorMessage.set('Corrija os erros do formulário antes de enviar.');
+      return;
+    };
 
+    this.errorMessage.set(null);
     this.submitting.set(true);
 
-    try {
-      this.submitted.set(true);
-      this.voluntarioForm.reset();
-    } catch (err) {
-      console.error('Erro ao enviar inscrição:', err);
-    } finally {
-      this.submitting.set(false);
-    }
+    const payload = this.voluntarioForm.getRawValue();
+
+    this.voluntaryService.createVoluntary(payload).subscribe({
+      next: () => {
+        this.submitted.set(true);
+        this.voluntarioForm.reset();
+      },
+      error: (err) => {
+        if(err.status != 500 && err.error?.message) {
+          this.errorMessage.set(err.error.message);
+        } else {
+          this.errorMessage.set('Ocorreu um erro ao enviar o formulário. Tente novamente');
+        }
+        this.submitting.set(false);
+      }
+    });
   }
+
 }
