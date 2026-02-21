@@ -5,8 +5,8 @@ export interface Voluntary {
     voluntaryPhone: string;
     voluntaryBirthDate: string;
     voluntaryOccupation: string;
-    voluntaryInterestArea: string;
-    voluntaryAvailability: string;
+    voluntaryInterestArea: string[];
+    voluntaryAvailability: string[];
     voluntaryExperience: string;
     voluntaryMotivation: string;
     hasTransportation: boolean;
