@@ -1,30 +1,40 @@
 <main class="min-h-screen">
-    <section class="relative bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 text-white py-20 md:py-32">
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-            <div class="max-w-4xl">
-                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">
-                    Dê uma nova chance de
-                    <span class="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
-                        ser feliz
-                    </span>
-                </h1>
-                <p class="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
-                    Conectamos corações a patinhas que precisam de um lar.
-                    Cada adoção é uma vida transformada, um amigo fiel encontrado.
-                </p>
-                <nav class="flex flex-col sm:flex-row gap-4">
-                    <a 
-                    routerLink="/animais" 
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
-                        Ver Animais Disponíveis
-                    </a>
-                    <a 
-                    routerLink="/sobre" 
-                    class="border-2 border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 rounded-full text-lg transition-all duration-300">
-                        Conheça Nossa História
-                    </a>
-                </nav>
+    <section class="relative bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 text-white py-20 md:py-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 items-center gap-12">
+                <div class="z-10">
+                    <h1 class="font-hero-title text-4xl md:text-6xl font-bold leading-tight mb-6">
+                        Dê uma nova chance de
+                        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+                            ser feliz
+                        </span>
+                    </h1>
+                    <p class="font-hero-text text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+                        Conectamos corações a patinhas que precisam de um lar.
+                        Cada adoção é uma vida transformada, um amigo fiel encontrado.
+                    </p>
+                    <nav class="flex flex-col sm:flex-row gap-4">
+                        <a 
+                        routerLink="/animais" 
+                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
+                            Ver Animais Disponíveis
+                        </a>
+                        <a 
+                        routerLink="/sobre" 
+                        class="border-2 border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 rounded-full text-lg transition-all duration-300">
+                            Conheça Nossa História
+                        </a>
+                    </nav>
+                </div>
+                <div class="relative">
+                    <img 
+                    src="https://i.ibb.co/HfvwBhZF/imagem-2026-02-21-131454697.png"
+                    alt="Imagem de fundo" 
+                    class="w-full max-w-lg mx-auto drop-shadow-2xl opacity-90"/>
+                    
+                </div>
             </div>
+            
         </div>
     
         <div class="absolute top-20 right-20 opacity-20" aria-hidden="true">
