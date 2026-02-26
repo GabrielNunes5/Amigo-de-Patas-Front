@@ -9,6 +9,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { adminGuard } from './_guard/admin-guard.guard';
+import { DonationComponent } from './pages/donation/donation.component';
 
 export const routes: Routes = [
     {
@@ -34,6 +35,10 @@ export const routes: Routes = [
     {
         path:"voluntario",
         component: VoluntarioComponent
+    },
+    {
+        path:"donation",
+        component: DonationComponent
     },
     {
         path:"auth",
