@@ -42,22 +42,16 @@
                         <button
                         (click)="selecionarValor(val)"
                         class="py-4 rounded-xl font-bold border transition-all cursor-pointer"
-                        [class.bg-gradient-to-r]="!modoCustom() && valorSelecionado() === val"
-                        [class.from-orange-500]="!modoCustom() && valorSelecionado() === val"
-                        [class.to-red-500]="!modoCustom() && valorSelecionado() === val"
-                        [class.text-white]="!modoCustom() && valorSelecionado() === val"
-                        [class.border-none]="!modoCustom() && valorSelecionado() === val">
+                        [class]="valorClasses(val)">
                         R$ {{ val }}
                         </button>
                     }
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex gap-3">
                     <button
                         (click)="ativarCustom()"
-                        class="px-4 py-2 border rounded-lg"
-                        [class.bg-orange-500]="modoCustom()"
-                        [class.text-white]="modoCustom()"
-                        [class.border-none]="modoCustom()">
+                        [class]="metodoClasses()"
+                        class="w-2/4 md:w-1/4 py-4 rounded-xl border font-bold transition-all cursor-pointer">
                         Outro valor
                     </button>
                     @if (modoCustom()) {
@@ -66,7 +60,7 @@
                         min="1"
                         [value]="valorCustom() ?? ''"
                         (input)="atualizarValorCustom($event)"
-                        class="border rounded-lg px-4 py-2 w-full"
+                        class="p-4 rounded-xl w-2/4 md:w-3/4"
                         placeholder="Digite o valor" />
                     }
                 </div>
@@ -81,10 +75,8 @@
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <button
                 (click)="metodo.set('cartao')"
-                class="inline-flex items-center justify-center gap-3 p-4 rounded-xl border-2 font-semibold transition-all cursor-pointer"
-                [class.border-blue-500]="metodo() === 'cartao'"
-                [class.bg-blue-50]="metodo() === 'cartao'"
-                [class.text-blue-700]="metodo() === 'cartao'">
+                class="flex flex-col md:flex-row items-center justify-center gap-3 p-4 rounded-xl border-2 font-semibold transition-all cursor-pointer"
+                [class]="cartaoClasses()">
                     <lucide-angular 
                     [img]="CreditCard" 
                     class="inline-block w-6 h-6"/>
@@ -92,10 +84,8 @@
                 </button>
                 <button
                 (click)="metodo.set('pix')"
-                class="inline-flex items-center justify-center gap-3 p-4 rounded-xl border-2 font-semibold transition-all cursor-pointer"
-                [class.border-green-500]="metodo() === 'pix'"
-                [class.bg-green-50]="metodo() === 'pix'"
-                [class.text-green-700]="metodo() === 'pix'">
+                class="flex flex-col md:flex-row items-center justify-center gap-3 p-4 rounded-xl border-2 font-semibold transition-all cursor-pointer"
+                [class]="pixClasses()">
                     <lucide-angular 
                     [img]="BankNote" 
                     class="inline-block w-6 h-6"/>

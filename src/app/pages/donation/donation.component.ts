@@ -77,4 +77,32 @@ export class DonationComponent {
         }
       });
   }
+
+  readonly metodoClasses = computed(() =>
+    this.modoCustom() 
+    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-none' 
+    : 'border-gray-300 text-gray-700 hover:border-orange-400'
+  )
+
+  readonly pixClasses = computed(() =>
+    this.metodo() === 'pix'
+      ? 'border-green-500 bg-green-50 text-green-700'
+      : 'border-gray-200 text-gray-600 hover:border-green-300'
+  );
+
+  readonly cartaoClasses = computed(() =>
+    this.metodo() === 'cartao'
+      ? 'border-blue-500 bg-blue-50 text-blue-700'
+      : 'border-gray-200 text-gray-600 hover:border-blue-300'
+  );
+
+  valorClasses(val: number): string {
+    const ativo =
+      !this.modoCustom() &&
+      this.valorSelecionado() === val;
+
+    return ativo
+      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-none'
+      : 'border-gray-300 text-gray-700 hover:border-orange-400';
+  }
 }
