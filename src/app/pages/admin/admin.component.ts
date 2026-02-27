@@ -4,11 +4,11 @@ import { AdocaoFormData, Animal } from '../../models/animal.model';
 import { AlertCircle, CheckCircle, Clock, Heart, LayoutDashboard, LucideAngularModule, PawPrint, Users } from 'lucide-angular';
 import { AdminAnimaisComponent } from '../../components/admin-animais/admin-animais.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AdminAdoptionFormComponent } from "../../components/admin-adoption-form/admin-adoption-form/admin-adoption-form.component";
+import { AdminAdoptionFormComponent } from '../../components/admin-adoption-form/admin-adoption-form.component';
 import { AdoptionFormService } from '../../service/adoptionForm/adoptionForm.service';
 import { Voluntary } from '../../models/voluntary.model';
 import { VoluntarioService } from '../../service/voluntario/voluntario.service';
-import { AdminVoluntaryComponent } from '../../components/admin-voluntary/admin-voluntary/admin-voluntary.component';
+import { AdminVoluntaryComponent } from '../../components/admin-voluntary/admin-voluntary.component';
 import { CommonModule } from '@angular/common';
 import { finalize, map, of, switchMap } from 'rxjs';
 
