@@ -1,5 +1,5 @@
 import { Component, computed, input, signal } from '@angular/core';
-import { AdocaoFormData } from '../../../models/animal.model';
+import { AdocaoFormData } from '../../models/animal.model';
 import { CommonModule } from '@angular/common';
 import { Eye, Heart, Home, LucideAngularModule, PawPrint, Search, Trash2, User } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
