@@ -1,5 +1,5 @@
 import { Component, computed, input, signal } from '@angular/core';
-import { Voluntary } from '../../../models/voluntary.model';
+import { Voluntary } from '../../models/voluntary.model';
 import { AtSign, Eye, HeartIcon, LucideAngularModule, Phone, Search, Trash2Icon, UserIcon } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
