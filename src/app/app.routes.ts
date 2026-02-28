@@ -37,7 +37,7 @@ export const routes: Routes = [
         component: VoluntarioComponent
     },
     {
-        path:"donation",
+        path:"doacao",
         component: DonationComponent
     },
     {
