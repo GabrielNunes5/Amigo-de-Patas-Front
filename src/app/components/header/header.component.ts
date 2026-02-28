@@ -1,7 +1,7 @@
 import { Component, HostListener, inject, signal, computed, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Heart, Home, Menu, PawPrint, Phone, Users, X, LogIn, LogOut, ShieldUser } from 'lucide-angular';
+import { LucideAngularModule, Heart, Home, Menu, PawPrint, Phone, Users, X, LogIn, LogOut, ShieldUser, Banknote, HandHeart } from 'lucide-angular';
 import { AuthService } from '../../service/auth/auth.service';
 import { filter } from 'rxjs';
 
@@ -19,8 +19,10 @@ export class HeaderComponent implements OnInit {
   navigationItems = [
     { title: 'Início', url: '/', icon: Home },
     { title: 'Animais', url: '/animais', icon: Heart },
-    { title: 'Sobre Nós', url: '/sobre', icon: Users },
-    { title: 'Contato', url: '/contato', icon: Phone }
+    { title: 'Doação', url: '/doacao', icon: Banknote },
+    { title: 'Voluntariado', url: '/voluntario', icon: HandHeart },
+    { title: 'Contato', url: '/contato', icon: Phone },
+    { title: 'Sobre Nós', url: '/sobre', icon: Users }
   ];
   
   readonly router = inject(Router);
@@ -98,4 +100,6 @@ export class HeaderComponent implements OnInit {
   readonly LogIn = LogIn;
   readonly LogOut = LogOut;
   readonly ShieldUser = ShieldUser;
+  readonly BankNote = Banknote;
+  readonly HandHeart = HandHeart;
 }
