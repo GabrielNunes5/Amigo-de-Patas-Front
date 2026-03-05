@@ -1,0 +1,28 @@
+<main class="min-h-screen py-20 bg-gray-50">
+    <section class="flex flex-col items-center justify-center text-center px-4">
+        <h1 class="text-3xl font-bold text-green-600">
+            Doação realizada com successo!
+        </h1>
+        <p class="mt-4 text-lg font-medium">
+            Sua contribuição ajuda diretamente no resgate, tratamento e cuidado
+        dos animais assistidos pela ONG.
+        </p>
+        <img 
+        src="https://i.ibb.co/WWbWPMmH/Chat-GPT-Image-28-de-fev-de-2026-22-32-11.png" 
+        alt="Imagem de agradecimento pela doação"
+        class="mt-6 w-full max-w-md rounded-lg shadow-lg">
+        <p class="mt-4 text-lg font-medium">
+            Obrigado por fazer parte dessa causa.
+        </p>
+        <button
+        class="mt-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-700 transition-colors cursor-pointer"
+        (click)="goHome()">
+            Voltar para a página inicial
+        </button>
+        <button
+        class="mt-6 px-4 py-2 text-lg font-semibold bg-orange-500 text-white rounded-md hover:bg-orange-700 transition-colors cursor-pointer"
+        (click)="goToDonationPage()">
+            Doar novamente
+        </button>
+    </section>
+</main>

@@ -1,0 +1,26 @@
+<main class="min-h-screen py-20 bg-gray-50">
+    <section class="flex flex-col items-center justify-center text-center px-4">
+        <h1 class="text-3xl font-bold text-red-600">
+            Doação cancelada
+        </h1>
+        <p class="mt-4 text-lg font-medium">
+            A transação não foi concluída.
+        </p>
+        <img 
+        src="https://i.ibb.co/jvP7sMcF/imagem-2026-03-04-200140613.png" alt="Doação cancelada"
+        class="mt-6 w-full max-w-md rounded-lg shadow-lg">
+        <p class="mt-4 text-lg font-medium">
+            Se houve algum problema, você pode tentar novamente.
+        </p>
+        <button
+        class="mt-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-700 transition-colors cursor-pointer"
+        (click)="goToDonationPage()">
+            Tentar novamente
+        </button>
+        <button
+        class="mt-6 px-4 py-2 text-lg font-semibold bg-orange-500 text-white rounded-md hover:bg-orange-700 transition-colors cursor-pointer"
+        (click)="goHome()">
+            Voltar para a página inicial
+        </button>
+    </section>
+</main>
