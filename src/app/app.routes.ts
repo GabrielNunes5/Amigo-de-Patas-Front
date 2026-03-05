@@ -7,7 +7,6 @@ import { AnimalDetalhesComponent } from './pages/animal-detalhes/animal-detalhes
 import { VoluntarioComponent } from './pages/voluntario/voluntario.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { AdminComponent } from './pages/admin/admin.component';
 import { adminGuard } from './_guard/admin-guard.guard';
 import { DonationComponent } from './pages/donation/donation.component';
 
@@ -51,6 +50,14 @@ export const routes: Routes = [
         path:"admin",
         canActivate: [adminGuard],
         loadComponent: () => import('./pages/admin/admin.component').then(m => m.AdminComponent)
+    },
+    {
+        path:"donation/success",
+        loadComponent: () => import('./pages/donation/donation-success/donation-success.component').then(m => m.DonationsuccessComponent)
+    },
+    {
+        path:"donation/cancel",
+        loadComponent: () => import('./pages/donation/donation-cancel/donation-cancel.component').then(m => m.DonationCancelComponent)
     },
     {
         path:"**",
