@@ -27,20 +27,8 @@ export interface AdopterResponse {
     adopterAddress: string,
     typeHouse: string,
     hasGarden: boolean,
-    adoptedAnimals: Animal[], 
+    adoptedAnimals: Animal[],
+    roles?: string[]
 }
 
-export interface AuthResponse {
-    accessToken: string,
-    refreshToken: string,
-    tokenType: string,
-    expiresIn: string
-}
 
-export interface JwtPayload{
-    adopterId: string,
-    sub: string,
-    exp: number,
-    iat: number
-    scope: string[],
-}
