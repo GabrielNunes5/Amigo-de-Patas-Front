@@ -5,7 +5,7 @@ import { Animal } from '../../models/animal.model';
 import { AnimalService } from '../../service/animal/animal.service';
 import { CommonModule } from '@angular/common';
 import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
-import { catchError, of } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 interface Filtros {
@@ -30,6 +30,7 @@ export class AnimaisComponent {
 
   private readonly animaisResponse = toSignal(
     this.animalService.getAnimals().pipe(
+      tap(() => console.log('Animais Component Chamou')),
       catchError(error => {
         console.error('Erro ao carregar animais:', error);
         return of([]);

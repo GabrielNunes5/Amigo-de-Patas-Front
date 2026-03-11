@@ -5,7 +5,7 @@ import { Award, Heart, Home, LucideAngularModule, PawPrint, Users } from 'lucide
 import { Animal } from '../../models/animal.model';
 import { AnimalCardComponent } from '../../components/animal-card/animal-card.component';
 import { AnimalService } from '../../service/animal/animal.service';
-import { catchError, of } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -25,6 +25,7 @@ export class HomeComponent {
 
   private readonly animaisResponse = toSignal(
     this.animalService.getAnimals().pipe(
+      tap(() => console.log('Home Component Chamou')),
       catchError(error => {
         console.error('Erro ao carregar animais:', error);
         return of([]);

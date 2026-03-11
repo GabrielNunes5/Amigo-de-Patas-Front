@@ -55,7 +55,6 @@ export class LoginComponent {
     this.auth
       .login(payload)
       .pipe(
-        switchMap(() => this.auth.profile()),
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.isLoading.set(false))
       )

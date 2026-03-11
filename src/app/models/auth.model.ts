@@ -28,7 +28,7 @@ export interface AdopterResponse {
     typeHouse: string,
     hasGarden: boolean,
     adoptedAnimals: Animal[],
-    roles?: string[]
+    role?: string[]
 }
 
 

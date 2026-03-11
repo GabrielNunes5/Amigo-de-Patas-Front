@@ -18,7 +18,7 @@ export class AnimalService {
     if (!this.animalsCache$) {
       this.animalsCache$ = this.http.get<{ data: { content: Animal[] } }>(this.apiUrlSorter).pipe(
         map(response => response.data.content),
-        shareReplay({ bufferSize: 1, refCount: true })
+        shareReplay({ bufferSize: 1, refCount: false })
       );
     }
     return this.animalsCache$;

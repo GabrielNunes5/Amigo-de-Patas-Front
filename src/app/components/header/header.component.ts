@@ -68,28 +68,29 @@ export class HeaderComponent implements OnInit {
     this.mobileMenuOpen.set(false);
   }
 
-  
   ngOnInit() {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd))
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.closeDropdown();
         this.closeMobileMenu();
-      })
-      
-    if (this.auth.isAuthenticated()) {
-      this.auth.loadUserProfile();
-    }
+      });
   }
 
   logout(): void {
-    this.auth.logout();
-    this.router.navigate(['/']);
+      this.auth.logout().subscribe({
+          next: () => {
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            console.error('Erro ao fazer logout', err);
+            this.router.navigate(['/']);
+          }
+      });
   }
 
   getFirstTwoNames(fullName: string | undefined): string {
     if (!fullName) return '';
-    
     const names = fullName.split(' ');
     return names.slice(0, 2).join(' ');
   }

@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, switchMap, map } from 'rxjs';
+import { Observable, tap, switchMap, map, of } from 'rxjs';
 import { AdopterResponse, LoginRequest, RegisterRequest } from '../../models/auth.model';
 
 interface ApiResponse<T> {
@@ -21,22 +21,23 @@ export class AuthService {
   }
 
   register(data: RegisterRequest): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/register`, data,
-      { withCredentials: true }
+    return this.http.post<void>(`${this.apiUrl}/register`, data
     );
   }
   
   login(data: LoginRequest): Observable<AdopterResponse> {
-    return this.http.post<void>(`${this.apiUrl}/login`, data,
-      { withCredentials: true }
+    return this.http.post<void>(`${this.apiUrl}/login`, data
     ).pipe(
       switchMap(() => this.profile())
     );
   }
 
   profile(): Observable<AdopterResponse> {
-    return this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me`,
-      { withCredentials: true }
+    if (this.currentUser() !== null) {
+      return of(this.currentUser()!);
+    }
+
+    return this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me`
     ).pipe(
       map(res => res.data),
       tap(user => this.currentUser.set(user))
@@ -44,13 +45,17 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/logout`, {},
-      { withCredentials: true }
+    return this.http.post<void>(`${this.apiUrl}/logout`, {}
     ).pipe(
       tap(() => {
         this.currentUser.set(null);
       })
     );
+  }
+
+  refresh(): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/refresh`, {}
+    )
   }
 
   isAuthenticated(): boolean {
@@ -59,7 +64,7 @@ export class AuthService {
 
   isAdmin(): boolean {
     const user = this.currentUser();
-    return user?.roles?.includes('ADMIN') ?? false;
+    return user?.role?.includes('ADMIN') ?? false;
   }
 
   loadUserProfile(): void {
