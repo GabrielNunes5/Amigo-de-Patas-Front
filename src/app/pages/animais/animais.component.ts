@@ -30,7 +30,6 @@ export class AnimaisComponent {
 
   private readonly animaisResponse = toSignal(
     this.animalService.getAnimals().pipe(
-      tap(() => console.log('Animais Component Chamou')),
       catchError(error => {
         console.error('Erro ao carregar animais:', error);
         return of([]);

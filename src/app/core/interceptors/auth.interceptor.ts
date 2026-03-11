@@ -13,9 +13,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     });
 
     return next(authReq).pipe(
-        tap(() => {
-            console.log('Request successful:', authReq.url);
-        }),
         catchError((err: HttpErrorResponse) => {
             if (err.status !== 401) {
                 return throwError(() => err);
