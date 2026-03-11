@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   ];
   
   readonly router = inject(Router);
-  public auth = inject(AuthService);
+  private readonly auth = inject(AuthService);
 
   readonly currentUser = this.auth.user;
 
