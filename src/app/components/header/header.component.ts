@@ -28,10 +28,7 @@ export class HeaderComponent implements OnInit {
   readonly router = inject(Router);
   public auth = inject(AuthService);
 
-  readonly currentUser = computed(() => {
-    const user = this.auth.user();
-    return user;
-  });
+  readonly currentUser = this.auth.user;
 
   isAdmin(): boolean {
     return this.auth.isAdmin();
