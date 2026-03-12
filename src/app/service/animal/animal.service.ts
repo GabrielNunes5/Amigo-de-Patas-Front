@@ -35,9 +35,10 @@ export class AnimalService {
     return this.animalCache.get(id)!;
   }
 
-
   createAnimal(data: Partial<Animal>): Observable<Animal> {
-    return this.http.post<Animal>(this.apiUrl, data);
+    return this.http.post<{ data: Animal }>(this.apiUrl, data).pipe(
+        map(res => res.data)
+    );
   }
 
   addAnimalImages(id: string, images: File[]): Observable<Animal> {
@@ -56,7 +57,9 @@ export class AnimalService {
   }
 
   updateAnimal(id: string, data: Partial<Animal>): Observable<Animal> {
-    return this.http.put<Animal>(`${this.apiUrl}/${id}`, data);
+    return this.http.put<{ data: Animal }>(`${this.apiUrl}/${id}`, data).pipe(
+      map(res => res.data)
+    );
   }
 
 }

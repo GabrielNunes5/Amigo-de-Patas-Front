@@ -1,77 +1,72 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
+import { map, Observable, shareReplay, tap } from "rxjs";
+import { Animal } from "../../models/animal.model";
+import { ApiResponse, PageResponse } from "../../models/api-response.model";
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap, switchMap, map, of } from 'rxjs';
-import { AdopterResponse, LoginRequest, RegisterRequest } from '../../models/auth.model';
 
-interface ApiResponse<T> {
-  data: T;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
-  private apiUrl = `${environment.apiUrl}auth`;
+@Injectable({ providedIn: 'root' })
+export class AnimalService {
+  private apiUrl = `${environment.apiUrl}animals`;
+  private apiUrlSorter = `${environment.apiUrl}animals?sort=createdAt,asc`;
   private http = inject(HttpClient);
-  private currentUser = signal<AdopterResponse | null>(null);
 
-  get user() {
-    return this.currentUser.asReadonly();
+  private animalsCache$?: Observable<Animal[]>;
+  private animalCache = new Map<string, Observable<Animal>>();
+
+  private invalidateCache(): void {
+    this.animalsCache$ = undefined;
+    this.animalCache.clear();
   }
 
-  register(data: RegisterRequest): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/register`, data
-    );
-  }
-  
-  login(data: LoginRequest): Observable<AdopterResponse> {
-    return this.http.post<void>(`${this.apiUrl}/login`, data
-    ).pipe(
-      switchMap(() => this.profile())
-    );
-  }
-
-  profile(): Observable<AdopterResponse> {
-    if (this.currentUser() !== null) {
-      return of(this.currentUser()!);
+  getAnimals(): Observable<Animal[]> {
+    if (!this.animalsCache$) {
+      this.animalsCache$ = this.http.get<ApiResponse<PageResponse<Animal>>>(this.apiUrlSorter).pipe(
+        map(res => res.data.content),
+        shareReplay({ bufferSize: 1, refCount: false })
+      );
     }
+    return this.animalsCache$;
+  }
 
-    return this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me`
-    ).pipe(
+  getAnimal(id: string): Observable<Animal> {
+    if (!this.animalCache.has(id)) {
+      const animal$ = this.http.get<ApiResponse<Animal>>(`${this.apiUrl}/${id}`).pipe(
+        map(res => res.data),
+        shareReplay({ bufferSize: 1, refCount: false })
+      );
+      this.animalCache.set(id, animal$);
+    }
+    return this.animalCache.get(id)!;
+  }
+
+  createAnimal(data: Partial<Animal>): Observable<Animal> {
+    return this.http.post<ApiResponse<Animal>>(this.apiUrl, data).pipe(
       map(res => res.data),
-      tap(user => this.currentUser.set(user))
+      tap(() => this.invalidateCache())
     );
   }
 
-  logout(): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/logout`, {}
-    ).pipe(
-      tap(() => {
-        this.currentUser.set(null);
-      })
+  updateAnimal(id: string, data: Partial<Animal>): Observable<Animal> {
+    return this.http.put<ApiResponse<Animal>>(`${this.apiUrl}/${id}`, data).pipe(
+      map(res => res.data),
+      tap(() => this.invalidateCache())
     );
   }
 
-  refresh(): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/refresh`, {}
-    )
+  deleteAnimal(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      tap(() => this.invalidateCache())
+    );
   }
 
-  isAuthenticated(): boolean {
-    return this.currentUser() !== null;
-  }
+  addAnimalImages(id: string, images: File[]): Observable<Animal> {
+    const formData = new FormData();
+    images.forEach(file => formData.append('files', file));
 
-  isAdmin(): boolean {
-    const user = this.currentUser();
-    return user?.role?.includes('ADMIN') ?? false;
-  }
-
-  loadUserProfile(): void {
-    this.profile().subscribe({
-      error: () => {
-        this.currentUser.set(null);
-      }
-    });
+    return this.http.post<ApiResponse<Animal>>(`${this.apiUrl}/${id}/images`, formData).pipe(
+      map(res => res.data),
+      tap(() => this.invalidateCache())
+    );
   }
 }

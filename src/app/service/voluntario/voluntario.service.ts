@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, shareReplay } from 'rxjs';
 import { Voluntary } from '../../models/voluntary.model';
+import { ApiResponse, PageResponse } from '../../models/api-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +15,18 @@ export class VoluntarioService {
   private voluntaryCache$?: Observable<Voluntary[]>;
 
   getVoluntaries(): Observable<Voluntary[]> {
-    if (!this.voluntaryCache$){
-      this.voluntaryCache$ = this.http.get<{ data: { content: Voluntary[] } }>(this.apiUrl).pipe(
-        map(response => response.data.content),
-        shareReplay({ bufferSize: 1, refCount: true })
+    if (!this.voluntaryCache$) {
+      this.voluntaryCache$ = this.http.get<ApiResponse<PageResponse<Voluntary>>>(this.apiUrl).pipe(
+        map(res => res.data.content),
+        shareReplay({ bufferSize: 1, refCount: false })
       );
     }
     return this.voluntaryCache$;
   }
 
-  createVoluntary(
-    data: Partial<Voluntary>): Observable<Voluntary> {
-      return this.http.post<Voluntary>(this.apiUrl, data);
-    }
+  createVoluntary(data: Partial<Voluntary>): Observable<Voluntary> {
+    return this.http.post<ApiResponse<Voluntary>>(this.apiUrl, data).pipe(
+      map(res => res.data)
+    );
+  }
 }
