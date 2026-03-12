@@ -27,12 +27,12 @@ export class AdminAnimaisComponent {
   readonly TriangleAlert = TriangleAlert;
 
   animais = input<Animal[]>([]);
-  loading = input<boolean>(false);
-  saving = input<boolean>(false);
+  loadingAnimal = input<boolean>(false);
+  savingAnimal = input<boolean>(false);
 
-  create = output<{ data: Partial<Animal>; images: File[] }>();
-  update = output<{ id: string; data: Partial<Animal>; images: File[] }>();
-  delete = output<string>();
+  createAnimal = output<{ data: Partial<Animal>; images: File[] }>();
+  updateAnimal = output<{ id: string; data: Partial<Animal>; images: File[] }>();
+  deleteAnimal = output<string>();
 
   searchTerm = signal('');
   filterStatus = signal<FilterStatus>('todos');
@@ -160,13 +160,13 @@ export class AdminAnimaisComponent {
     const selected = this.selectedAnimal();
 
     if (selected) {
-      this.update.emit({
+      this.updateAnimal.emit({
         id: selected.animalId,
         data,
         images: images
       });
     } else {
-      this.create.emit({
+      this.createAnimal.emit({
         data,
         images: images
       });
@@ -179,7 +179,7 @@ export class AdminAnimaisComponent {
     const animal = this.selectedAnimal();
     if (!animal) return;
 
-    this.delete.emit(animal.animalId);
+    this.deleteAnimal.emit(animal.animalId);
     this.closeDeleteDialog();
   }
 

@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { Voluntary } from '../../models/voluntary.model';
 import { AtSign, Eye, HeartIcon, LucideAngularModule, Phone, Search, Trash2Icon, UserIcon } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
@@ -12,9 +12,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './admin-voluntary.component.css'
 })
 export class AdminVoluntaryComponent {
-  voluntaries = input<Voluntary[]>([]);
-  loading = input<boolean>(false);
-
   readonly Search = Search;
   readonly HeartIcon = HeartIcon;
   readonly UserIcon = UserIcon;
@@ -22,6 +19,12 @@ export class AdminVoluntaryComponent {
   readonly Trash2Icon = Trash2Icon;
   readonly AtSign = AtSign;
   readonly Phone = Phone;
+
+  voluntaries = input<Voluntary[]>([]);
+  loadingVoluntary = input<boolean>(false);
+  savingVoluntary = input<boolean>(false);
+
+  deleteVoluntary = output<string>();
 
   searchTerm = signal('');
   isViewOpen = signal(false);
@@ -37,12 +40,19 @@ export class AdminVoluntaryComponent {
     })
   })
 
-  
+  handleDelete(): void {
+    const voluntary = this.selectedVoluntary();
+    if (!voluntary) return;
+
+    this.deleteVoluntary.emit(voluntary.voluntaryId);
+    this.closeDeleteDialog();
+  }
+
   openView(voluntary: Voluntary): void {
     this.selectedVoluntary.set(voluntary);
     this.isViewOpen.set(true);
   }
-  
+
   onSearchChange(value: string): void {
     this.searchTerm.set(value);
   }
@@ -60,7 +70,4 @@ export class AdminVoluntaryComponent {
     this.isDeleteOpen.set(false);
   }
 
-    handleDelete(): void {
-    this.closeDeleteDialog();
-  }
 }

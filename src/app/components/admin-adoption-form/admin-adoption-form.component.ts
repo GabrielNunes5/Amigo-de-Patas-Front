@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { AdocaoFormData } from '../../models/animal.model';
 import { CommonModule } from '@angular/common';
 import { Eye, Heart, Home, LucideAngularModule, PawPrint, Search, Trash2, User } from 'lucide-angular';
@@ -12,9 +12,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './admin-adoption-form.component.css'
 })
 export class AdminAdoptionFormComponent {
-  adoptionForm = input<AdocaoFormData[]>([]);
-  loading = input<boolean>(false);
-
   readonly Search = Search;
   readonly HeartIcon = Heart;
   readonly UserIcon = User;
@@ -22,6 +19,12 @@ export class AdminAdoptionFormComponent {
   readonly Eye = Eye;
   readonly Trash2Icon = Trash2;
   readonly HomeIcon = Home;
+  
+  adoptionForm = input<AdocaoFormData[]>([]);
+  loadingAdoptionForm = input<boolean>(false);
+  savingAdoptionForm = input<boolean>(false);
+
+  deleteAdoptionForm = output<string>();
 
   searchTerm = signal('');
   isViewOpen = signal(false);

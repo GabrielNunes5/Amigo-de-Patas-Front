@@ -39,11 +39,19 @@ export class AdminComponent implements OnInit {
   }
 
   activeTab = signal<AdminTab>('dashboard');
-  loading = signal(false);
-  saving = signal(false);
+
   animais = signal<Animal[]>([]);
+  loadingAnimal = signal(false);
+  savingAnimal = signal(false);
+
   adoptionForm = signal<AdocaoFormData[]>([]);
+  loadingAdoptionForm = signal(false);
+  savingAdoptionForm = signal(false);
+
   voluntaries = signal<Voluntary[]>([]);
+  loadingVoluntary = signal(false);
+  savingVoluntary = signal(false);
+
 
   animaisAdotados = computed(() =>
     this.animais().filter(a => a.animalAdopted)
@@ -55,13 +63,15 @@ export class AdminComponent implements OnInit {
     this.loadVoluntaries();
   }
 
+  // ANIMAIS
+
   loadAnimais(): void {
-    this.loading.set(true);
+    this.loadingAnimal.set(true);
 
     this.animalService.getAnimals()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
+        finalize(() => this.loadingAnimal.set(false))
       )
       .subscribe({
         next: list => this.animais.set(list),
@@ -73,7 +83,7 @@ export class AdminComponent implements OnInit {
   }
 
   createAnimal(payload: { data: Partial<Animal>; images: File[] }): void {
-    this.saving.set(true);
+    this.savingAnimal.set(true);
 
     this.animalService.createAnimal(payload.data)
       .pipe(
@@ -82,9 +92,9 @@ export class AdminComponent implements OnInit {
             return of(animal);
           }
           return this.animalService
-            .addAnimalImages(animal.animalId, payload.images)
+          .addAnimalImages(animal.animalId, payload.images)
         }),
-        finalize(() => this.saving.set(false)),
+        finalize(() => this.savingAnimal.set(false)),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -97,14 +107,12 @@ export class AdminComponent implements OnInit {
       });
   }
 
-
   deleteAnimal(id: string): void {
-    this.saving.set(true);
-    
+    this.savingAnimal.set(true);
     this.animalService.deleteAnimal(id)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.saving.set(false)),
+        finalize(() => this.savingAnimal.set(false)),
       )
       .subscribe({
         next: () => {
@@ -120,7 +128,7 @@ export class AdminComponent implements OnInit {
 
   updateAnimal(
     payload: { id: string; data: Partial<Animal>; images: File[] }): void {
-    this.saving.set(true);
+    this.savingAnimal.set(true);
     
     this.animalService.updateAnimal(payload.id, payload.data)
       .pipe(
@@ -131,7 +139,7 @@ export class AdminComponent implements OnInit {
           return this.animalService
             .addAnimalImages(animalUpdated.animalId, payload.images)
         }),
-        finalize(() => this.saving.set(false)),
+        finalize(() => this.savingAnimal.set(false)),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -146,8 +154,10 @@ export class AdminComponent implements OnInit {
       });
   }
 
+  // ADOÇÃO FORMULÁRIO
+
   loadAdoptionForm(): void {
-    this.loading.set(true);
+    this.loadingAdoptionForm.set(true);
 
     this.adoptionFormService.getAdoptionForms()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -157,12 +167,33 @@ export class AdminComponent implements OnInit {
           console.error('Erro ao carregar formulários de adoção', err);
           this.adoptionForm.set([]);
         },
-        complete: () => this.loading.set(false),
+        complete: () => this.loadingAdoptionForm.set(false),
+      });
+  }
+
+  // VOLUNTÁRIOS
+
+  deleteVoluntary(id: string): void {
+    this.savingAdoptionForm.set(true);
+    this.voluntaryService.deleteVoluntary(id)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.savingAdoptionForm.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.voluntaries.update(lista =>
+            lista.filter(v => v.voluntaryId !== id)
+          );
+        },
+        error: err => {
+          console.error('Erro ao deletar voluntário', err);
+        }
       });
   }
 
   loadVoluntaries(): void {
-    this.loading.set(true);
+    this.loadingVoluntary.set(true);
 
     this.voluntaryService.getVoluntaries()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -172,7 +203,7 @@ export class AdminComponent implements OnInit {
           console.error('Erro ao carregar voluntários', err);
           this.voluntaries.set([]);
         },
-        complete: () => this.loading.set(false),
+        complete: () => this.loadingVoluntary.set(false),
       })
   }
 }
