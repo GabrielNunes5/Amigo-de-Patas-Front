@@ -17,10 +17,6 @@ export class AnimalService {
   private animalsCache$?: Observable<Animal[]>;
   private animalCache = new Map<string, Observable<Animal>>();
 
-  private invalidateCache(): void {
-    this.animalsCache$ = undefined;
-    this.animalCache.clear();
-  }
 
   getAnimals(): Observable<Animal[]> {
     if (!this.animalsCache$) {
@@ -45,22 +41,18 @@ export class AnimalService {
 
   createAnimal(data: Partial<Animal>): Observable<Animal> {
     return this.http.post<ApiResponse<Animal>>(this.apiUrl, data).pipe(
-      map(res => res.data),
-      tap(() => this.invalidateCache())
+      map(res => res.data)
     );
   }
 
   updateAnimal(id: string, data: Partial<Animal>): Observable<Animal> {
     return this.http.put<ApiResponse<Animal>>(`${this.apiUrl}/${id}`, data).pipe(
-      map(res => res.data),
-      tap(() => this.invalidateCache())
+      map(res => res.data)
     );
   }
 
   deleteAnimal(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      tap(() => this.invalidateCache())
-    );
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   addAnimalImages(id: string, images: File[]): Observable<Animal> {
@@ -68,8 +60,7 @@ export class AnimalService {
     images.forEach(file => formData.append('files', file));
 
     return this.http.post<ApiResponse<Animal>>(`${this.apiUrl}/${id}/images`, formData).pipe(
-      map(res => res.data),
-      tap(() => this.invalidateCache())
+      map(res => res.data)
     );
   }
 }
