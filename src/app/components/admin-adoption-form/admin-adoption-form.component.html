@@ -47,53 +47,63 @@
                     </td>
                   </tr>
                 }
-                @for (adoptions of filteredAdoptions(); track adoptions.animalId) {
-                  <tr class="hover:bg-gray-300 transition-colors">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="flex items-center gap-2">
-                        <lucide-icon [img]="UserIcon" class="w-4 h-4 text-gray-400"/>
-                        <span class="font-medium text-gray-900">
-                          {{ adoptions.adopterName }}
-                        </span>
+                @if (savingAdoptionForm()) {
+                  <tr>
+                    <td colspan="8" class="px-6 py-8">
+                      <div class="h-12 bg-gray-100 animate-pulse text-center flex items-center justify-center rounded">
+                        <span class="text-2xl">Salvando Formulario...</span>
                       </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="flex items-center gap-2">
-                        <lucide-icon [img]="PawPrintIcon" class="w-4 h-4 text-blue-500"/>
-                        <span class="font-medium text-gray-900">
-                          {{ adoptions.animalName }}
-                        </span>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700">
-                        {{ adoptions.experience || 'Não informado' }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700">
-                        {{ adoptions.otherAnimals || 'Não informado' }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right">
-                      <nav>
-                        <ul class="flex justify-center gap-2 list-none">
-                          <li>
-                            <button 
-                            type="button"
-                            (click)="openView(adoptions)"
-                            class="p-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-                              <lucide-icon [img]="Eye" class="w-4 h-4"/>
-                            </button>
-                          </li>
-                          <li>
-                            <button 
-                            type="button"
-                            (click)="openDeleteDialog(adoptions)"
-                            class="p-2 border border-gray-300 rounded-md text-red-500 hover:bg-red-50 transition-colors">
-                              <lucide-icon [img]="Trash2Icon" class="w-4 h-4"/>
-                            </button>
-                          </li>
-                        </ul>
-                      </nav>
                     </td>
                   </tr>
+                } @else {
+                  @for (adoptions of filteredAdoptions(); track adoptions.animalId) {
+                    <tr class="hover:bg-gray-300 transition-colors">
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-2">
+                          <lucide-icon [img]="UserIcon" class="w-4 h-4 text-gray-400"/>
+                          <span class="font-medium text-gray-900">
+                            {{ adoptions.adopterName }}
+                          </span>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-2">
+                          <lucide-icon [img]="PawPrintIcon" class="w-4 h-4 text-blue-500"/>
+                          <span class="font-medium text-gray-900">
+                            {{ adoptions.animalName }}
+                          </span>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                          {{ adoptions.experience || 'Não informado' }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                          {{ adoptions.otherAnimals || 'Não informado' }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <nav>
+                          <ul class="flex justify-center gap-2 list-none">
+                            <li>
+                              <button 
+                              type="button"
+                              (click)="openView(adoptions)"
+                              class="p-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                                <lucide-icon [img]="Eye" class="w-4 h-4"/>
+                              </button>
+                            </li>
+                            <li>
+                              <button 
+                              type="button"
+                              (click)="openDeleteDialog(adoptions)"
+                              class="p-2 border border-gray-300 rounded-md text-red-500 hover:bg-red-50 transition-colors">
+                                <lucide-icon [img]="Trash2Icon" class="w-4 h-4"/>
+                              </button>
+                            </li>
+                          </ul>
+                        </nav>
+                      </td>
+                    </tr>
+                  }
                 }
               </tbody>
             </table>

@@ -155,7 +155,7 @@
                                 </div>
                                 <div>
                                     <label for="voluntaryBirthDate" class="text-sm font-semibold text-gray-900 mb-2 block">
-                                        Idade
+                                        Idade *
                                     </label>
                                     <input 
                                     id="voluntaryBirthDate"
@@ -186,10 +186,10 @@
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                                 <lucide-angular [img]="Heart" class="w-5 h-5 text-red-500"/>
-                                Áreas de Interesse
+                                Áreas de Interesse *
                             </h3>
                             <p class="text-gray-600 mb-4">
-                                Selecione as atividades que mais despertam seu interesse:
+                                Selecione as atividades que mais despertam seu interesse (Pelo menos uma):
                             </p>
                             <div class="grid md:grid-cols-2 gap-4">
                                 @for (area of areasInteresse; track area.id) {
@@ -213,7 +213,7 @@
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                                 <lucide-angular [img]="Clock" class="w-5 h-5 text-green-600"/>
-                                Disponibilidade
+                                Disponibilidade *
                             </h3>
                             <p class="text-gray-600 mb-4">
                                 Quando você pode dedicar seu tempo ao voluntariado?

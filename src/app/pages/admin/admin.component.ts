@@ -174,11 +174,11 @@ export class AdminComponent implements OnInit {
   // VOLUNTÁRIOS
 
   deleteVoluntary(id: string): void {
-    this.savingAdoptionForm.set(true);
+    this.savingVoluntary.set(true);
     this.voluntaryService.deleteVoluntary(id)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.savingAdoptionForm.set(false)),
+        finalize(() => this.savingVoluntary.set(false)),
       )
       .subscribe({
         next: () => {
