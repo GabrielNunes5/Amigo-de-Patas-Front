@@ -34,7 +34,7 @@ export class AuthService {
       return of(this.currentUser()!);
     }
 
-    return this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me`
+    return this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me` 
     ).pipe(
       map(res => res.data),
       tap(user => this.currentUser.set(user))
@@ -55,6 +55,15 @@ export class AuthService {
     )
   }
 
+  forgotPassword(adopterEmail: string): Observable<void> {
+    console.log('forgotPassword chamado', adopterEmail);
+    return this.http.post<void>(`${this.apiUrl}/forgot-password`, { adopterEmail });
+  }
+
+  resetPassword(adopterPassword: string, adopterConfirmPassword: string, resetToken: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/reset-password?resetToken=${resetToken}`, { adopterPassword, adopterConfirmPassword });
+  }
+
   isAuthenticated(): boolean {
     return this.currentUser() !== null;
   }
@@ -65,10 +74,13 @@ export class AuthService {
   }
 
   loadUserProfile(): void {
-    this.profile().subscribe({
-      error: () => {
-        this.currentUser.set(null);
-      }
+    this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me`, {
+        headers: { 'X-Skip-Auth': 'true' }
+    }).pipe(
+        map(res => res.data),
+        tap(user => this.currentUser.set(user))
+    ).subscribe({
+        error: () => this.currentUser.set(null)
     });
   }
 }

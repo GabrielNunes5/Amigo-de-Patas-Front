@@ -48,7 +48,7 @@
               Senha
             </label>
             <a
-              routerLink="/auth/recuperar-senha"
+              routerLink="/auth/forgot-password"
               class="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200">
               Esqueci a senha
             </a>
@@ -92,12 +92,12 @@
             }
         </fieldset>
         @if (errorMessage()) {
-          <aside role="alert" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+          <div role="alert" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
             <div class="flex items-start gap-3">
               <lucide-angular [img]="CircleAlert" class="w-4 h-4 text-red-500 flex-shrink-0" aria-hidden="true" />
               <p class="text-red-800 text-sm font-medium whitespace-pre-line">{{ errorMessage() }}</p>
             </div>
-          </aside>
+          </div>
         }
         <button
           type="submit"
