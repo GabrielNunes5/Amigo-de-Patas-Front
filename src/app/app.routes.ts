@@ -62,6 +62,14 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/donation/donation-cancel/donation-cancel.component').then(m => m.DonationCancelComponent)
     },
     {
+        path:"termos",
+        loadComponent: () => import('./pages/terms/terms.component').then(m => m.TermsComponent)
+    },
+    {
+        path:"privacidade",
+        loadComponent: () => import('./pages/privacy-policy/privacy-policy.component').then(m => m.PrivacyPolicyComponent)
+    },
+    {
         path:"**",
         redirectTo: ""
     }
