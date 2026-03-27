@@ -25,11 +25,13 @@ export class AdminAdoptionFormComponent {
   savingAdoptionForm = input<boolean>(false);
 
   deleteAdoptionForm = output<string>();
+  updateStatusAdoptionForm = output<{ id: string, status: string }>();
 
   searchTerm = signal('');
   isViewOpen = signal(false);
   isDeleteOpen = signal(false);
   selectedAdoptions = signal<AdocaoFormData | null>(null);
+  selectedStatus = signal<string>('');
 
   filteredAdoptions = computed(() => {
     const search = this.searchTerm().trim().toLowerCase();
@@ -41,8 +43,19 @@ export class AdminAdoptionFormComponent {
     })
   })
 
+  handleSaveStatus(): void {
+    const adoption = this.selectedAdoptions();
+    if (!adoption) return;
+    this.updateStatusAdoptionForm.emit({ 
+        id: adoption.formId, 
+        status: this.selectedStatus() 
+    });
+    this.closeView();
+  }
+
   openView(adoptions: AdocaoFormData): void {
     this.selectedAdoptions.set(adoptions);
+    this.selectedStatus.set(adoptions.status);
     this.isViewOpen.set(true);
   }
 
@@ -64,6 +77,39 @@ export class AdminAdoptionFormComponent {
   }
 
   handleDelete(): void {
+    const adoption = this.selectedAdoptions();
+    if (!adoption) return;
+    this.deleteAdoptionForm.emit(adoption.formId);
     this.closeDeleteDialog();
+  }
+
+  handleStatusChange(status: string): void {
+    this.selectedStatus.set(status);
+  }
+
+  getAdoptionFormStatus(status: string): string {
+    switch (status) {
+      case 'PENDING':
+        return 'Pendente';
+      case 'APPROVED':
+        return 'Aprovado';
+      case 'REJECTED':
+        return 'Rejeitado';
+      default:
+        return status;
+    }
+  }
+
+  getAdoptionFormStatusClass(status: string): string {
+    switch (status) {
+      case 'PENDING':
+        return 'px-6 py-4 whitespace-nowrap text-yellow-700';
+      case 'APPROVED':
+        return 'px-6 py-4 whitespace-nowrap text-green-700';
+      case 'REJECTED':
+        return 'px-6 py-4 whitespace-nowrap text-red-700';
+      default:
+        return '';
+    }
   }
 }

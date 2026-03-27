@@ -24,6 +24,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telefone</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Áreas de Interesse</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                         </tr>
                     </thead>
@@ -82,6 +83,9 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-gray-700">
                                         {{ voluntary.voluntaryInterestArea }}
+                                    </td>
+                                    <td [class]="getVoluntaryStatusClass(voluntary.voluntaryStatus)">
+                                        {{ getVoluntaryStatus(voluntary.voluntaryStatus) }}
                                     </td>
                                     <td class="px-6 py-3 whitespace-nowrap text-right">
                                         <nav>
@@ -171,6 +175,18 @@
                                 <dd class="font-medium">
                                     {{ selectedVoluntary()?.voluntaryOccupation }}
                                 </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-gray-500">
+                                    Status
+                                </dt>
+                                <select 
+                                (change)="handleStatusChange($any($event.target).value)" 
+                                class="font-medium border border-gray-300 rounded-md px-2 py-1">
+                                    <option value="PENDING" [selected]="selectedVoluntary()?.voluntaryStatus === 'PENDING'">Pendente</option>
+                                    <option value="APPROVED" [selected]="selectedVoluntary()?.voluntaryStatus === 'APPROVED'">Aprovado</option>
+                                    <option value="REJECTED" [selected]="selectedVoluntary()?.voluntaryStatus === 'REJECTED'">Rejeitado</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -262,7 +278,14 @@
                 </div>
             }
 
-            <div class="p-2 border-t flex justify-end">
+            <div class="p-2 border-t flex justify-end gap-2">
+                <button
+                type="button"
+                (click)="handleSaveStatus()"
+                [disabled]="selectedStatus() === selectedVoluntary()?.voluntaryStatus || savingVoluntary()"
+                class="px-4 py-2 cursor-pointer border bg-blue-600 rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    Salvar
+                </button>
                 <button
                 type="button"
                 (click)="closeView()"

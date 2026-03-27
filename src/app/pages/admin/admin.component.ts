@@ -156,18 +156,62 @@ export class AdminComponent implements OnInit {
 
   // ADOÇÃO FORMULÁRIO
 
+  deleteAdoptionForm(id: string): void {
+    this.savingAdoptionForm.set(true);
+    this.adoptionFormService.deleteAdoptionForm(id)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.savingAdoptionForm.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.adoptionForm.update(lista =>
+            lista.filter(f => f.formId !== id)
+          );
+        },
+        error: err => {
+          console.error('Erro ao deletar formulário de adoção', err);
+        }
+      });
+  }
+
+  updateStatusAdoptionForm( payload: { id: string, status: string } ): void {
+    this.savingAdoptionForm.set(true);
+    this.adoptionFormService.updateAdoptionForm(payload.id, payload.status)
+      .pipe(
+        finalize(() => this.savingAdoptionForm.set(false)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: () => {
+          if (payload.status === 'APPROVED') {
+            this.loadAdoptionForm();
+          } else {
+            this.adoptionForm.update(lista =>
+              lista.map(f => f.formId === payload.id ? { ...f, status: payload.status } : f)
+            );
+          }
+        },
+        error: err => {
+          console.error('Erro ao atualizar status do formulário de adoção', err);
+        }
+      });
+  }
+
   loadAdoptionForm(): void {
     this.loadingAdoptionForm.set(true);
 
     this.adoptionFormService.getAdoptionForms()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        finalize(() => this.loadingAdoptionForm.set(false)),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe({
         next: list => this.adoptionForm.set(list),
         error: err => {
           console.error('Erro ao carregar formulários de adoção', err);
           this.adoptionForm.set([]);
-        },
-        complete: () => this.loadingAdoptionForm.set(false),
+        }
       });
   }
 
@@ -192,18 +236,39 @@ export class AdminComponent implements OnInit {
       });
   }
 
+  updateVoluntaryStatus( payload: { id: string, status: string } ): void {
+    this.savingVoluntary.set(true);
+    this.voluntaryService.updateVoluntaryStatus(payload.id, payload.status)
+      .pipe(
+        finalize(() => this.savingVoluntary.set(false)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: () => {
+          this.voluntaries.update(lista =>
+            lista.map(v => v.voluntaryId === payload.id ? { ...v, voluntaryStatus: payload.status } : v)
+          );
+        },
+        error: err => {
+          console.error('Erro ao atualizar status do voluntário', err);
+        }
+      });
+  }
+
   loadVoluntaries(): void {
     this.loadingVoluntary.set(true);
 
     this.voluntaryService.getVoluntaries()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        finalize(() => this.loadingVoluntary.set(false)),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe({
         next: list => this.voluntaries.set(list),
         error: err => {
           console.error('Erro ao carregar voluntários', err);
           this.voluntaries.set([]);
-        },
-        complete: () => this.loadingVoluntary.set(false),
+        }
       })
   }
 }

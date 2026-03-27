@@ -15,10 +15,12 @@ export interface Animal {
 }
 
 export interface AdocaoFormData {
+    formId: string;
     animalId: string;
     animalName: string;
     adopterName: string;
     experience?: string;
     otherAnimals?: string;
     message?: string;
+    status: string;
 }

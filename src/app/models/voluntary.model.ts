@@ -13,4 +13,5 @@ export interface Voluntary {
     hasRescueExperience: boolean;
     canWorkOnWeekends: boolean;
     voluntarySpecialSkills: string;
+    voluntaryStatus: string;
 }

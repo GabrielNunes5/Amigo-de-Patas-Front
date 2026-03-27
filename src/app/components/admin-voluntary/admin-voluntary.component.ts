@@ -25,11 +25,13 @@ export class AdminVoluntaryComponent {
   savingVoluntary = input<boolean>(false);
 
   deleteVoluntary = output<string>();
+  updateVoluntaryStatus = output<{ id: string, status: string }>();
 
   searchTerm = signal('');
   isViewOpen = signal(false);
   isDeleteOpen = signal(false);
   selectedVoluntary = signal<Voluntary | null>(null);
+  selectedStatus = signal<string>('');
 
   filtredVoluntaries = computed(() => {
     const search = this.searchTerm().trim().toLowerCase();
@@ -40,6 +42,20 @@ export class AdminVoluntaryComponent {
     })
   })
 
+  handleStatusChange(status: string): void {
+    this.selectedStatus.set(status);
+  }
+
+  handleSaveStatus(): void {
+    const voluntary = this.selectedVoluntary();
+    if (!voluntary) return;
+    this.updateVoluntaryStatus.emit({ 
+        id: voluntary.voluntaryId, 
+        status: this.selectedStatus() 
+    });
+    this.closeView();
+  }
+  
   handleDelete(): void {
     const voluntary = this.selectedVoluntary();
     if (!voluntary) return;
@@ -50,6 +66,7 @@ export class AdminVoluntaryComponent {
 
   openView(voluntary: Voluntary): void {
     this.selectedVoluntary.set(voluntary);
+    this.selectedStatus.set(voluntary.voluntaryStatus);
     this.isViewOpen.set(true);
   }
 
@@ -68,6 +85,32 @@ export class AdminVoluntaryComponent {
 
   closeDeleteDialog(): void {
     this.isDeleteOpen.set(false);
+  }
+
+  getVoluntaryStatus(status: string): string {
+    switch (status) {
+      case 'PENDING':
+        return 'Pendente';
+      case 'APPROVED':
+        return 'Aprovado';
+      case 'REJECTED':
+        return 'Rejeitado';
+      default:
+        return status;
+    }
+  }
+
+  getVoluntaryStatusClass(status: string): string {
+    switch (status) {
+      case 'PENDING':
+        return 'px-6 py-4 whitespace-nowrap text-yellow-700';
+      case 'APPROVED':
+        return 'px-6 py-4 whitespace-nowrap text-green-700';
+      case 'REJECTED':
+        return 'px-6 py-4 whitespace-nowrap text-red-700';
+      default:
+        return '';
+    }
   }
 
 }

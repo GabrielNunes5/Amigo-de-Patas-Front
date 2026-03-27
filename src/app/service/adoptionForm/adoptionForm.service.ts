@@ -28,4 +28,14 @@ export class AdoptionFormService {
       map(res => res.data)
     );
   }
+
+  updateAdoptionForm(id: string, status: string): Observable<AdocaoFormData> {
+    return this.http.patch<ApiResponse<AdocaoFormData>>(`${this.apiUrl}/${id}/status`, { status }).pipe(
+      map(res => res.data)
+    )
+  }
+
+  deleteAdoptionForm(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

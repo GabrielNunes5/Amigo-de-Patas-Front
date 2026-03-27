@@ -30,6 +30,12 @@ export class VoluntarioService {
     );
   }
 
+  updateVoluntaryStatus(id: string, status: string): Observable<Voluntary> {
+    return this.http.patch<ApiResponse<Voluntary>>(`${this.apiUrl}/${id}/status`, { status }).pipe(
+      map(res => res.data)
+    )
+  }
+
   deleteVoluntary(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

@@ -138,8 +138,11 @@
   @if (activeTab() === 'adocoes') {
     <section>
       <app-admin-adoption-form
+        (deleteAdoptionForm)="deleteAdoptionForm($event)"
+        (updateStatusAdoptionForm)="updateStatusAdoptionForm($event)"
         [adoptionForm]="adoptionForm()"
-        [loadingAdoptionForm]="loadingAdoptionForm()" />
+        [loadingAdoptionForm]="loadingAdoptionForm()"
+        [savingAdoptionForm]="savingAdoptionForm()" />
     </section>
   }
 
@@ -147,6 +150,7 @@
     <section>
       <app-admin-voluntary
         (deleteVoluntary)="deleteVoluntary($event)"
+        (updateVoluntaryStatus)="updateVoluntaryStatus($event)"
         [voluntaries]="voluntaries()"
         [loadingVoluntary]="loadingVoluntary()"
         [savingVoluntary]="savingVoluntary()" />
