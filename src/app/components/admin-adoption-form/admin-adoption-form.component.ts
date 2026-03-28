@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Eye, Heart, Home, LucideAngularModule, PawPrint, Search, Trash2, User } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
 
+type FilterStatus = 'todos' | 'Aprovado' | 'Pendente' | 'Rejeitado';
+
 @Component({
   selector: 'app-admin-adoption-form',
   standalone: true,
@@ -30,16 +32,20 @@ export class AdminAdoptionFormComponent {
   searchTerm = signal('');
   isViewOpen = signal(false);
   isDeleteOpen = signal(false);
+  filterStatus = signal<FilterStatus>('todos');
   selectedAdoptions = signal<AdocaoFormData | null>(null);
   selectedStatus = signal<string>('');
 
   filteredAdoptions = computed(() => {
     const search = this.searchTerm().trim().toLowerCase();
+    const status = this.filterStatus();
 
     return this.adoptionForm().filter(adocao => {
       const matchAnimalName = !search || adocao.animalName.toLowerCase().includes(search);
       const matchAdopterName = !search || adocao.adopterName.toLowerCase().includes(search);
-      return matchAnimalName || matchAdopterName;
+      const matchStatus = status === 'todos' || adocao.status === status;
+
+      return matchAnimalName && matchStatus || matchAdopterName && matchStatus;
     })
   })
 

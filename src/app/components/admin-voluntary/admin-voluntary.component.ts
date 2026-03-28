@@ -4,6 +4,8 @@ import { AtSign, Eye, HeartIcon, LucideAngularModule, Phone, Search, Trash2Icon,
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+type FilterStatus = 'todos' | 'Aprovado' | 'Pendente' | 'Rejeitado';
+
 @Component({
   selector: 'app-admin-voluntary',
   standalone: true,
@@ -30,15 +32,18 @@ export class AdminVoluntaryComponent {
   searchTerm = signal('');
   isViewOpen = signal(false);
   isDeleteOpen = signal(false);
+  filterStatus = signal<FilterStatus>('todos');
   selectedVoluntary = signal<Voluntary | null>(null);
   selectedStatus = signal<string>('');
 
   filtredVoluntaries = computed(() => {
     const search = this.searchTerm().trim().toLowerCase();
+    const status = this.filterStatus();
 
     return this.voluntaries().filter(voluntary => {
       const matchName = !search || voluntary.voluntaryName.toLowerCase().includes(search);
-      return matchName;
+      const matchStatus = status === "todos" || voluntary.voluntaryStatus == status
+      return matchName && matchStatus;
     })
   })
 
