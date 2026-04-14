@@ -9,6 +9,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { adminGuard } from './_guard/admin-guard.guard';
 import { DonationComponent } from './pages/donation/donation.component';
+import { authGuard } from './_guard/auth-guard.guard';
+import { guestGuard } from './_guard/guest-guard.guard';
+
 
 export const routes: Routes = [
     {
@@ -41,6 +44,7 @@ export const routes: Routes = [
     },
     {
         path:"auth",
+        canActivate: [guestGuard],
         children: [
             {path: 'login', component: LoginComponent},
             {path: 'register', component: RegisterComponent},
@@ -52,6 +56,11 @@ export const routes: Routes = [
         path:"admin",
         canActivate: [adminGuard],
         loadComponent: () => import('./pages/admin/admin.component').then(m => m.AdminComponent)
+    },
+    {
+        path:"profile",
+        canActivate: [authGuard],
+        loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent)
     },
     {
         path:"donation/success",

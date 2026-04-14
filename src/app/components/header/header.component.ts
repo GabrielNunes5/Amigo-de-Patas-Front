@@ -38,6 +38,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/admin']);
   }
 
+  goToProfile(){
+    this.router.navigate(['/profile']);
+  }
+
   toggleDropdown(): void {
     this.isDropdownOpen.update((v) => !v);
   }
@@ -100,4 +104,5 @@ export class HeaderComponent implements OnInit {
   readonly ShieldUser = ShieldUser;
   readonly BankNote = Banknote;
   readonly HandHeart = HandHeart;
+  readonly User = Users;
 }

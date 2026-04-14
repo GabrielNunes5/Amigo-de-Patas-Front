@@ -1,0 +1,210 @@
+
+@if (loading()) {
+  <main class="min-h-screen flex items-center justify-center">
+      <div class="flex flex-col items-center gap-4">
+          <div class="w-12 h-12 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
+          <p class="text-slate-400 text-sm font-medium tracking-wide">
+              Carregando perfil...
+          </p>
+      </div>
+  </main>
+} @else {
+  <main class="min-h-screen py-12 px-4 bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/40">
+    <section class="max-w-3xl mx-auto animate-fade-in">
+      <section class="flex items-center gap-5 mb-10">
+          <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200 flex-shrink-0">
+              <lucide-angular [img]="User" class="text-white w-10 h-10"/>
+          </div>
+          <div>
+              <h1 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight">
+                  {{ currentUser()?.adopterFullName }}
+              </h1>
+              <p class="text-slate-400 flex items-center gap-1.5 text-sm mt-1">
+                  <lucide-angular [img]="Mail"/>
+                  {{ currentUser()?.adopterEmail }}
+              </p>
+          </div>
+      </section>
+      <section class="flex gap-1 bg-gray-100/80 backdrop-blur-sm border border-slate-100 rounded-2xl p-1.5 mb-8 shadow-sm">
+          <button
+          (click)="setTab('dados')"
+          [class]="tabClass('dados')">
+            <lucide-angular [img]="Edit3"/>
+            Meus Dados
+          </button>
+          <button
+          (click)="setTab('adocoes')"
+          [class]="tabClass('adocoes')">
+            <lucide-angular [img]="ClipboardList"/>
+            Adoções
+            @if ((currentUser()?.adoptionForms?.length ?? 0) > 0) {
+              <span class="ml-1 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                {{ currentUser()?.adoptionForms?.length || 0 }}
+              </span>
+            }
+          </button>
+          <button
+          (click)="setTab('animais')"
+          [class]="tabClass('animais')">
+            <lucide-angular [img]="Heart"/>
+            Adotados
+            @if ((currentUser()?.adoptedAnimals?.length ?? 0) > 0) {
+              <span class="ml-1 bg-emerald-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                {{ currentUser()?.adoptedAnimals?.length || 0 }}
+              </span>
+            }
+          </button>
+      </section>
+      @if (activeTab() === 'dados') {
+        <section class="animate-slide-up">
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="px-6 pt-6 pb-2 border-b border-slate-50">
+              <h2 class="text-base font-bold text-slate-700 flex items-center gap-2">
+                <lucide-angular [img]="User" class="text-blue-500"/>
+                Dados Cadastrais
+              </h2>
+            </div>
+            <form 
+            class="p-6 space-y-5" 
+            [formGroup]="profileForm" 
+            (ngSubmit)="saveProfile()">
+              <div>
+                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <lucide-angular [img]="Phone"/>
+                  Telefone / WhatsApp
+                </label>
+                <input
+                  formControlName="adopterPhone"
+                  placeholder="Atualizar telefone ou WhatsApp"
+                  class="w-full px-4 py-2.5 rounded-xl bg-white text-slate-700 border border-slate-200 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition-all"/>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <lucide-angular [img]="MapPin"/>
+                  Endereço (rua e número)
+                </label>
+                <input
+                  formControlName="adopterAddress"
+                  placeholder="Atualizar endereço"
+                  class="w-full px-4 py-2.5 rounded-xl bg-white text-slate-700 border border-slate-200 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition-all"/>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  Tipo de Residência
+                </label>
+                <select 
+                name="typeHouse" 
+                id="typeHouse" 
+                formControlName="typeHouse" 
+                class="w-full px-4 py-2.5 rounded-xl bg-white text-slate-700 border border-slate-200 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition-all">
+                  <option value="" disabled>
+                    Atualize o tipo de residência
+                  </option>
+                  <option value="Casa">Casa</option>
+                  <option value="Apartamento">Apartamento</option>
+                  <option value="Sitio/Chácara">Sítio/Chácara</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-3">
+                <input
+                id="hasGarden"
+                type="checkbox"
+                formControlName="hasGarden"
+                class="w-5 h-5 border-2 border-gray-300 rounded focus:ring-2 focus:ring-blue-600/20 text-blue-600 transition-all duration-200"/>
+                <label for="hasGarden" class="text-sm font-medium text-gray-700 cursor-pointer">
+                  Possuo jardim ou quintal
+                </label>
+              </div>
+              <button
+              class="w-full py-3 cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              [disabled]="profileForm.untouched || profileForm.invalid">
+                  <span class="flex items-center justify-center gap-2">
+                    <lucide-angular [img]="Save"/>
+                    Salvar Dados
+                  </span>
+              </button>
+            </form>
+          </div>
+        </section>
+      }
+      @if (activeTab() === 'adocoes') {
+        <section class="animate-slide-up">
+          @if (currentUser()?.adoptionForms?.length === 0) {
+            <div class="text-center py-20 text-slate-300">
+              <lucide-angular [img]="ClipboardList" class="mx-auto mb-4 w-20 h-20"/>
+              <p class="font-semibold text-slate-400 text-lg">
+                Você ainda não enviou nenhum formulário de adoção.
+              </p>
+            </div>
+          } @else {
+            <div class="space-y-3">
+              @for (sol of currentUser()?.adoptionForms; track sol.adoptionFormId) {
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-start justify-between gap-4 hover:shadow-md transition-shadow">
+                  <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <lucide-angular [img]="Heart" class="text-orange-400"/>
+                    </div>
+                    <div>
+                      <p class="font-bold text-slate-800">
+                        {{ sol.animalName }}
+                      </p>
+                      <p class="text-xs text-slate-400 mt-0.5">
+                        Enviado em {{ formatDate(sol.createdAt) }}
+                      </p>
+                      @if (sol.message) {
+                        <p class="text-sm text-slate-500 mt-1 line-clamp-2 italic">"{{ sol.message }}"</p>
+                      }
+                    </div>
+                  </div>
+                  <span [class]="statusBadgeClass(sol.status)">
+                    {{ getStatusLabel(sol.status) }}
+                  </span>
+                </div>
+              }
+            </div>
+          }
+        </section>
+      }
+      @if (activeTab() === 'animais') {
+        <section class="animate-slide-up">
+          @if (currentUser()?.adoptedAnimals?.length === 0) {
+            <div class="text-center py-20 text-slate-300">
+              <lucide-angular [img]="Heart" class="mx-auto mb-4 w-20 h-20"/>
+              <p class="font-semibold text-slate-400 text-lg">
+                Você ainda não possui animais adotados por aqui.
+              </p>
+            </div>
+          } @else {
+            <div class="grid sm:grid-cols-2 gap-4">
+              @for (animal of currentUser()?.adoptedAnimals; track animal.animalId) {
+                <div class="bg-white w-fit rounded-3xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                  @if (animal.animalImages) {
+                    <div class="aspect-square overflow-hidden bg-slate-100">
+                      <img 
+                      [src]="animal.animalImages[0]" 
+                      [alt]="animal.animalName" 
+                      class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"/>
+                    </div>
+                  }
+                  <div class="p-4">
+                    <div class="flex items-center justify-between">
+                      <p class="font-bold text-slate-800 text-lg">
+                        {{ animal.animalName }}
+                      </p>
+                      <span class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-semibold px-3 py-1 rounded-full">
+                        Adotado ✅
+                      </span>
+                    </div>
+                    <p class="text-sm text-slate-400 mt-1">
+                        {{ animal.animalSpecies }} • {{ animal.animalAge }} • {{ animal.animalSize }}
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </section>
+      }
+    </section>
+  </main>
+}

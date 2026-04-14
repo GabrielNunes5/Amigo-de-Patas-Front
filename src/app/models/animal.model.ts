@@ -1,3 +1,4 @@
+
 export interface Animal {
     animalId: string;
     animalName: string;
@@ -15,7 +16,7 @@ export interface Animal {
 }
 
 export interface AdocaoFormData {
-    formId: string;
+    adoptionFormId: string;
     animalId: string;
     animalName: string;
     adopterName: string;
@@ -23,4 +24,5 @@ export interface AdocaoFormData {
     otherAnimals?: string;
     message?: string;
     status: string;
+    createdAt: string;
 }
