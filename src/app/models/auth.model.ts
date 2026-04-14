@@ -32,4 +32,10 @@ export interface AdopterResponse {
     role?: string[]
 }
 
+export interface UpdateAdopterRequest {
+    adopterPhone:   string;
+    adopterAddress: string;
+    typeHouse:      string;
+    hasGarden:      boolean;
+}
 

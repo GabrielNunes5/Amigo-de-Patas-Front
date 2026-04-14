@@ -1,8 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { CheckCheck, CheckCircle, ClipboardList, Clock, Edit3, Heart, LucideAngularModule, Mail, MapPin, Phone, Save, User, XCircle, } from 'lucide-angular';
 import { AuthService } from '../../service/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AdopterService } from '../../service/adopter/adopter.service';
+import { AdopterResponse, UpdateAdopterRequest } from '../../models/auth.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
 
 type ProfileTabs =  'dados' | 'adocoes' | 'animais';
 
@@ -28,12 +32,12 @@ export class ProfileComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(AuthService);
+  private readonly adopterService = inject(AdopterService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly currentUser = this.auth.user;
 
   loading = signal(false);
-  save = signal(false);
-  saving = signal(false);
   activeTab = signal<ProfileTabs>('dados');
 
   setTab(tab: ProfileTabs): void {
@@ -63,11 +67,37 @@ export class ProfileComponent implements OnInit {
       typeHouse:      user?.typeHouse      ?? '',
       hasGarden:      user?.hasGarden      ?? false,
     });
-
+    
   }
 
   saveProfile(): void {
-    console.log(this.profileForm.value);
+    if (this.profileForm.invalid) {
+      this.profileForm.markAllAsTouched();
+      return;
+    }
+
+    this.loading.set(true);
+
+    const raw = this.profileForm.getRawValue();
+
+    const data: UpdateAdopterRequest = {
+      adopterPhone:   raw.adopterPhone   ?? '',
+      adopterAddress: raw.adopterAddress ?? '',
+      typeHouse:      raw.typeHouse      ?? '',
+      hasGarden:      raw.hasGarden      ?? false,
+    };
+
+    const userId = this.currentUser()?.adopterId;
+    if (!userId) return;
+
+    this.adopterService.updateAdopter(userId, data).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.loading.set(false))
+    ).subscribe({
+      error: (err) =>{
+        console.error('Erro ao atualizar perfil:', err);
+      }
+    })
   }
 
   tabClass(tab: string): string {
@@ -75,13 +105,6 @@ export class ProfileComponent implements OnInit {
     return this.activeTab() === tab
       ? `${base} bg-gradient-to-r from-blue-500 to-emerald-500 text-white shadow-md shadow-blue-100`
       : `${base} text-slate-500 hover:text-slate-700 hover:bg-slate-50`;
-  }
-
-  saveButtonClass(): string {
-    const base = 'w-full py-3 rounded-2xl font-bold text-white text-sm transition-all duration-300 disabled:opacity-70';
-    return this.save()
-      ? `${base} bg-emerald-500 hover:bg-emerald-600 shadow-lg shadow-emerald-100`
-      : `${base} bg-gradient-to-r from-blue-500 to-emerald-500 hover:opacity-90 shadow-lg shadow-blue-100`;
   }
 
   statusBadgeClass(status: string): string {
