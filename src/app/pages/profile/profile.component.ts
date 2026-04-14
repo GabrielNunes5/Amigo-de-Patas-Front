@@ -57,10 +57,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     const user = this.currentUser();
 
-    user?.adoptedAnimals?.forEach(animal => {
-      console.log(animal.animalSize);
-    });
-    
     this.profileForm.patchValue({
       adopterPhone:   user?.adopterPhone   ?? '',
       adopterAddress: user?.adopterAddress ?? '',

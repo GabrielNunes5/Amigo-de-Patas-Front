@@ -25,36 +25,47 @@
               </p>
           </div>
       </section>
-      <section class="flex gap-1 bg-gray-100/80 backdrop-blur-sm border border-slate-100 rounded-2xl p-1.5 mb-8 shadow-sm">
-          <button
-          (click)="setTab('dados')"
-          [class]="tabClass('dados')">
-            <lucide-angular [img]="Edit3"/>
-            Meus Dados
-          </button>
-          <button
-          (click)="setTab('adocoes')"
-          [class]="tabClass('adocoes')">
-            <lucide-angular [img]="ClipboardList"/>
-            Adoções
-            @if ((currentUser()?.adoptionForms?.length ?? 0) > 0) {
-              <span class="ml-1 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                {{ currentUser()?.adoptionForms?.length || 0 }}
-              </span>
-            }
-          </button>
-          <button
-          (click)="setTab('animais')"
-          [class]="tabClass('animais')">
-            <lucide-angular [img]="Heart"/>
-            Adotados
-            @if ((currentUser()?.adoptedAnimals?.length ?? 0) > 0) {
-              <span class="ml-1 bg-emerald-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                {{ currentUser()?.adoptedAnimals?.length || 0 }}
-              </span>
-            }
-          </button>
-      </section>
+      <nav class="flex justify-center mb-4">
+        <ul class="grid grid-cols-1 md:grid-cols-3  gap-2 bg-white p-2 rounded-xl shadow list-none">
+          <li>
+            <button
+            (click)="setTab('dados')"
+            [class]="tabClass('dados')">
+              <lucide-angular [img]="Edit3"/>
+              Meus Dados
+            </button>
+          </li>
+
+          <li>
+            <button
+            (click)="setTab('adocoes')"
+            [class]="tabClass('adocoes')">
+              <lucide-angular [img]="ClipboardList"/>
+              Adoções
+              @if ((currentUser()?.adoptionForms?.length ?? 0) > 0) {
+                <span class="ml-1 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                  {{ currentUser()?.adoptionForms?.length || 0 }}
+                </span>
+              }
+            </button>
+          </li>
+
+          <li>
+            <button
+            (click)="setTab('animais')"
+            [class]="tabClass('animais')">
+              <lucide-angular [img]="Heart"/>
+              Adotados
+              @if ((currentUser()?.adoptedAnimals?.length ?? 0) > 0) {
+                <span class="ml-1 bg-emerald-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                  {{ currentUser()?.adoptedAnimals?.length || 0 }}
+                </span>
+              }
+            </button>
+          </li>
+
+        </ul>
+      </nav>
       @if (activeTab() === 'dados') {
         <section class="animate-slide-up">
           <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
