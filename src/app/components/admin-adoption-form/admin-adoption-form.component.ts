@@ -53,7 +53,7 @@ export class AdminAdoptionFormComponent {
     const adoption = this.selectedAdoptions();
     if (!adoption) return;
     this.updateStatusAdoptionForm.emit({ 
-        id: adoption.formId, 
+        id: adoption.adoptionFormId, 
         status: this.selectedStatus() 
     });
     this.closeView();
@@ -85,7 +85,7 @@ export class AdminAdoptionFormComponent {
   handleDelete(): void {
     const adoption = this.selectedAdoptions();
     if (!adoption) return;
-    this.deleteAdoptionForm.emit(adoption.formId);
+    this.deleteAdoptionForm.emit(adoption.adoptionFormId);
     this.closeDeleteDialog();
   }
 

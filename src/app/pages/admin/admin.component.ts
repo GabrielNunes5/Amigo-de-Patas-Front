@@ -166,7 +166,7 @@ export class AdminComponent implements OnInit {
       .subscribe({
         next: () => {
           this.adoptionForm.update(lista =>
-            lista.filter(f => f.formId !== id)
+            lista.filter(f => f.adoptionFormId !== id)
           );
         },
         error: err => {
@@ -188,7 +188,7 @@ export class AdminComponent implements OnInit {
             this.loadAdoptionForm();
           } else {
             this.adoptionForm.update(lista =>
-              lista.map(f => f.formId === payload.id ? { ...f, status: payload.status } : f)
+              lista.map(f => f.adoptionFormId === payload.id ? { ...f, status: payload.status } : f)
             );
           }
         },
