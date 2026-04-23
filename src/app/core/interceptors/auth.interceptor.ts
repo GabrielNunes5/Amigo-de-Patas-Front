@@ -24,7 +24,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             }
 
             if (req.url.includes('/auth/refresh')) {
-                authService.logout().subscribe();
+                authService.logout();
                 if (!router.url.includes('/auth/')) {
                     router.navigate(['/auth/login']);
                 }
@@ -37,7 +37,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                     return next(retryReq);
                 }),
                 catchError(() => {
-                    authService.logout().subscribe();
+                    authService.logout();
                     if (!router.url.includes('/auth/')) {
                         router.navigate(['/auth/login']);
                     }

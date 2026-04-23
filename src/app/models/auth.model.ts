@@ -21,7 +21,6 @@ export interface AdopterResponse {
     adopterId: string,
     adopterFullName: string,
     adopterBirthDate: string,
-    adopterCPF: string,
     adopterEmail: string,
     adopterPhone: string,
     adopterAddress: string,

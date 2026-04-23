@@ -30,10 +30,6 @@ export class AuthService {
   }
 
   profile(): Observable<AdopterResponse> {
-    if (this.currentUser() !== null) {
-      return of(this.currentUser()!);
-    }
-
     return this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me` 
     ).pipe(
       map(res => res.data),
@@ -56,7 +52,6 @@ export class AuthService {
   }
 
   forgotPassword(adopterEmail: string): Observable<void> {
-    console.log('forgotPassword chamado', adopterEmail);
     return this.http.post<void>(`${this.apiUrl}/forgot-password`, { adopterEmail });
   }
 
@@ -73,14 +68,4 @@ export class AuthService {
     return user?.role?.includes('ADMIN') ?? false;
   }
 
-  loadUserProfile(): void {
-    this.http.get<ApiResponse<AdopterResponse>>(`${this.apiUrl}/me`, {
-        headers: { 'X-Skip-Auth': 'true' }
-    }).pipe(
-        map(res => res.data),
-        tap(user => this.currentUser.set(user))
-    ).subscribe({
-        error: () => this.currentUser.set(null)
-    });
-  }
 }

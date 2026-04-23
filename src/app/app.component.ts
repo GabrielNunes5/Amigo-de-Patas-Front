@@ -1,8 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
-import { AuthService } from './service/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +9,6 @@ import { AuthService } from './service/auth/auth.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
-  public auth = inject(AuthService);
+export class AppComponent {
   title = 'amigo-de-patas';
-
-  ngOnInit() {
-    this.auth.loadUserProfile();
-  }
 }
